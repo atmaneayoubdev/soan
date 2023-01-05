@@ -1,0 +1,11 @@
+<svg id="Group_2686" data-name="Group 2686" xmlns="http://www.w3.org/2000/svg" width="25.622" height="25.622" viewBox="0 0 25.622 25.622">
+  <g id="Group_2685" data-name="Group 2685">
+    <path id="Path_40809" data-name="Path 40809" d="M8.894,0h7.834a8.894,8.894,0,0,1,8.894,8.894v7.834a8.894,8.894,0,0,1-8.894,8.894H8.894A8.894,8.894,0,0,1,0,16.728V8.894A8.894,8.894,0,0,1,8.894,0Z" fill="#e8a188"/>
+    <rect id="Rectangle_1582" data-name="Rectangle 1582" width="24.561" height="24.561" rx="7.631" transform="translate(0.53 0.53)" fill="#f6f6f6"/>
+    <rect id="Rectangle_1583" data-name="Rectangle 1583" width="22.97" height="22.97" rx="5.736" transform="translate(1.326 1.326)" fill="#e8a188"/>
+    <path id="Path_1140" data-name="Path 1140" d="M36.662,231.579a1.881,1.881,0,0,0-1.878,1.878V251.61a1.86,1.86,0,0,0,.368,1.11c.627-9.961,2.53-17.628,6.742-21.142Z" transform="translate(-32.928 -229.723)" fill="#fff" opacity="0.2" style="mix-blend-mode: overlay;isolation: isolate"/>
+    <path id="Path_1141" data-name="Path 1141" d="M76.121,264.617h2.674a1.88,1.88,0,0,0,1.878-1.878V250.764C80.087,257.021,78.942,262.3,76.121,264.617Z" transform="translate(-56.907 -240.852)" fill="#fff" opacity="0.2" style="mix-blend-mode: overlay;isolation: isolate"/>
+  </g>
+  <path id="Path_1142" data-name="Path 1142" d="M55.345,260.848v-1.413h.807V249.8h-.807v-1.413H59.23v11.05h.757v1.413Z" transform="translate(-44.855 -239.472)" fill="#fff"/>
+  <path id="Path_1143" data-name="Path 1143" d="M59.324,239.443a1.852,1.852,0,0,1-1.375.58,1.9,1.9,0,0,1-.757-.151,1.958,1.958,0,0,1-.619-.417,1.917,1.917,0,0,1-.416-.631,2.029,2.029,0,0,1,0-1.539,1.93,1.93,0,0,1,.416-.631,1.965,1.965,0,0,1,.619-.417,1.908,1.908,0,0,1,.757-.151,1.854,1.854,0,0,1,1.375.58,1.98,1.98,0,0,1,0,2.775Z" transform="translate(-45.238 -232.338)" fill="#fff"/>
+</svg>
