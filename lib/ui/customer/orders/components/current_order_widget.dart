@@ -11,7 +11,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../../Common/show_location.dart';
 import '../../../../Common/text_widget.dart';
 import '../../../../constants.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart' as modal;
 import '../view/order_details_view.dart';
 import 'reply_bottom_sheet_widget.dart';
 import '../view/invoice_view.dart';
@@ -299,7 +299,7 @@ class _CurrentOrderWidgetState extends State<CurrentOrderWidget> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              showMaterialModalBottomSheet(
+                              modal.showMaterialModalBottomSheet(
                                 enableDrag: true,
                                 backgroundColor: Colors.transparent,
                                 context: context,

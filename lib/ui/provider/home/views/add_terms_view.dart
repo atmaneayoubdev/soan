@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:soan/Common/loading_widget.dart';
@@ -48,11 +49,13 @@ class _AddTermsAndConditionsState extends State<AddTermsAndConditions> {
                   ),
                   Align(
                     alignment: Alignment.bottomCenter,
-                    child: TextWidget(
-                      text: LocaleKeys.titles_add_terms.tr(),
-                      size: 22,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w500,
+                    child: FittedBox(
+                      child: TextWidget(
+                        text: LocaleKeys.titles_add_terms.tr(),
+                        size: 22,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                 ]),
@@ -95,8 +98,10 @@ class _AddTermsAndConditionsState extends State<AddTermsAndConditions> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              const TextWidget(
-                                text: "سياسة وشروط المركز",
+                              TextWidget(
+                                text: LocaleKeys
+                                    .provider_home_shops_terms_and_conditions
+                                    .tr(),
                                 size: 22,
                                 color: kDarkBleuColor,
                                 fontWeight: FontWeight.normal,
@@ -121,26 +126,31 @@ class _AddTermsAndConditionsState extends State<AddTermsAndConditions> {
                       SizedBox(
                         height: 23.h,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            height: 9.h,
-                            width: 9.w,
-                            decoration: const BoxDecoration(
-                                shape: BoxShape.circle, color: kPinkColor),
-                          ),
-                          SizedBox(
-                            width: 10.w,
-                          ),
-                          const TextWidget(
-                            text:
-                                "عند الحفظ لن تتمكن من التعديل إلا بإتصالك بالدعم الفني",
-                            size: 14,
-                            color: kPinkColor,
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ],
+                      FittedBox(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              height: 9.h,
+                              width: 9.w,
+                              decoration: const BoxDecoration(
+                                  shape: BoxShape.circle, color: kPinkColor),
+                            ),
+                            SizedBox(
+                              width: 10.w,
+                            ),
+                            Text(
+                              LocaleKeys.provider_home_you_wont_change.tr(),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.tajawal(
+                                fontSize: 14.sp,
+                                color: kPinkColor,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       SizedBox(
                         height: 30.h,
@@ -153,6 +163,7 @@ class _AddTermsAndConditionsState extends State<AddTermsAndConditions> {
                               setState(() {});
                               if (controller.text.isNotEmpty) {
                                 await ProviderController.updateTerms(
+                                        language: context.locale.languageCode,
                                         token: Provider.of<ProviderProvider>(
                                                 context,
                                                 listen: false)
@@ -205,8 +216,9 @@ class _AddTermsAndConditionsState extends State<AddTermsAndConditions> {
                                 });
                               }
                             },
-                            child:
-                                const LargeButton(text: 'حفظ', isButton: true)),
+                            child: LargeButton(
+                                text: LocaleKeys.auth_save.tr(),
+                                isButton: true)),
                       ),
                     ],
                   ),

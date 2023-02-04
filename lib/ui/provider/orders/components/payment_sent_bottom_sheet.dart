@@ -96,6 +96,7 @@ class _PayementRecievedBottomSheetState
                               isLoading = true;
                               setState(() {});
                               await ProviderController.confirmTakeMoney(
+                                language: context.locale.languageCode,
                                 token: Provider.of<ProviderProvider>(
                                   context,
                                   listen: false,

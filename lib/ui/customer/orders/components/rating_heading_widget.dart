@@ -56,10 +56,11 @@ class RatingHeaderWidget extends StatelessWidget {
           if (provdier.categories.isNotEmpty)
             SizedBox(
               height: 20.h,
-              width: 200.w,
+              //width: 200.w,
               child: Center(
                 child: ListView.separated(
                   shrinkWrap: true,
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
                   scrollDirection: Axis.horizontal,
                   itemCount: provdier.categories.length,
                   separatorBuilder: (BuildContext context, int index) {

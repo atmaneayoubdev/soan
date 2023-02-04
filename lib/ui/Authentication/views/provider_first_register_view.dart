@@ -1,10 +1,10 @@
 import 'package:easy_localization/easy_localization.dart' as loc;
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:soan/Common/loading_widget.dart';
 import 'package:soan/controllers/global_controller.dart';
 import 'package:soan/models/global/area_model.dart';
@@ -53,7 +53,8 @@ class _ProviderFirstRegisterViewState extends State<ProviderFirstRegisterView> {
   CityModel? _selectedCity;
   LocModel? _locModel;
   Future getAreas() async {
-    await GlobalController.getAreaList().then((value) {
+    await GlobalController.getAreaList(context.locale.languageCode)
+        .then((value) {
       areas = value;
       if (value.isNotEmpty) {
         _selectedArea = value.first;
@@ -63,7 +64,8 @@ class _ProviderFirstRegisterViewState extends State<ProviderFirstRegisterView> {
   }
 
   Future getAreaCities(int id) async {
-    await GlobalController.getAreaCities(id).then((value) {
+    await GlobalController.getAreaCities(id, context.locale.languageCode)
+        .then((value) {
       setState(() {
         cities = value;
       });
@@ -74,7 +76,8 @@ class _ProviderFirstRegisterViewState extends State<ProviderFirstRegisterView> {
   }
 
   Future getHowToKnowUsList() async {
-    await GlobalController.getHowToKnowUsList().then((value) {
+    await GlobalController.getHowToKnowUsList(context.locale.languageCode)
+        .then((value) {
       howToKnowUsList = value;
       if (value.isNotEmpty) {
         _selectedHowToKnowUsModel = howToKnowUsList.first;
@@ -86,10 +89,12 @@ class _ProviderFirstRegisterViewState extends State<ProviderFirstRegisterView> {
   @override
   void initState() {
     super.initState();
-    getHowToKnowUsList();
-    getAreas().then((value) {
-      setState(() {
-        isLoading = false;
+    Future.delayed(Duration.zero, () {
+      getHowToKnowUsList();
+      getAreas().then((value) {
+        setState(() {
+          isLoading = false;
+        });
       });
     });
   }
@@ -196,6 +201,7 @@ class _ProviderFirstRegisterViewState extends State<ProviderFirstRegisterView> {
                                         .auth_enter_registration_number
                                         .tr();
                                   }
+
                                   return null;
                                 },
                                 decoration: formFieldDecoration,
@@ -218,6 +224,10 @@ class _ProviderFirstRegisterViewState extends State<ProviderFirstRegisterView> {
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return LocaleKeys.auth_enter_tax_number
+                                        .tr();
+                                  }
+                                  if (value.length != 10) {
+                                    return LocaleKeys.auth_valid_reg_number
                                         .tr();
                                   }
                                   return null;
@@ -559,34 +569,30 @@ class _ProviderFirstRegisterViewState extends State<ProviderFirstRegisterView> {
                                     ),
                                     GestureDetector(
                                       onTap: () {
-                                        showMaterialModalBottomSheet(
-                                          enableDrag: true,
-                                          isDismissible: true,
-                                          backgroundColor: Colors.transparent,
+                                        showDialog<void>(
                                           context: context,
-                                          builder: (context) => Container(
-                                            padding: const EdgeInsets.all(20),
-                                            // height: 800.h,
-                                            // width: 250.w,
-                                            margin: EdgeInsets.symmetric(
-                                              horizontal: 50.w,
-                                              vertical: 100.h,
-                                            ),
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(16.r),
-                                                color: Colors.white),
-                                            child: SingleChildScrollView(
-                                              child: Text(
-                                                'gasdklfkajsdf asdklfj kajs;dlfkjj lkas \n fhasjhd;gjalskdfasdgasdgad \n gasdklfkajsdf asdklfj kajs;dlfkjj lkas \n fhasjhd;gjalskdfasdgasdgad \n gasdklfkajsdf asdklfj kajs;dlfkjj lkas \n fhasjhd;gjalskdfasdgasdgad \n gasdklfkajsdf asdklfj kajs;dlfkjj lkas \n fhasjhd;gjalskdfasdgasdgad \n gasdklfkajsdf asdklfj kajs;dlfkjj lkas \n fhasjhd;gjalskdfasdgasdgad \n gasdklfkajsdf asdklfj kajs;dlfkjj lkas \n fhasjhd;gjalskdfasdgasdgad \n gasdklfkajsdf asdklfj kajs;dlfkjj lkas \n fhasjhd;gjalskdfasdgasdgad \n gasdklfkajsdf asdklfj kajs;dlfkjj lkas \n fhasjhd;gjalskdfasdgasdgad \n gasdklfkajsdf asdklfj kajs;dlfkjj lkas \n fhasjhd;gjalskdfasdgasdgad \n gasdklfkajsdf asdklfj kajs;dlfkjj lkas \n fhasjhd;gjalskdfasdgasdgad \n gasdklfkajsdf asdklfj kajs;dlfkjj lkas \n fhasjhd;gjalskdfasdgasdgad \n gasdklfkajsdf asdklfj kajs;dlfkjj lkas \n fhasjhd;gjalskdfasdgasdgad \n gasdklfkajsdf asdklfj kajs;dlfkjj lkas \n fhasjhd;gjalskdfasdgasdgad \n gasdklfkajsdf asdklfj kajs;dlfkjj lkas \n fhasjhd;gjalskdfasdgasdgad \n ',
-                                                style: GoogleFonts.tajawal(
-                                                  fontSize: 22.sp,
-                                                  color: kDarkBleuColor,
-                                                  fontWeight: FontWeight.w600,
+                                          barrierDismissible:
+                                              true, // user must tap button!
+                                          builder: (BuildContext ctx) {
+                                            return AlertDialog(
+                                              contentPadding: EdgeInsets.zero,
+                                              content: InAppWebView(
+                                                initialUrlRequest: URLRequest(
+                                                  url: Uri.parse(
+                                                      "https://cpanel-soan.com/privacy-policy"),
                                                 ),
+
+                                                // onLoadStart: (controller, url) {
+                                                //   isLoading = true;
+                                                //   setState(() {});
+                                                // },
+                                                // onLoadStop: (controller, url) {
+                                                //   isLoading = false;
+                                                //   setState(() {});
+                                                // },
                                               ),
-                                            ),
-                                          ),
+                                            );
+                                          },
                                         );
                                       },
                                       child: SvgPicture.asset(

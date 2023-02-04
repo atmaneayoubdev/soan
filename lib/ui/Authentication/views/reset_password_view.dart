@@ -288,10 +288,13 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                                         isLoading = true;
                                       });
                                       await AuthController.resetPassword(
-                                        phone: finalPhone,
-                                        password: passwordController.text,
-                                        otp: double.parse(pinController.text),
-                                      ).then((value) {
+                                              phone: finalPhone,
+                                              password: passwordController.text,
+                                              otp: double.parse(
+                                                  pinController.text),
+                                              language:
+                                                  context.locale.languageCode)
+                                          .then((value) {
                                         isLoading = false;
                                         setState(() {});
 
@@ -442,8 +445,9 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                                         isLoading = true;
                                       });
                                       await AuthController.forgotPassword(
-                                        finalPhone,
-                                      ).then((value) {
+                                              finalPhone,
+                                              context.locale.languageCode)
+                                          .then((value) {
                                         isLoading = false;
                                         setState(() {});
                                         if (value.length != 4) {
@@ -480,7 +484,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                                     }
                                   },
                                   child: LargeButton(
-                                    text: LocaleKeys.auth_save.tr(),
+                                    text: LocaleKeys.common_continue.tr(),
                                     isButton: false,
                                   ),
                                 ),

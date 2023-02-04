@@ -31,7 +31,8 @@ class _AddCarButtonSheetState extends State<AddCarButtonSheet> {
     isLoading = true;
     setState(() {});
     await CostumerController.getCostumerCars(
-            Provider.of<UserProvider>(context, listen: false).user.apiToken)
+            Provider.of<UserProvider>(context, listen: false).user.apiToken,
+            context.locale.languageCode)
         .then((value) {
       _carsList = value;
       value.isEmpty ? isEmpty = true : isEmpty = false;
@@ -44,13 +45,16 @@ class _AddCarButtonSheetState extends State<AddCarButtonSheet> {
     await CostumerController.deleteCar(
       token: Provider.of<UserProvider>(context, listen: false).user.apiToken,
       id: id,
+      language: context.locale.languageCode,
     );
   }
 
   @override
   void initState() {
     super.initState();
-    getMyCarsList().then((value) {});
+    Future.delayed(Duration.zero, () {
+      getMyCarsList().then((value) {});
+    });
   }
 
   @override
@@ -130,6 +134,8 @@ class _AddCarButtonSheetState extends State<AddCarButtonSheet> {
                                         GestureDetector(
                                           onTap: () async {
                                             await CostumerController.deleteCar(
+                                              language:
+                                                  context.locale.languageCode,
                                               token: Provider.of<UserProvider>(
                                                       context,
                                                       listen: false)
@@ -233,7 +239,7 @@ class _AddCarButtonSheetState extends State<AddCarButtonSheet> {
                                       builder: ((context) =>
                                           const AddCarView()),
                                     ),
-                                  );
+                                  ).then((value) => getMyCarsList());
                                 },
                                 child: Container(
                                   width: 175.w,
@@ -338,7 +344,9 @@ class _AddCarButtonSheetState extends State<AddCarButtonSheet> {
                                 context,
                                 MaterialPageRoute(
                                     builder: ((context) =>
-                                        const AddCarView())));
+                                        const AddCarView()))).then((value) {
+                              Navigator.pop(context);
+                            });
                           },
                           child: Container(
                             width: 175.w,
@@ -351,7 +359,7 @@ class _AddCarButtonSheetState extends State<AddCarButtonSheet> {
                             ),
                             child: Center(
                               child: Text(
-                                "إضافة سيارة",
+                                LocaleKeys.titles_add_car.tr(),
                                 style: GoogleFonts.tajawal(
                                   fontSize: 14.sp,
                                   fontWeight: FontWeight.normal,
@@ -376,7 +384,7 @@ class _AddCarButtonSheetState extends State<AddCarButtonSheet> {
                             ),
                             child: Center(
                               child: Text(
-                                "الغاء",
+                                LocaleKeys.common_cancel.tr(),
                                 style: GoogleFonts.tajawal(
                                   fontSize: 14.sp,
                                   fontWeight: FontWeight.normal,

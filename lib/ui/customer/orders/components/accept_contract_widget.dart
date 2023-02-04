@@ -120,6 +120,7 @@ class _AcceptContractWidgetState extends State<AcceptContractWidget> {
                               isLoading = true;
                               setState(() {});
                               await CostumerController.acceptAnswer(
+                                      language: context.locale.languageCode,
                                       token: Provider.of<UserProvider>(context,
                                               listen: false)
                                           .user

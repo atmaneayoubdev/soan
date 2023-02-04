@@ -15,10 +15,11 @@ import 'package:soan/models/global/slider_model.dart';
 
 class GlobalController with ChangeNotifier {
   ////////////////////get categories//////////////////////
-  static Future<List<CategoryModel>> getCategories() async {
+  static Future<List<CategoryModel>> getCategories(String language) async {
     try {
       Map<String, String> headers = {
         'Accept': 'application/json',
+        'Accept-Language': language,
       };
       Dio dio = Dio();
 
@@ -46,10 +47,12 @@ class GlobalController with ChangeNotifier {
   }
 
   ////////////////////get country factories//////////////////////
-  static Future<List<CarCountryFactoryModel>> getCarCountryFactories() async {
+  static Future<List<CarCountryFactoryModel>> getCarCountryFactories(
+      String language) async {
     try {
       Map<String, String> headers = {
         'Accept': 'application/json',
+        'Accept-Language': language,
       };
       Dio dio = Dio();
 
@@ -77,10 +80,11 @@ class GlobalController with ChangeNotifier {
   }
 
   ////////////////////get areas//////////////////////
-  static Future<List<AreaModel>> getAreaList() async {
+  static Future<List<AreaModel>> getAreaList(String language) async {
     try {
       Map<String, String> headers = {
         'Accept': 'application/json',
+        'Accept-Language': language,
       };
       Dio dio = Dio();
 
@@ -108,10 +112,11 @@ class GlobalController with ChangeNotifier {
   }
 
   ////////////////////get area cities//////////////////////
-  static Future<List<CityModel>> getAreaCities(int id) async {
+  static Future<List<CityModel>> getAreaCities(int id, String language) async {
     try {
       Map<String, String> headers = {
         'Accept': 'application/json',
+        'Accept-Language': language,
       };
       Dio dio = Dio();
 
@@ -139,10 +144,12 @@ class GlobalController with ChangeNotifier {
   }
 
   ////////////////////get how to know us//////////////////////
-  static Future<List<HowToKnowUsModel>> getHowToKnowUsList() async {
+  static Future<List<HowToKnowUsModel>> getHowToKnowUsList(
+      String language) async {
     try {
       Map<String, String> headers = {
         'Accept': 'application/json',
+        'Accept-Language': language,
       };
       Dio dio = Dio();
 
@@ -170,10 +177,11 @@ class GlobalController with ChangeNotifier {
   }
 
   ////////////////////get sliders list//////////////////////
-  static Future<List<HomesliderModel>> getSlidersList() async {
+  static Future<List<HomesliderModel>> getSlidersList(String language) async {
     try {
       Map<String, String> headers = {
         'Accept': 'application/json',
+        'Accept-Language': language,
       };
       Dio dio = Dio();
 
@@ -201,10 +209,11 @@ class GlobalController with ChangeNotifier {
   }
 
   ////////////////////get settings//////////////////////
-  static Future getSettings() async {
+  static Future getSettings(String language) async {
     try {
       Map<String, String> headers = {
         'Accept': 'application/json',
+        'Accept-Language': language,
       };
       Dio dio = Dio();
       var response = await dio.get(
@@ -229,10 +238,11 @@ class GlobalController with ChangeNotifier {
   }
 
   ////////////////////get colors//////////////////////
-  static Future<List<ColorModel>> getColors() async {
+  static Future<List<ColorModel>> getColors(String language) async {
     try {
       Map<String, String> headers = {
         'Accept': 'application/json',
+        'Accept-Language': language,
       };
       Dio dio = Dio();
 
@@ -260,10 +270,11 @@ class GlobalController with ChangeNotifier {
   }
 
   ////////////////////get makers//////////////////////
-  static Future<List<String>> getMakers() async {
+  static Future<List<String>> getMakers(String language) async {
     try {
       Map<String, String> headers = {
         'Accept': 'application/json',
+        'Accept-Language': language,
       };
       Dio dio = Dio();
 
@@ -290,10 +301,11 @@ class GlobalController with ChangeNotifier {
   }
 
   ////////////////////get models//////////////////////
-  static Future<List<String>> getModels(String maker) async {
+  static Future<List<String>> getModels(String maker, String language) async {
     try {
       Map<String, String> headers = {
         'Accept': 'application/json',
+        'Accept-Language': language,
       };
       Dio dio = Dio();
 
@@ -319,10 +331,11 @@ class GlobalController with ChangeNotifier {
   }
 
   ////////////////////get colors//////////////////////
-  static Future<List<RefusalModel>> getRefualList() async {
+  static Future<List<RefusalModel>> getRefualList(String language) async {
     try {
       Map<String, String> headers = {
         'Accept': 'application/json',
+        'Accept-Language': language,
       };
       Dio dio = Dio();
 
@@ -354,11 +367,13 @@ class GlobalController with ChangeNotifier {
     required String token,
     required String message,
     required String type,
+    required String language,
   }) async {
     try {
       Map<String, String> headers = {
         'Accept': 'application/json',
         'Authorization': "Bearer $token",
+        'Accept-Language': language,
       };
       Dio dio = Dio();
 
@@ -379,6 +394,76 @@ class GlobalController with ChangeNotifier {
     } on DioError catch (error) {
       log(error.message);
       return error.message;
+    }
+  }
+
+  ////////////////////get terms and conditions//////////////////////
+  static Future getTermsAndConditions(String language) async {
+    try {
+      Map<String, String> headers = {
+        'Accept': 'application/json',
+        'Accept-Language': language,
+      };
+      Dio dio = Dio();
+      var response = await dio.get(
+        "${baseUrl}contents/1",
+        options: Options(
+          headers: headers,
+        ),
+      );
+      log(response.data.toString());
+      return response.data['data']['description'];
+    } on DioError catch (error) {
+      log(error.message);
+      return '';
+    }
+  }
+
+  ////////////////////get faqs//////////////////////
+  static Future<String> getFaq(String language) async {
+    try {
+      Map<String, String> headers = {
+        'Accept': 'application/json',
+        'Accept-Language': language,
+      };
+      Dio dio = Dio();
+      var response = await dio.get(
+        "${baseUrl}contents/3",
+        options: Options(
+          followRedirects: false,
+          validateStatus: (status) => true,
+          headers: headers,
+        ),
+      );
+      log(response.data.toString());
+      return response.data['data']['description'];
+    } on DioError catch (error) {
+      log(error.message);
+      return '';
+    }
+  }
+
+  ////////////////////get privacy//////////////////////
+  static Future<String> getPrivacy(String language) async {
+    try {
+      Map<String, String> headers = {
+        'Accept': 'application/json',
+        'Accept-Language': language,
+      };
+      Dio dio = Dio();
+      var response = await dio.get(
+        "${baseUrl}contents/2",
+        options: Options(
+          followRedirects: false,
+          validateStatus: (status) => true,
+          headers: headers,
+        ),
+      );
+      log(response.data.toString());
+      return response.data['data']['description'];
+    } on DioError catch (error) {
+      log(error.message);
+      return '';
     }
   }
 }

@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart' as modal;
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:soan/Common/loading_widget.dart';
@@ -47,7 +47,8 @@ class _PsettingsViewState extends State<PsettingsView> {
 
   Future getSettings() async {
     if (mounted) {
-      await GlobalController.getSettings().then((value) {
+      await GlobalController.getSettings(context.locale.languageCode)
+          .then((value) {
         settingsModel = value;
         if (mounted) {
           setState(() {});
@@ -67,7 +68,9 @@ class _PsettingsViewState extends State<PsettingsView> {
     super.initState();
     provider =
         Provider.of<ProviderProvider>(context, listen: false).providerModel;
-    getSettings();
+    Future.delayed(Duration.zero, () {
+      getSettings();
+    });
   }
 
   @override
@@ -139,20 +142,23 @@ class _PsettingsViewState extends State<PsettingsView> {
                     GestureDetector(
                       onTap: () {
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: ((context) => const FaqView())));
+                          context,
+                          MaterialPageRoute(
+                            builder: ((context) => const FaqView()),
+                          ),
+                        );
                       },
                       child: SettingsWidget(
-                          name: LocaleKeys.titles_faq.tr(),
-                          image: "assets/icons/faq.svg"),
+                        name: LocaleKeys.titles_faq.tr(),
+                        image: "assets/icons/faq.svg",
+                      ),
                     ),
-                    GestureDetector(
-                      onTap: () {},
-                      child: SettingsWidget(
-                          name: LocaleKeys.costumer_settings_rate_app.tr(),
-                          image: "assets/icons/settings_star.svg"),
-                    ),
+                    // GestureDetector(
+                    //   onTap: () {},
+                    //   child: SettingsWidget(
+                    //       name: LocaleKeys.costumer_settings_rate_app.tr(),
+                    //       image: "assets/icons/settings_star.svg"),
+                    // ),
                     GestureDetector(
                       onTap: () {
                         Navigator.push(
@@ -221,6 +227,7 @@ class _PsettingsViewState extends State<PsettingsView> {
                                     GestureDetector(
                                       onTap: () {
                                         context.setLocale(const Locale("en"));
+
                                         setState(() {});
                                       },
                                       child: Container(
@@ -308,9 +315,9 @@ class _PsettingsViewState extends State<PsettingsView> {
                           SizedBox(
                             height: 10.h,
                           ),
-                          const FittedBox(
+                          FittedBox(
                             child: TextWidget(
-                              text: "اللغة",
+                              text: LocaleKeys.costumer_settings_language.tr(),
                               size: 14,
                               color: kDarkBleuColor,
                               fontWeight: FontWeight.normal,
@@ -337,6 +344,7 @@ class _PsettingsViewState extends State<PsettingsView> {
                         isLoading = true;
                         setState(() {});
                         await AuthController.logout(
+                          language: context.locale.languageCode,
                           token: Provider.of<ProviderProvider>(context,
                                   listen: false)
                               .providerModel
@@ -404,7 +412,8 @@ class _PsettingsViewState extends State<PsettingsView> {
                     ),
                     GestureDetector(
                       onTap: () async {
-                        showMaterialModalBottomSheet<bool>(
+                        modal
+                            .showMaterialModalBottomSheet<bool>(
                           enableDrag: false,
                           backgroundColor: Colors.transparent,
                           context: context,
@@ -493,11 +502,13 @@ class _PsettingsViewState extends State<PsettingsView> {
                               ),
                             ),
                           ),
-                        ).then((value) async {
+                        )
+                            .then((value) async {
                           if (value == true) {
                             isLoading = true;
                             setState(() {});
                             await AuthController.deleteAccount(
+                                    language: context.locale.languageCode,
                                     token: Provider.of<ProviderProvider>(
                                             context,
                                             listen: false)

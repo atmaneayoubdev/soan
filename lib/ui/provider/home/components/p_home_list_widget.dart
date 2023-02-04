@@ -9,7 +9,7 @@ import '../../../../constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart' as modal;
 import '../../../customer/orders/components/send_reply_botton_sheet.dart';
 import '../../orders/views/p_order_details.dart';
 
@@ -219,7 +219,8 @@ class _PhomeListWidgetState extends State<PhomeListWidget> {
                           },
                           child: GestureDetector(
                             onTap: () {
-                              showMaterialModalBottomSheet<bool>(
+                              modal
+                                  .showMaterialModalBottomSheet<bool>(
                                 enableDrag: true,
                                 backgroundColor: Colors.transparent,
                                 context: context,
@@ -232,7 +233,8 @@ class _PhomeListWidgetState extends State<PhomeListWidget> {
                                         : SendReplyBottomSheet(
                                             orderId: widget.order.id,
                                           ),
-                              ).then((value) {
+                              )
+                                  .then((value) {
                                 if (value == true) {
                                   widget.getorder();
                                 }

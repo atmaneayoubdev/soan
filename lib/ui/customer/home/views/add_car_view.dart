@@ -42,14 +42,15 @@ class _AddCarViewState extends State<AddCarView> {
   bool isListCollaps = false;
 
   Future getColors() async {
-    await GlobalController.getColors().then((value) {
+    await GlobalController.getColors(context.locale.languageCode).then((value) {
       colors = value;
       setState(() {});
     });
   }
 
   Future getFactories() async {
-    await GlobalController.getCarCountryFactories().then((value) {
+    await GlobalController.getCarCountryFactories(context.locale.languageCode)
+        .then((value) {
       setState(() {
         _factories = value;
       });
@@ -57,14 +58,15 @@ class _AddCarViewState extends State<AddCarView> {
   }
 
   Future getMakers() async {
-    await GlobalController.getMakers().then((value) {
+    await GlobalController.getMakers(context.locale.languageCode).then((value) {
       makers = value;
       setState(() {});
     });
   }
 
   Future getModels(String maker) async {
-    await GlobalController.getModels(maker).then((value) {
+    await GlobalController.getModels(maker, context.locale.languageCode)
+        .then((value) {
       _selectedModel = null;
       models = value;
       setState(() {});
@@ -90,12 +92,14 @@ class _AddCarViewState extends State<AddCarView> {
   @override
   void initState() {
     super.initState();
-    getFactories();
-    getMakers();
-    getColors().then((value) {
-      getExistingCarData();
+    Future.delayed(Duration.zero, () {
+      getFactories();
+      getMakers();
+      getColors().then((value) {
+        getExistingCarData();
+      });
+      isLoading = false;
     });
-    isLoading = false;
   }
 
   @override
@@ -454,6 +458,7 @@ class _AddCarViewState extends State<AddCarView> {
                                       setState(() {});
                                       if (widget.existingCar != null) {
                                         await CostumerController.updateCar(
+                                          language: context.locale.languageCode,
                                           token: Provider.of<UserProvider>(
                                             context,
                                             listen: false,
@@ -502,6 +507,7 @@ class _AddCarViewState extends State<AddCarView> {
                                         });
                                       } else {
                                         await CostumerController.addCar(
+                                          language: context.locale.languageCode,
                                           token: Provider.of<UserProvider>(
                                             context,
                                             listen: false,

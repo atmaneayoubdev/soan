@@ -30,6 +30,7 @@ class _InvoiceViewState extends State<InvoiceView> {
     isLoading = true;
     setState(() {});
     await CostumerController.getOrder(
+      language: context.locale.languageCode,
       token: Provider.of<UserProvider>(context, listen: false).user.apiToken,
       id: widget.orderId,
     ).then((value) {
@@ -55,7 +56,9 @@ class _InvoiceViewState extends State<InvoiceView> {
   @override
   void initState() {
     super.initState();
-    getOrder();
+    Future.delayed(Duration.zero, () {
+      getOrder();
+    });
   }
 
   @override

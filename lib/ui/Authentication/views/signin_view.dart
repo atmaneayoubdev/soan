@@ -240,6 +240,7 @@ class _SignInViewState extends State<SignInView> {
                                 isLoading = true;
                                 setState(() {});
                                 await AuthController.login(
+                                        language: context.locale.languageCode,
                                         phoneNumber: finalPhone,
                                         password: passwordController.text)
                                     .then((value) async {
@@ -260,6 +261,7 @@ class _SignInViewState extends State<SignInView> {
                                     final ProviderModel p = value;
                                     if (p.approved == "false") {
                                       await AuthController.logout(
+                                        language: context.locale.languageCode,
                                         token: p.apiToken,
                                       ).then((value) {
                                         if (value == 'تم تسجيل الخروج') {

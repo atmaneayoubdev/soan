@@ -116,7 +116,9 @@ class _PhoneVerificationState extends State<PhoneVerification> {
                       });
                       if (widget.from == "provider") {
                         await AuthController.checkOtpProvider(
-                                phone: widget.number, otp: v)
+                                phone: widget.number,
+                                otp: v,
+                                language: context.locale.languageCode)
                             .then((value) async {
                           setState(() {
                             isLoading = false;
@@ -125,8 +127,9 @@ class _PhoneVerificationState extends State<PhoneVerification> {
                             final ProviderModel p = value;
                             if (p.approved == "false") {
                               await AuthController.logout(
-                                token: p.apiToken,
-                              ).then((value) {
+                                      token: p.apiToken,
+                                      language: context.locale.languageCode)
+                                  .then((value) {
                                 if (value == 'تم تسجيل الخروج') {
                                   Navigator.of(context).pushAndRemoveUntil(
                                       MaterialPageRoute(
@@ -170,7 +173,9 @@ class _PhoneVerificationState extends State<PhoneVerification> {
                       }
                       if (widget.from == "costumer") {
                         await AuthController.checkOtp(
-                                phone: widget.number, otp: v)
+                                phone: widget.number,
+                                otp: v,
+                                language: context.locale.languageCode)
                             .then((value) {
                           setState(() {
                             isLoading = false;
@@ -211,7 +216,9 @@ class _PhoneVerificationState extends State<PhoneVerification> {
                       isLoading = true;
                     });
                     log(widget.number);
-                    await AuthController.reSendOtp(widget.number).then((value) {
+                    await AuthController.reSendOtp(
+                            widget.number, context.locale.languageCode)
+                        .then((value) {
                       isLoading = false;
                       canResend = false;
                       final int endT =

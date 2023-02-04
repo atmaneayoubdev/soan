@@ -1,15 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart' as modal;
 import 'package:soan/models/constumer/order_model.dart';
 import 'package:soan/translations/locale_keys.g.dart';
 import 'package:soan/ui/customer/orders/components/cancle_widget.dart';
 import '../../../../Common/back_button.dart';
+import '../../../../Common/large_button.dart';
 import '../../../../Common/text_widget.dart';
 import '../../../../constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import 'invoice_view.dart';
 
 class OrderDetailsView extends StatefulWidget {
   const OrderDetailsView({Key? key, required this.order}) : super(key: key);
@@ -368,13 +371,15 @@ class _OrderDetailsViewState extends State<OrderDetailsView> {
                   if (widget.order.provider == null)
                     GestureDetector(
                       onTap: () {
-                        showMaterialModalBottomSheet<bool>(
+                        modal
+                            .showMaterialModalBottomSheet<bool>(
                           enableDrag: true,
                           backgroundColor: Colors.transparent,
                           context: context,
                           builder: (context) =>
                               CancleWidget(order: widget.order),
-                        ).then((value) {
+                        )
+                            .then((value) {
                           if (value == true) {
                             Navigator.pop(context, value);
                           }
@@ -401,6 +406,34 @@ class _OrderDetailsViewState extends State<OrderDetailsView> {
                         ),
                       ),
                     ),
+                  if (widget.order.orderStatus == 'done')
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: ((context) => InvoiceView(
+                                  orderId: widget.order.id,
+                                )),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        width: double.maxFinite,
+                        height: 50.h,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(
+                            10.r,
+                          ),
+                          color: kLightLightGreenColor,
+                        ),
+                        child: Center(
+                          child: LargeButton(
+                            text: LocaleKeys.provider_home_show_invoice.tr(),
+                            isButton: false,
+                          ),
+                        ),
+                      ),
+                    )
                 ],
               ),
             ),

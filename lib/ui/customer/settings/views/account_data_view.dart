@@ -150,7 +150,7 @@ class _AccountDataViewState extends State<AccountDataView> {
                               child: GestureDetector(
                                 onTap: () async {
                                   await _picker
-                                      .pickImage(source: ImageSource.gallery)
+                                      .pickImage(source: ImageSource.camera)
                                       .then((value) {
                                     if (value != null) {
                                       setState(() {
@@ -258,6 +258,7 @@ class _AccountDataViewState extends State<AccountDataView> {
                                 FocusManager.instance.primaryFocus!.unfocus();
                                 if (_formKey.currentState!.validate()) {
                                   await CostumerController.updateProfile(
+                                          language: context.locale.languageCode,
                                           token: user.apiToken,
                                           firstName: firstNameController.text,
                                           lastName: lastNameController.text,

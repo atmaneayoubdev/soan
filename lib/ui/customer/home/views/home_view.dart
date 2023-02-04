@@ -34,7 +34,8 @@ class _HomeViewState extends State<HomeView> {
 
   Future getSliders() async {
     if (mounted) {
-      await GlobalController.getSlidersList().then((value) {
+      await GlobalController.getSlidersList(context.locale.languageCode)
+          .then((value) {
         _sliders = value;
         if (mounted) {
           setState(() {});
@@ -45,7 +46,8 @@ class _HomeViewState extends State<HomeView> {
 
   Future getCategories() async {
     if (mounted) {
-      await GlobalController.getCategories().then((value) {
+      await GlobalController.getCategories(context.locale.languageCode)
+          .then((value) {
         if (mounted) {
           setState(() {
             _categories = value;
@@ -60,6 +62,7 @@ class _HomeViewState extends State<HomeView> {
       if (prefs.getString('currentCarId') != null) {
         if (prefs.getString('currentCarId')!.isNotEmpty) {
           await CostumerController.getCarInfo(
+            language: context.locale.languageCode,
             token:
                 Provider.of<UserProvider>(context, listen: false).user.apiToken,
             id: prefs.getString('currentCarId')!,
@@ -76,10 +79,12 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     super.initState();
-    getCurrentCar();
-    getCategories();
-    getSliders();
-    log(Provider.of<UserProvider>(context, listen: false).user.apiToken);
+    Future.delayed(Duration.zero, () {
+      getCurrentCar();
+      getCategories();
+      getSliders();
+      log(Provider.of<UserProvider>(context, listen: false).user.apiToken);
+    });
   }
 
   @override

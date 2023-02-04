@@ -172,7 +172,7 @@ class _UserSecondSignUpViewState extends State<UserSecondSignUpView> {
                                     child: Icon(
                                       Icons.visibility,
                                       color: !isPassVisible
-                                          ? kOrangeColor
+                                          ? Colors.red
                                           : kGreenColor,
                                     ),
                                   ),
@@ -229,7 +229,7 @@ class _UserSecondSignUpViewState extends State<UserSecondSignUpView> {
                                     child: Icon(
                                       Icons.visibility,
                                       color: !isPassConfVisible
-                                          ? kOrangeColor
+                                          ? Colors.red
                                           : kGreenColor,
                                     ),
                                   ),
@@ -247,15 +247,17 @@ class _UserSecondSignUpViewState extends State<UserSecondSignUpView> {
                                   isLoading = true;
                                 });
                                 await AuthController.userRegister(
-                                  firstName: widget.firstName,
-                                  lastName: widget.lastName,
-                                  phoneNumber: widget.phone,
-                                  email: emailControlelr.text,
-                                  password: passwordController.text,
-                                  passwordConfirm: confirmPassController.text,
-                                  deviceToken: "54234343234523",
-                                  howToKnowUs: widget.howToKnowUs,
-                                ).then((value) {
+                                        firstName: widget.firstName,
+                                        lastName: widget.lastName,
+                                        phoneNumber: widget.phone,
+                                        email: emailControlelr.text,
+                                        password: passwordController.text,
+                                        passwordConfirm:
+                                            confirmPassController.text,
+                                        deviceToken: "54234343234523",
+                                        howToKnowUs: widget.howToKnowUs,
+                                        language: context.locale.languageCode)
+                                    .then((value) {
                                   setState(() {
                                     isLoading = false;
                                   });

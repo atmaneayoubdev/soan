@@ -234,6 +234,7 @@ class _PchangePassViewState extends State<PchangePassView> {
                                 isLoading = true;
                                 setState(() {});
                                 await ProviderController.updatePassword(
+                                  language: context.locale.languageCode,
                                   token: providerModel.apiToken,
                                   oldPassword: oldPasswordController.text,
                                   password: passwordController.text,

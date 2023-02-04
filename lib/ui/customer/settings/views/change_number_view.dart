@@ -206,6 +206,7 @@ class _ChangeNumberViewState extends State<ChangeNumberView> {
                                 isLoading = true;
                                 setState(() {});
                                 await CostumerController.updatePhone(
+                                  language: context.locale.languageCode,
                                   token: user.apiToken,
                                   phone: finalPhone,
                                   password: passwordController.text,

@@ -4,7 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart' as modal;
 import 'package:provider/provider.dart';
 import 'package:soan/Common/loading_widget.dart';
 import 'package:soan/models/constumer/car_model.dart';
@@ -63,7 +63,8 @@ class _CreateOrderViewState extends State<CreateOrderView> {
 
   Future getMyCarsList() async {
     await CostumerController.getCostumerCars(
-            Provider.of<UserProvider>(context, listen: false).user.apiToken)
+            Provider.of<UserProvider>(context, listen: false).user.apiToken,
+            context.locale.languageCode)
         .then((value) {
       _myCarsList = value;
       setState(() {});
@@ -71,7 +72,8 @@ class _CreateOrderViewState extends State<CreateOrderView> {
   }
 
   Future getCategories() async {
-    await GlobalController.getCategories().then((value) {
+    await GlobalController.getCategories(context.locale.languageCode)
+        .then((value) {
       setState(() {
         _categories = value;
         _selectedCategory = _categories
@@ -81,7 +83,8 @@ class _CreateOrderViewState extends State<CreateOrderView> {
   }
 
   Future getAreas() async {
-    await GlobalController.getAreaList().then((value) {
+    await GlobalController.getAreaList(context.locale.languageCode)
+        .then((value) {
       areas = value;
       if (value.isNotEmpty) {
         _selectedArea = value.first;
@@ -91,7 +94,8 @@ class _CreateOrderViewState extends State<CreateOrderView> {
   }
 
   Future getAreaCities(int id) async {
-    await GlobalController.getAreaCities(id).then((value) {
+    await GlobalController.getAreaCities(id, context.locale.languageCode)
+        .then((value) {
       setState(() {
         cities = value;
       });
@@ -104,9 +108,11 @@ class _CreateOrderViewState extends State<CreateOrderView> {
   @override
   void initState() {
     super.initState();
-    getMyCarsList();
-    getCategories();
-    getAreas();
+    Future.delayed(Duration.zero, () {
+      getMyCarsList();
+      getCategories();
+      getAreas();
+    });
   }
 
   @override
@@ -832,6 +838,8 @@ class _CreateOrderViewState extends State<CreateOrderView> {
                                         isLoading = true;
                                         setState(() {});
                                         await CostumerController.createOrder(
+                                            language:
+                                                context.locale.languageCode,
                                             token: Provider.of<UserProvider>(
                                               context,
                                               listen: false,
@@ -857,7 +865,7 @@ class _CreateOrderViewState extends State<CreateOrderView> {
                                           setState(() {});
 
                                           if (value == "بيانات الطلب") {
-                                            showMaterialModalBottomSheet(
+                                            modal.showMaterialModalBottomSheet(
                                               enableDrag: true,
                                               backgroundColor:
                                                   Colors.transparent,
@@ -926,6 +934,20 @@ class _CreateOrderViewState extends State<CreateOrderView> {
                                                       child: TextWidget(
                                                         text: LocaleKeys
                                                             .costumer_home_be_ready_to_recieve
+                                                            .tr(),
+                                                        size: 22,
+                                                        color: kDarkBleuColor,
+                                                        fontWeight:
+                                                            FontWeight.normal,
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 25.w),
+                                                      child: TextWidget(
+                                                        text: LocaleKeys
+                                                            .costumer_home_in_ordes_screen
                                                             .tr(),
                                                         size: 22,
                                                         color: kDarkBleuColor,

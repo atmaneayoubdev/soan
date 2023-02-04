@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart' as modal;
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:soan/Common/large_button.dart';
@@ -42,10 +42,12 @@ class _SettingsViewState extends State<SettingsView> {
       social: SocialModel(facebook: "", instagram: "", twitter: ''),
       info: InfoModel(
           appName: '', phone: '', whatsapp: '', email: '', vat: '', dues: ''));
+  Locale? appLocale;
 
   Future getSettings() async {
     if (mounted) {
-      await GlobalController.getSettings().then((value) {
+      await GlobalController.getSettings(context.locale.languageCode)
+          .then((value) {
         settingsModel = value;
         if (mounted) {
           setState(() {});
@@ -63,7 +65,9 @@ class _SettingsViewState extends State<SettingsView> {
   @override
   void initState() {
     super.initState();
-    getSettings();
+    Future.delayed(Duration.zero, () {
+      getSettings();
+    });
   }
 
   @override
@@ -122,19 +126,34 @@ class _SettingsViewState extends State<SettingsView> {
                         );
                       },
                       child: SettingsWidget(
-                          name: LocaleKeys.costumer_settings_faq.tr(),
-                          image: "assets/icons/faq.svg"),
+                        name: LocaleKeys.costumer_settings_faq.tr(),
+                        image: "assets/icons/faq.svg",
+                      ),
                     ),
-                    //  SettingsWidget(
+                    // GestureDetector(
+                    //   onTap: () async {
+                    //     // final InAppReview inAppReview = InAppReview.instance;
+
+                    //     // if (await inAppReview.isAvailable()) {
+                    //     //   inAppReview.requestReview();
+                    //     // } else {
+                    //     //   debugPrint('Rate Not availbale');
+                    //     // }
+                    //   },
+                    //   child: const SettingsWidget(
                     //     name: "قيم التطبيق",
-                    //     image: "assets/icons/settings_star.svg"),
+                    //     image: "assets/icons/settings_star.svg",
+                    //   ),
+                    // ),
                     GestureDetector(
                       onTap: () {
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: ((context) =>
-                                    const TermsAndConditionView())));
+                          context,
+                          MaterialPageRoute(
+                            builder: ((context) =>
+                                const TermsAndConditionView()),
+                          ),
+                        );
                       },
                       child: SettingsWidget(
                           name: LocaleKeys
@@ -298,9 +317,9 @@ class _SettingsViewState extends State<SettingsView> {
                           SizedBox(
                             height: 10.h,
                           ),
-                          const FittedBox(
+                          FittedBox(
                             child: TextWidget(
-                              text: "اللغة",
+                              text: LocaleKeys.costumer_settings_language.tr(),
                               size: 14,
                               color: kDarkBleuColor,
                               fontWeight: FontWeight.normal,
@@ -317,12 +336,13 @@ class _SettingsViewState extends State<SettingsView> {
                                 token: Provider.of<UserProvider>(context,
                                         listen: false)
                                     .user
-                                    .apiToken)
+                                    .apiToken,
+                                language: context.locale.languageCode)
                             .then((value) {
                           setState(() {
                             isLoading = false;
                           });
-                          if (value == 'تم تسجيل الخروج') {
+                          if (value == 'تم تسجيل الخروج' || value == 'LogOut') {
                             Provider.of<CarProvider>(context, listen: false)
                                 .clearCar();
                             ScaffoldMessenger.of(context).showSnackBar(
@@ -383,7 +403,8 @@ class _SettingsViewState extends State<SettingsView> {
                     ),
                     GestureDetector(
                       onTap: () async {
-                        showMaterialModalBottomSheet<bool>(
+                        modal
+                            .showMaterialModalBottomSheet<bool>(
                           enableDrag: false,
                           backgroundColor: Colors.transparent,
                           context: context,
@@ -470,17 +491,19 @@ class _SettingsViewState extends State<SettingsView> {
                               ),
                             ),
                           ),
-                        ).then((value) async {
+                        )
+                            .then((value) async {
                           if (value == true) {
                             isLoading = true;
                             setState(() {});
                             await AuthController.deleteAccount(
-                              token: Provider.of<UserProvider>(context,
-                                      listen: false)
-                                  .user
-                                  .apiToken,
-                              type: 'customer',
-                            ).then((value) async {
+                                    token: Provider.of<UserProvider>(context,
+                                            listen: false)
+                                        .user
+                                        .apiToken,
+                                    type: 'customer',
+                                    language: context.locale.languageCode)
+                                .then((value) async {
                               isLoading = false;
                               setState(() {});
                               if (value == "تم مسح الحساب") {

@@ -30,7 +30,7 @@ List<SliderModel> getSlides() {
   SliderModel sliderModel = SliderModel();
 
   //1
-  sliderModel.setDesc(LocaleKeys.intoduction_page1.tr());
+  sliderModel.setDesc(LocaleKeys.intoduction_page3.tr());
   sliderModel.setImageAssetPath("assets/images/Intro1.png");
   slides.add(sliderModel);
 
@@ -46,7 +46,7 @@ List<SliderModel> getSlides() {
   sliderModel = SliderModel();
 
   //3
-  sliderModel.setDesc(LocaleKeys.intoduction_page3.tr());
+  sliderModel.setDesc(LocaleKeys.intoduction_page1.tr());
   sliderModel.setImageAssetPath("assets/images/Intro3.png");
   slides.add(sliderModel);
 

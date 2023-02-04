@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart' as loc;
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:soan/Common/back_button.dart';
 import 'package:soan/Common/large_button.dart';
 import 'package:soan/Common/loading_widget.dart';
@@ -41,7 +41,8 @@ class _UserFirstSignUpViewState extends State<UserFirstSignUpView> {
   bool isLoading = true;
 
   Future getHowToKnowUsList() async {
-    await GlobalController.getHowToKnowUsList().then((value) {
+    await GlobalController.getHowToKnowUsList(context.locale.languageCode)
+        .then((value) {
       howToKnowUsList = value;
 
       if (value.isNotEmpty) {
@@ -56,7 +57,9 @@ class _UserFirstSignUpViewState extends State<UserFirstSignUpView> {
   @override
   void initState() {
     super.initState();
-    getHowToKnowUsList();
+    Future.delayed(Duration.zero, () {
+      getHowToKnowUsList();
+    });
   }
 
   @override
@@ -320,34 +323,21 @@ class _UserFirstSignUpViewState extends State<UserFirstSignUpView> {
                                     ),
                                     GestureDetector(
                                       onTap: () {
-                                        showMaterialModalBottomSheet(
-                                          enableDrag: true,
-                                          isDismissible: true,
-                                          backgroundColor: Colors.transparent,
+                                        showDialog<void>(
                                           context: context,
-                                          builder: (context) => Container(
-                                            padding: const EdgeInsets.all(20),
-                                            // height: 800.h,
-                                            // width: 250.w,
-                                            margin: EdgeInsets.symmetric(
-                                              horizontal: 50.w,
-                                              vertical: 100.h,
-                                            ),
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(16.r),
-                                                color: Colors.white),
-                                            child: SingleChildScrollView(
-                                              child: Text(
-                                                'gasdklfkajsdf asdklfj kajs;dlfkjj lkas \n fhasjhd;gjalskdfasdgasdgad \n gasdklfkajsdf asdklfj kajs;dlfkjj lkas \n fhasjhd;gjalskdfasdgasdgad \n gasdklfkajsdf asdklfj kajs;dlfkjj lkas \n fhasjhd;gjalskdfasdgasdgad \n gasdklfkajsdf asdklfj kajs;dlfkjj lkas \n fhasjhd;gjalskdfasdgasdgad \n gasdklfkajsdf asdklfj kajs;dlfkjj lkas \n fhasjhd;gjalskdfasdgasdgad \n gasdklfkajsdf asdklfj kajs;dlfkjj lkas \n fhasjhd;gjalskdfasdgasdgad \n gasdklfkajsdf asdklfj kajs;dlfkjj lkas \n fhasjhd;gjalskdfasdgasdgad \n gasdklfkajsdf asdklfj kajs;dlfkjj lkas \n fhasjhd;gjalskdfasdgasdgad \n gasdklfkajsdf asdklfj kajs;dlfkjj lkas \n fhasjhd;gjalskdfasdgasdgad \n gasdklfkajsdf asdklfj kajs;dlfkjj lkas \n fhasjhd;gjalskdfasdgasdgad \n gasdklfkajsdf asdklfj kajs;dlfkjj lkas \n fhasjhd;gjalskdfasdgasdgad \n gasdklfkajsdf asdklfj kajs;dlfkjj lkas \n fhasjhd;gjalskdfasdgasdgad \n gasdklfkajsdf asdklfj kajs;dlfkjj lkas \n fhasjhd;gjalskdfasdgasdgad \n gasdklfkajsdf asdklfj kajs;dlfkjj lkas \n fhasjhd;gjalskdfasdgasdgad \n ',
-                                                style: GoogleFonts.tajawal(
-                                                  fontSize: 22.sp,
-                                                  color: kDarkBleuColor,
-                                                  fontWeight: FontWeight.w600,
+                                          barrierDismissible:
+                                              true, // user must tap button!
+                                          builder: (BuildContext ctx) {
+                                            return AlertDialog(
+                                              contentPadding: EdgeInsets.zero,
+                                              content: InAppWebView(
+                                                initialUrlRequest: URLRequest(
+                                                  url: Uri.parse(
+                                                      "https://cpanel-soan.com/privacy-policy"),
                                                 ),
                                               ),
-                                            ),
-                                          ),
+                                            );
+                                          },
                                         );
                                       },
                                       child: SvgPicture.asset(

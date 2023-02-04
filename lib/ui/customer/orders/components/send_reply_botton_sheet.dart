@@ -112,6 +112,7 @@ class _SendReplyBottomSheetState extends State<SendReplyBottomSheet> {
                       isLoading = true;
                       setState(() {});
                       await ProviderController.makeOrderAnswer(
+                        language: context.locale.languageCode,
                         token: Provider.of<ProviderProvider>(context,
                                 listen: false)
                             .providerModel

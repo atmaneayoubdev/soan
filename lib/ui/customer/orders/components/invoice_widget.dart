@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:soan/controllers/costumer_controller.dart';
-import 'package:soan/helpers/invoice_service.dart';
 import 'package:soan/models/constumer/order_model.dart';
 import 'package:soan/models/global/inoice_item_model.dart';
 import 'package:soan/models/global/invoice_model.dart';
@@ -12,6 +11,8 @@ import 'package:soan/translations/locale_keys.g.dart';
 import '../../../../Common/large_button.dart';
 import '../../../../Common/text_widget.dart';
 import '../../../../constants.dart';
+import '../../../../helpers/invoice_service_ar.dart';
+import '../../../../helpers/invoice_service_en.dart';
 import '../../../../helpers/user_provider.dart';
 
 class InvoiceWidget extends StatefulWidget {
@@ -33,6 +34,7 @@ class _InvoiceWidgetState extends State<InvoiceWidget> {
 
   Future getInvoice() async {
     await CostumerController.getInvoice(
+      language: context.locale.languageCode,
       token: Provider.of<UserProvider>(context, listen: false).user.apiToken,
       id: widget.orderId,
     ).then((value) {
@@ -40,6 +42,8 @@ class _InvoiceWidgetState extends State<InvoiceWidget> {
       setState(() {});
       if (value.runtimeType == InvoiceModel) {
         invoice = value;
+        DateTime date = DateTime.parse(invoice!.createdAt);
+        invoice!.createdAt = DateFormat('MM/dd/yyyy').format(date);
         setState(() {});
       }
     });
@@ -48,7 +52,9 @@ class _InvoiceWidgetState extends State<InvoiceWidget> {
   @override
   void initState() {
     super.initState();
-    getInvoice();
+    Future.delayed(Duration.zero, () {
+      getInvoice();
+    });
   }
 
   @override
@@ -125,7 +131,7 @@ class _InvoiceWidgetState extends State<InvoiceWidget> {
                           height: 5.h,
                         ),
                         TextWidget(
-                          text: widget.order.createdAt,
+                          text: invoice!.createdAt,
                           size: 18,
                           color: kDarkBleuColor,
                           fontWeight: FontWeight.normal,
@@ -232,7 +238,7 @@ class _InvoiceWidgetState extends State<InvoiceWidget> {
                           children: [
                             TextWidget(
                                 text:
-                                    "${widget.order.costumer.lastName} ${widget.order.costumer.firstName}",
+                                    "${widget.order.costumer.firstName} ${widget.order.costumer.firstName}",
                                 size: 14,
                                 color: kDarkBleuColor,
                                 fontWeight: FontWeight.normal),
@@ -384,16 +390,17 @@ class _InvoiceWidgetState extends State<InvoiceWidget> {
                           ),
                           GestureDetector(
                             onTap: () async {
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //     builder: (context) => const PdfPreviewPage(),
-                              //   ),
-                              // );
-
-                              final pdfFile =
-                                  await PdfInvoiceService.generate(invoice!);
-                              PdfInvoiceService.openFile(pdfFile);
+                              if (context.locale.languageCode == 'ar') {
+                                final pdfFile =
+                                    await PdfInvoiceServiceAr.generate(
+                                        invoice!);
+                                PdfInvoiceServiceAr.openFile(pdfFile);
+                              } else {
+                                final pdfFile =
+                                    await PdfInvoiceServiceEn.generate(
+                                        invoice!);
+                                PdfInvoiceServiceEn.openFile(pdfFile);
+                              }
                             },
                             child: LargeButton(
                               text: LocaleKeys.costumer_my_orders_download_pdf

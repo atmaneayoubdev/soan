@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:soan/controllers/global_controller.dart';
 import 'package:soan/translations/locale_keys.g.dart';
 import '../../../../Common/back_button.dart';
 import '../../../../Common/text_widget.dart';
@@ -48,7 +49,7 @@ class _TermsAndConditionViewState extends State<TermsAndConditionView> {
           Expanded(
             child: Container(
               width: double.infinity,
-              padding: EdgeInsets.symmetric(horizontal: 30.w),
+              padding: EdgeInsets.symmetric(horizontal: 15.w),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -70,12 +71,21 @@ class _TermsAndConditionViewState extends State<TermsAndConditionView> {
                   SizedBox(
                     height: 32.h,
                   ),
-                  Text(
-                    "adfsdfalkds fkjajsd jfka jsdf jflkj lasdasf lsdjflkaj sdf f alskdjflk j;laksjd;flkja;lksdjf j;alsdj;lfj lajsghaskdf hjj lajsdf hasjkgajeior a;iorgj sgdsf",
-                    style: GoogleFonts.tajawal(
-                      fontSize: 14.sp,
-                      color: kGreyColor,
-                      fontWeight: FontWeight.normal,
+                  Expanded(
+                    child: FutureBuilder(
+                      future: GlobalController.getTermsAndConditions(
+                          context.locale.languageCode),
+                      initialData: '',
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        return Text(
+                          snapshot.data.toString(),
+                          style: GoogleFonts.tajawal(
+                            fontSize: 14.sp,
+                            color: kGreyColor,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ],

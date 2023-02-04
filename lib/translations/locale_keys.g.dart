@@ -87,6 +87,7 @@ abstract class  LocaleKeys {
   static const auth_save = 'auth.save';
   static const auth_enter_code_please = 'auth.enter_code_please';
   static const auth_reset_password = 'auth.reset_password';
+  static const auth_valid_reg_number = 'auth.valid_reg_number';
   static const auth = 'auth';
   static const costumer_home_select_problem_type = 'costumer.home.select_problem_type';
   static const costumer_home_add_car_details = 'costumer.home.add_car_details';
@@ -134,6 +135,7 @@ abstract class  LocaleKeys {
   static const costumer_home_do_you_want_contract_this_provider = 'costumer.home.do_you_want_contract_this_provider';
   static const costumer_home_you_will_not_be_able_to_cancel = 'costumer.home.you_will_not_be_able_to_cancel';
   static const costumer_home_no_find_another_provider = 'costumer.home.no_find_another_provider';
+  static const costumer_home_in_ordes_screen = 'costumer.home.in_ordes_screen';
   static const costumer_home = 'costumer.home';
   static const costumer_providers_permission_denied = 'costumer.providers.permission_denied';
   static const costumer_providers_permission_denied_activate_location = 'costumer.providers.permission_denied_activate_location';
@@ -207,6 +209,8 @@ abstract class  LocaleKeys {
   static const common_soan = 'common.soan';
   static const common_total = 'common.total';
   static const common_yes = 'common.yes';
+  static const common_add = 'common.add';
+  static const common_continue = 'common.continue';
   static const common = 'common';
   static const provider_settings_pay_dues = 'provider.settings.pay_dues';
   static const provider_settings_dues_completed = 'provider.settings.dues_completed';
@@ -218,6 +222,7 @@ abstract class  LocaleKeys {
   static const provider_orders_invoice_was_created = 'provider.orders.invoice_was_created';
   static const provider_orders_sent_to_client_successfully = 'provider.orders.sent_to_client_successfully';
   static const provider_orders_did_you_get_the_payement = 'provider.orders.did_you_get_the_payement';
+  static const provider_orders_waiting_payement = 'provider.orders.waiting_payement';
   static const provider_orders = 'provider.orders';
   static const provider_home_region = 'provider.home.region';
   static const provider_home_send_reply = 'provider.home.send_reply';
@@ -230,6 +235,9 @@ abstract class  LocaleKeys {
   static const provider_home_payement_received = 'provider.home.payement_received';
   static const provider_home_show = 'provider.home.show';
   static const provider_home_show_invoice = 'provider.home.show_invoice';
+  static const provider_home_you_wont_change = 'provider.home.you_wont_change';
+  static const provider_home_shops_terms_and_conditions = 'provider.home.shops_terms_and_conditions';
+  static const provider_home_waiting_for_orders = 'provider.home.waiting_for_orders';
   static const provider_home = 'provider.home';
   static const provider = 'provider';
 

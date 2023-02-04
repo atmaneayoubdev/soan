@@ -30,6 +30,7 @@ class _PordersViewState extends State<PordersView> {
     }
     setState(() {});
     await ProviderController.getOrdersList(
+      language: context.locale.languageCode,
       token: Provider.of<ProviderProvider>(context, listen: false)
           .providerModel
           .apiToken,
@@ -48,13 +49,15 @@ class _PordersViewState extends State<PordersView> {
   @override
   void initState() {
     super.initState();
-    if (mounted) {
-      getOrders('process').then((value) {
-        if (mounted) {
-          getOrders('wait_for_pay');
-        }
-      });
-    }
+    Future.delayed(Duration.zero, () {
+      if (mounted) {
+        getOrders('process').then((value) {
+          if (mounted) {
+            getOrders('wait_for_pay');
+          }
+        });
+      }
+    });
   }
 
   @override

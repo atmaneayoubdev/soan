@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +12,8 @@ import '../../../../Common/back_button.dart';
 import '../../../../Common/text_widget.dart';
 import '../../../../constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+
+import '../components/notification_item_widget.dart';
 
 class NotificationView extends StatefulWidget {
   const NotificationView({Key? key}) : super(key: key);
@@ -25,7 +28,7 @@ class _NotificationViewState extends State<NotificationView> {
 
   Future getNotifications() async {
     await CostumerController.getNotifications(
-      language: 'ar',
+      language: window.locale.languageCode,
       token: Provider.of<UserProvider>(context, listen: false).user.apiToken,
     ).then((value) {
       _notifications = value;
@@ -35,9 +38,11 @@ class _NotificationViewState extends State<NotificationView> {
   @override
   void initState() {
     super.initState();
-    getNotifications().then((value) {
-      setState(() {
-        isLoading = false;
+    Future.delayed(Duration.zero, () {
+      getNotifications().then((value) {
+        setState(() {
+          isLoading = false;
+        });
       });
     });
   }
@@ -97,54 +102,7 @@ class _NotificationViewState extends State<NotificationView> {
                           },
                           itemBuilder: (BuildContext context, int index) {
                             NotificationModel notif = _notifications[index];
-                            return Container(
-                              padding: EdgeInsets.all(10.h),
-                              height: 79.h,
-                              decoration: BoxDecoration(
-                                color: Colors.transparent,
-                                border: Border.all(
-                                  color: kLightLightSkyBlueColor,
-                                ),
-                                borderRadius: BorderRadius.circular(10.r),
-                              ),
-                              child: Row(
-                                children: [
-                                  Image.asset(
-                                      "assets/icons/notifiction_view_icon.png"),
-                                  SizedBox(
-                                    width: 10.w,
-                                  ),
-                                  Expanded(
-                                    child: TextWidget(
-                                      text: notif.message,
-                                      size: 11,
-                                      color: kDarkBleuColor,
-                                      fontWeight: FontWeight.normal,
-                                    ),
-                                  ),
-                                  //const Spacer(),
-                                  SizedBox(
-                                    width: 10.w,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      SvgPicture.asset(
-                                          "assets/icons/clock.svg"),
-                                      SizedBox(
-                                        width: 3.w,
-                                      ),
-                                      TextWidget(
-                                        text: notif.createdAt,
-                                        size: 10,
-                                        color: kLightDarkBleuColor,
-                                        fontWeight: FontWeight.normal,
-                                      )
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            );
+                            return NotificationItemWidget(notif: notif);
                           },
                         ),
                       ),

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:soan/models/provider/p_order_model.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../../../translations/locale_keys.g.dart';
 import '../views/p_order_details.dart';
 
 class PcurrentOrdersWidget extends StatefulWidget {
@@ -167,38 +169,55 @@ class _PcurrentOrdersWidgetState extends State<PcurrentOrdersWidget> {
             width: 325.w,
             child: Column(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      height: 11.h,
-                      width: 11.w,
-                      decoration: BoxDecoration(
-                        color: widget.order.invoiceItems.isNotEmpty
-                            ? kDarkBleuColor
-                            : kGreenColor,
-                        shape: BoxShape.circle,
+                Align(
+                  alignment: context.locale.languageCode == 'en'
+                      ? Alignment.centerLeft
+                      : Alignment.centerRight,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        height: 11.h,
+                        width: 11.w,
+                        decoration: BoxDecoration(
+                          color: widget.order.invoiceItems.isNotEmpty
+                              ? kDarkBleuColor
+                              : kGreenColor,
+                          shape: BoxShape.circle,
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      width: 20.w,
-                    ),
-                    Flexible(
-                      child: Text(
-                        widget.order.invoiceItems.isNotEmpty
-                            ? "تم اصدار الفاتورة ${double.parse(widget.order.price.total).toStringAsFixed(0)} ريال ، بانتظار تاكيد استلام المبلغ"
-                            : "تم التعاقد  ${widget.order.processAt}",
-                        maxLines: 2,
-                        overflow: TextOverflow.clip,
-                        style: GoogleFonts.tajawal(
-                            fontSize: 14.r,
-                            color: widget.order.invoiceItems.isNotEmpty
-                                ? kDarkBleuColor
-                                : kGreenColor,
-                            fontWeight: FontWeight.normal),
+                      SizedBox(
+                        width: 5.w,
                       ),
-                    )
-                  ],
+                      context.locale.languageCode == 'ar'
+                          ? Text(
+                              widget.order.invoiceItems.isNotEmpty
+                                  ? "تم اصدار الفاتورة ${double.parse(widget.order.price.total).toStringAsFixed(0)} ريال ، بانتظار تاكيد استلام المبلغ"
+                                  : "تم التعاقد  ${widget.order.processAt}",
+                              //maxLines: 2,
+                              overflow: TextOverflow.clip,
+                              style: GoogleFonts.tajawal(
+                                  fontSize: 14.r,
+                                  color: widget.order.invoiceItems.isNotEmpty
+                                      ? kDarkBleuColor
+                                      : kGreenColor,
+                                  fontWeight: FontWeight.normal),
+                            )
+                          : Text(
+                              widget.order.invoiceItems.isNotEmpty
+                                  ? "${LocaleKeys.provider_orders_invoice_was_created.tr()} ${double.parse(widget.order.price.total).toStringAsFixed(0)} ${LocaleKeys.provider_orders_waiting_payement.tr()}"
+                                  : "${LocaleKeys.costumer_my_orders_contracted.tr()} ${widget.order.processAt}",
+                              // maxLines: 2,
+                              overflow: TextOverflow.clip,
+                              style: GoogleFonts.tajawal(
+                                  fontSize: 14.r,
+                                  color: widget.order.invoiceItems.isNotEmpty
+                                      ? kDarkBleuColor
+                                      : kGreenColor,
+                                  fontWeight: FontWeight.normal),
+                            )
+                    ],
+                  ),
                 ),
                 SizedBox(
                   height: 10.h,
@@ -235,7 +254,7 @@ class _PcurrentOrdersWidgetState extends State<PcurrentOrdersWidget> {
                             ),
                             Center(
                               child: Text(
-                                "اتصال",
+                                LocaleKeys.common_call.tr(),
                                 style: GoogleFonts.tajawal(
                                   fontSize: 16.sp,
                                   fontWeight: FontWeight.normal,
@@ -272,7 +291,7 @@ class _PcurrentOrdersWidgetState extends State<PcurrentOrdersWidget> {
                         ),
                         child: Center(
                           child: Text(
-                            "تفاصيل الطلب",
+                            LocaleKeys.titles_order_details.tr(),
                             style: GoogleFonts.tajawal(
                               fontSize: 16.sp,
                               fontWeight: FontWeight.normal,

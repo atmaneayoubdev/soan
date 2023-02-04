@@ -203,6 +203,7 @@ class _PchangeNumberViewState extends State<PchangeNumberView> {
                                 isLoading = true;
                                 setState(() {});
                                 await ProviderController.updatePhone(
+                                  language: context.locale.languageCode,
                                   token: providerModel.apiToken,
                                   phone: finalPhone,
                                   password: passwordController.text,

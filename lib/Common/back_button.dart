@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:easy_localization/easy_localization.dart';
 
 class BackButtonWidget extends StatelessWidget {
   const BackButtonWidget({
@@ -23,10 +22,8 @@ class BackButtonWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(6.r),
             border: Border.all(color: Colors.white)),
         margin: EdgeInsets.symmetric(horizontal: 26.w),
-        child: Icon(
-          context.locale.languageCode == 'ar'
-              ? Icons.chevron_right
-              : Icons.chevron_left,
+        child: const Icon(
+          Icons.chevron_left,
           color: Colors.white,
         ),
       ),

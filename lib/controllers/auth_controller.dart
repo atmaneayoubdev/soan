@@ -17,6 +17,7 @@ class AuthController with ChangeNotifier {
     required String passwordConfirm,
     required String deviceToken,
     required int howToKnowUs,
+    required String language,
   }) async {
     try {
       Dio dio = Dio();
@@ -37,6 +38,7 @@ class AuthController with ChangeNotifier {
             validateStatus: (status) => true,
             headers: {
               "Accept": "application/json",
+              'Accept-Language': language,
             }),
       );
       log(response.toString());
@@ -74,6 +76,7 @@ class AuthController with ChangeNotifier {
     required List<int> categories,
     required List<int> factories,
     required String deviceToken,
+    required String language,
   }) async {
     try {
       Dio dio = Dio();
@@ -101,6 +104,7 @@ class AuthController with ChangeNotifier {
             validateStatus: (status) => true,
             headers: {
               "Accept": "application/json",
+              'Accept-Language': language,
             }),
       );
       log(response.toString());
@@ -126,16 +130,17 @@ class AuthController with ChangeNotifier {
   static Future checkOtp({
     required String phone,
     required String otp,
+    required String language,
   }) async {
     log("this is check phone $phone");
     try {
       Dio dio = Dio();
       var response = await dio.post(
         "${baseUrl}check-code-otp",
-        // options: Options(
-        //   followRedirects: false,
-        //   validateStatus: (status) => true,
-        // ),
+        options: Options(headers: {
+          "Accept": "application/json",
+          'Accept-Language': language,
+        }),
         data: {
           'phone': phone,
           'otp': otp,
@@ -174,16 +179,16 @@ class AuthController with ChangeNotifier {
   static Future checkOtpProvider({
     required String phone,
     required String otp,
+    required String language,
   }) async {
     log("this is check phone $phone");
     try {
       Dio dio = Dio();
       var response = await dio.post(
         "${baseUrl}check-code-otp",
-        // options: Options(
-        //   followRedirects: false,
-        //   validateStatus: (status) => true,
-        // ),
+        options: Options(headers: {
+          'Accept-Language': language,
+        }),
         data: {
           'phone': phone,
           'otp': otp,
@@ -229,16 +234,21 @@ class AuthController with ChangeNotifier {
   }
 
 ////////////////////////////ReSend OTP////////////////////////////////
-  static Future reSendOtp(String phone) async {
+  static Future reSendOtp(
+    String phone,
+    String language,
+  ) async {
     log("this is check phone $phone");
     try {
       Dio dio = Dio();
       var response = await dio.post(
         "${baseUrl}re-send",
         options: Options(
-          followRedirects: false,
-          validateStatus: (status) => true,
-        ),
+            followRedirects: false,
+            validateStatus: (status) => true,
+            headers: {
+              'Accept-Language': language,
+            }),
         data: {
           'phone': int.parse(phone),
         },
@@ -264,13 +274,18 @@ class AuthController with ChangeNotifier {
   static Future login({
     required String phoneNumber,
     required String password,
+    required String language,
   }) async {
     log(password);
     log(phoneNumber);
     try {
       Dio dio = Dio();
+
       var response = await dio.post(
         "${baseUrl}login",
+        options: Options(headers: {
+          'Accept-Language': language,
+        }),
         data: {
           'phone': phoneNumber,
           'password': password,
@@ -339,10 +354,12 @@ class AuthController with ChangeNotifier {
   ////////////////////////////LogOut///////////////////////////
   static Future logout({
     required String token,
+    required String language,
   }) async {
     Map<String, String> headers = {
       'Accept': 'application/json',
       'Authorization': "Bearer $token",
+      'Accept-Language': language,
     };
     try {
       Dio dio = Dio();
@@ -368,7 +385,10 @@ class AuthController with ChangeNotifier {
   }
 
   ////////////////////////////Forgot Password///////////////////////////
-  static Future<String> forgotPassword(String phone) async {
+  static Future<String> forgotPassword(
+    String phone,
+    String language,
+  ) async {
     try {
       Dio dio = Dio();
       var response = await dio.post("${baseUrl}forget-password",
@@ -376,7 +396,10 @@ class AuthController with ChangeNotifier {
             'phone': phone,
           },
           options: Options(
-            headers: {"Accept": "application/json"},
+            headers: {
+              "Accept": "application/json",
+              'Accept-Language': language,
+            },
             followRedirects: false,
             validateStatus: (status) => true,
           ));
@@ -398,11 +421,15 @@ class AuthController with ChangeNotifier {
     required String phone,
     required String password,
     required double otp,
+    required String language,
   }) async {
     try {
       Dio dio = Dio();
       var response = await dio.post(
         "${baseUrl}reset-password",
+        options: Options(headers: {
+          'Accept-Language': language,
+        }),
         data: {
           "phone": phone,
           "password": password,
@@ -423,12 +450,14 @@ class AuthController with ChangeNotifier {
   static Future deleteAccount({
     required String token,
     required String type,
+    required String language,
   }) async {
     try {
       Dio dio = Dio();
       Map<String, String> headers = {
         "Accept": "application/json",
         'Authorization': "Bearer $token",
+        'Accept-Language': language,
       };
 
       var response = await dio.delete(

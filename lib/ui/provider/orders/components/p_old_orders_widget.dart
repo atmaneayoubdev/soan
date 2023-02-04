@@ -153,43 +153,39 @@ class PoldOrdersWidget extends StatelessWidget {
             height: 17.h,
           ),
           SizedBox(
-            width: 325.w,
+            width: 350.w,
             child: Column(
               children: [
-                Column(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        Container(
-                          height: 11.h,
-                          width: 11.w,
-                          decoration: const BoxDecoration(
-                            color: kPinkColor,
-                            shape: BoxShape.circle,
+                    Expanded(
+                      child: Row(
+                        children: [
+                          Container(
+                            height: 11.h,
+                            width: 11.w,
+                            decoration: const BoxDecoration(
+                              color: kPinkColor,
+                              shape: BoxShape.circle,
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          width: 10.w,
-                        ),
-                        FittedBox(
-                          child: Text(
+                          SizedBox(
+                            width: 5.w,
+                          ),
+                          Text(
                             "${LocaleKeys.costumer_my_orders_order_finished.tr()} ${order.completedAt}  ",
                             style: GoogleFonts.tajawal(
                                 fontSize: 14.r,
                                 color: kPinkColor,
                                 fontWeight: FontWeight.normal),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    FittedBox(
+                    Expanded(
                       child: Text(
-                        "${LocaleKeys.costumer_my_orders_service_total_cost.tr()} ${order.price.total} ${LocaleKeys.common_sar.tr()} ",
+                        "${LocaleKeys.costumer_my_orders_service_total_cost.tr()} ${order.price.total} ${LocaleKeys.common_sar.tr()}",
                         style: GoogleFonts.tajawal(
                           fontSize: 14.r,
                           color: kDarkBleuColor,
@@ -203,7 +199,7 @@ class PoldOrdersWidget extends StatelessWidget {
                   height: 10.h,
                 ),
                 SizedBox(
-                  width: 325.w,
+                  width: 323505.w,
                   child: GestureDetector(
                     onTap: () {
                       Navigator.push(
@@ -227,7 +223,7 @@ class PoldOrdersWidget extends StatelessWidget {
                       ),
                       child: Center(
                         child: Text(
-                          "تفاصيل الطلب",
+                          LocaleKeys.titles_order_details.tr(),
                           style: GoogleFonts.tajawal(
                             fontSize: 16.sp,
                             fontWeight: FontWeight.normal,

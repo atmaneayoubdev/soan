@@ -7,6 +7,8 @@ import '../../../../constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../../controllers/global_controller.dart';
+
 class FaqView extends StatefulWidget {
   const FaqView({Key? key}) : super(key: key);
 
@@ -70,14 +72,23 @@ class _FaqViewState extends State<FaqView> {
                   SizedBox(
                     height: 32.h,
                   ),
-                  Text(
-                    "adfsdfalkds fkjajsd jfka jsdf jflkj lasdasf lsdjflkaj sdf f alskdjflk j;laksjd;flkja;lksdjf j;alsdj;lfj lajsghaskdf hjj lajsdf hasjkgajeior a;iorgj sgdsf",
-                    style: GoogleFonts.tajawal(
-                      fontSize: 14.sp,
-                      color: kGreyColor,
-                      fontWeight: FontWeight.normal,
+                  Expanded(
+                    child: FutureBuilder(
+                      future:
+                          GlobalController.getFaq(context.locale.languageCode),
+                      initialData: '',
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        return Text(
+                          snapshot.data.toString(),
+                          style: GoogleFonts.tajawal(
+                            fontSize: 14.sp,
+                            color: kGreyColor,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        );
+                      },
                     ),
-                  ),
+                  )
                 ],
               ),
             ),

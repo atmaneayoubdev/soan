@@ -11,11 +11,13 @@ import 'package:soan/models/provider/p_order_model.dart';
 
 import '../models/auth/provider_model.dart';
 import '../models/constumer/notification_model.dart';
+import '../models/global/invoice_model.dart';
 
 class ProviderController with ChangeNotifier {
   ////////////////////////////change user info///////////////////////////
   static Future updateProfile({
     required String token,
+    required String language,
     required String providerName,
     File? image,
   }) async {
@@ -24,6 +26,7 @@ class ProviderController with ChangeNotifier {
       'Content-type': 'multipart/from-data',
       "Accept": "application/json",
       'Authorization': "Bearer $token",
+      'Accept-Language': language,
     };
 
     if (image != null) {
@@ -108,11 +111,13 @@ class ProviderController with ChangeNotifier {
   ////////////////////Show profile//////////////////////
   static Future showProfile({
     required String token,
+    required String language,
   }) async {
     try {
       Map<String, String> headers = {
         'Accept': 'application/json',
         'Authorization': "Bearer $token",
+        'Accept-Language': language,
       };
       Dio dio = Dio();
 
@@ -139,12 +144,14 @@ class ProviderController with ChangeNotifier {
     required String token,
     required String phone,
     required String password,
+    required String language,
   }) async {
     try {
       Dio dio = Dio();
       Map<String, String> headers = {
         "Accept": "application/json",
         'Authorization': "Bearer $token",
+        'Accept-Language': language,
       };
       log(password);
       log(phone);
@@ -184,12 +191,14 @@ class ProviderController with ChangeNotifier {
     required String oldPassword,
     required String password,
     required String passwordConfirmation,
+    required String language,
   }) async {
     try {
       Dio dio = Dio();
       Map<String, String> headers = {
         "Accept": "application/json",
         'Authorization': "Bearer $token",
+        'Accept-Language': language,
       };
 
       var response = await dio.post(
@@ -220,11 +229,15 @@ class ProviderController with ChangeNotifier {
   }
 
   ////////////////////get dues//////////////////////
-  static Future getDuesOrders(String token) async {
+  static Future getDuesOrders(
+    String token,
+    String language,
+  ) async {
     try {
       Map<String, String> headers = {
         "Accept": "application/json",
         'Authorization': "Bearer $token",
+        'Accept-Language': language,
       };
       Dio dio = Dio();
 
@@ -252,12 +265,14 @@ class ProviderController with ChangeNotifier {
   ////////////////////////////change user password///////////////////////////
   static Future makeDues({
     required String token,
+    required String language,
   }) async {
     try {
       Dio dio = Dio();
       Map<String, String> headers = {
         "Accept": "application/json",
         'Authorization': "Bearer $token",
+        'Accept-Language': language,
       };
 
       var response = await dio.post(
@@ -316,12 +331,14 @@ class ProviderController with ChangeNotifier {
   ////////////////////get orders list//////////////////////
   static Future<List<PorderModel>> getOrdersList({
     required String token,
+    required String language,
     required String status,
   }) async {
     try {
       Map<String, String> headers = {
         'Accept': 'application/json',
         'Authorization': "Bearer $token",
+        'Accept-Language': language,
       };
       Dio dio = Dio();
 
@@ -352,11 +369,13 @@ class ProviderController with ChangeNotifier {
   ////////////////////get orders list//////////////////////
   static Future<List<PorderModel>> getOrdersThatNeedsAnswer({
     required String token,
+    required String language,
   }) async {
     try {
       Map<String, String> headers = {
         'Accept': 'application/json',
         'Authorization': "Bearer $token",
+        'Accept-Language': language,
       };
       Dio dio = Dio();
 
@@ -388,12 +407,14 @@ class ProviderController with ChangeNotifier {
   static Future makeOrderAnswer({
     required String token,
     required String orderId,
+    required String language,
     required String message,
   }) async {
     try {
       Map<String, String> headers = {
         'Accept': 'application/json',
         'Authorization': "Bearer $token",
+        'Accept-Language': language,
       };
       Dio dio = Dio();
 
@@ -420,11 +441,13 @@ class ProviderController with ChangeNotifier {
   static Future confirmTakeMoney({
     required String token,
     required String orderId,
+    required String language,
   }) async {
     try {
       Map<String, String> headers = {
         'Accept': 'application/json',
         'Authorization': "Bearer $token",
+        'Accept-Language': language,
       };
       Dio dio = Dio();
 
@@ -452,11 +475,13 @@ class ProviderController with ChangeNotifier {
     required double subTotal,
     required double vat,
     required double total,
+    required String language,
   }) async {
     try {
       Map<String, String> headers = {
         'Accept': 'application/json',
         'Authorization': "Bearer $token",
+        'Accept-Language': language,
       };
       Dio dio = Dio();
       List jsonList = [];
@@ -487,11 +512,13 @@ class ProviderController with ChangeNotifier {
   static Future updateTerms({
     required String token,
     required String terms,
+    required String language,
   }) async {
     try {
       Map<String, String> headers = {
         'Accept': 'application/json',
         'Authorization': "Bearer $token",
+        'Accept-Language': language,
       };
       Dio dio = Dio();
 
@@ -508,6 +535,37 @@ class ProviderController with ChangeNotifier {
       );
       log(response.data.toString());
       return response.data['message'];
+    } on DioError catch (error) {
+      log(error.message);
+      return error.message;
+    }
+  }
+
+  ////////////////////get invoice//////////////////////
+  static Future getInvoice({
+    required String token,
+    required String id,
+    required String language,
+  }) async {
+    try {
+      Map<String, String> headers = {
+        'Accept': 'application/json',
+        'Authorization': "Bearer $token",
+        'Accept-Language': language,
+      };
+      Dio dio = Dio();
+
+      var response = await dio.get(
+        "${baseUrl}provider/orders/$id/show-Invoice",
+        options: Options(
+          followRedirects: false,
+          validateStatus: (status) => true,
+          headers: headers,
+        ),
+      );
+      log(response.data.toString());
+
+      return InvoiceModel.fromJson(response.data["data"]);
     } on DioError catch (error) {
       log(error.message);
       return error.message;

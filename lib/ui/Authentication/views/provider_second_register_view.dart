@@ -63,7 +63,8 @@ class _ProviderSecondRegisterViewState
   bool isTypeRed = false;
 
   Future getFactories() async {
-    await GlobalController.getCarCountryFactories().then((value) {
+    await GlobalController.getCarCountryFactories(context.locale.languageCode)
+        .then((value) {
       setState(() {
         _factories = value;
       });
@@ -71,7 +72,8 @@ class _ProviderSecondRegisterViewState
   }
 
   Future getCategories() async {
-    await GlobalController.getCategories().then((value) {
+    await GlobalController.getCategories(context.locale.languageCode)
+        .then((value) {
       setState(() {
         _categories = value;
       });
@@ -81,10 +83,12 @@ class _ProviderSecondRegisterViewState
   @override
   void initState() {
     super.initState();
-    getCategories();
-    getFactories().then((value) {
-      setState(() {
-        isLoading = false;
+    Future.delayed(Duration.zero, () {
+      getCategories();
+      getFactories().then((value) {
+        setState(() {
+          isLoading = false;
+        });
       });
     });
   }
@@ -384,7 +388,7 @@ class _ProviderSecondRegisterViewState
                                         child: Icon(
                                           Icons.visibility,
                                           color: !isPassVisible
-                                              ? kOrangeColor
+                                              ? Colors.red
                                               : kGreenColor,
                                         ),
                                       ),
@@ -445,7 +449,7 @@ class _ProviderSecondRegisterViewState
                                         child: Icon(
                                           Icons.visibility,
                                           color: !isPassConfVisible
-                                              ? kOrangeColor
+                                              ? Colors.red
                                               : kGreenColor,
                                         ),
                                       ),
@@ -511,6 +515,7 @@ class _ProviderSecondRegisterViewState
                                       howToKnowUs: widget.howToKnowUs,
                                       categories: _selectedCategories,
                                       factories: _selectedFactories,
+                                      language: context.locale.languageCode,
                                       deviceToken: "2345234524")
                                   .then((value) {
                                 setState(() {

@@ -51,8 +51,6 @@ class _IntroductionViewState extends State<IntroductionView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        extendBodyBehindAppBar: true,
-        extendBody: true,
         backgroundColor: Colors.white,
         body: Stack(
           children: [

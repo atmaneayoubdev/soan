@@ -87,7 +87,8 @@
     "verification_code": "رمز التحقق",
     "save": "حفظ",
     "enter_code_please": "الرجاء إدخال الرمز",
-    "reset_password": "إعادة تعيين كلمة المرور"
+    "reset_password": "إعادة تعيين كلمة المرور",
+    "valid_reg_number": "الرجاء إدخال رقم ضريبي صحيح"
   },
   "costumer": {
     "home": {
@@ -96,9 +97,9 @@
       "add_other": "إضافة أخرى",
       "modify": "تعديل",
       "add_car": "إضافة سيارة",
-      "car_factory": "مصنع السيارة \"",
-      "select_factory_please": "الرجاء تحديد مصنع",
-      "car_manufacturer": "مصنع السيارة",
+      "car_factory": "الدولة المصنعة",
+      "select_factory_please": "الرجاء تحديدالدول المصنعة",
+      "car_manufacturer": "اسم الشركة",
       "please_select_manufacturer": "الرجاء تحديد الشركة المصنعة",
       "car_model": "طراز السيارة",
       "please_select_model": "الرجاء تحديد طراز السيارة",
@@ -108,8 +109,8 @@
       "please_select_chassis_nbr": "الرجاء إدخال رقم الهيكل",
       "please_enter_chassis_nbr": "الرجاء إدخال رقم الهيكل",
       "chassis_must_be_17": "يجب أن يتكون رقم الهيكل من 17 حرفًا",
-      "year": "السنة",
-      "please_enter_year": "الرجاء إدخال السنة",
+      "year": "سنة الصنع",
+      "please_enter_year": "الرجاء إدخال سنة الصنع",
       "enter_valid_year_please": "من فضلك ادخل سنة صحيحة",
       "car_created_succesfully": "تم انشاء السياره بنجاح",
       "fill_in_your_data": "املأ بياناتك لرفع",
@@ -136,12 +137,13 @@
       "contract": "تعاقد",
       "do_you_want_contract_this_provider": "هل تريد بالفعل التعاقد مع هذا المزود ؟",
       "you_will_not_be_able_to_cancel": "لن تتمكن من الغاء الطلب بعد التعاقد",
-      "no_find_another_provider": "لا، البحث عن مزود آخر"
+      "no_find_another_provider": "لا، البحث عن مزود آخر",
+      "in_ordes_screen": "بشاشة طلباتي"
     },
     "providers": {
       "permission_denied": "تم رفض أذونات الموقع",
       "permission_denied_activate_location": "خدمات الموقع معطلة. يرجى تفعيل خدمة الموقع",
-      "we_can_not_request_permission": "أذونات الموقع مرفوضة بشكل دائم ، ولا يمكننا طلب أذونات",
+      "we_can_not_request_permission": "أذونات الموقع مرفوضة بشكل دائم ،  يرجى تفعيل خدمة الموقع",
       "nearby_worshops": "مراكز الصيانة القريبة",
       "top_rated_workshops": "مراكز الصيانة الأعلى تقييماً"
     },
@@ -213,7 +215,9 @@
     "sar": "ريال",
     "soan": "صون",
     "total": "المجموع",
-    "yes": "نعم"
+    "yes": "نعم",
+    "add": "إضافة",
+    "continue": "متابعة"
   },
   "provider": {
     "settings": {
@@ -227,7 +231,8 @@
       "add_other_item": "اضافه عنصر اخر",
       "invoice_was_created": "تم انشاء الفاتورة",
       "sent_to_client_successfully": "وارسالها الى العميل بنجاح",
-      "did_you_get_the_payement": "هل تم استلام المبلغ ؟"
+      "did_you_get_the_payement": "هل تم استلام المبلغ ؟",
+      "waiting_payement": " بانتظار تاكيد استلام المبلغ"
     },
     "home": {
       "region": "المنطقة",
@@ -240,7 +245,10 @@
       "show_modify_inovoice": "عرض / تعديل الفاتوره",
       "payement_received": "تم استلام المبلغ",
       "show": "عرض",
-      "show_invoice": "عرض الفاتورة"
+      "show_invoice": "عرض الفاتورة",
+      "you_wont_change": "عند الحفظ لن تتمكن من التعديل إلا بإتصالك بالدعم الفني",
+      "shops_terms_and_conditions": "سياسة وشروط المركز",
+      "waiting_for_orders": "في انتظار طلبات العملاء"
     }
   }
 }

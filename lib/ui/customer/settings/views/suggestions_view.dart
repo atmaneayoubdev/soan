@@ -115,19 +115,19 @@ class _SuggestionsViewState extends State<SuggestionsView> {
                               isLoading = true;
                               setState(() {});
                               await GlobalController.sendMessage(
-                                      token: widget.isProvider
-                                          ? Provider.of<ProviderProvider>(
-                                                  context,
-                                                  listen: false)
-                                              .providerModel
-                                              .apiToken
-                                          : Provider.of<UserProvider>(
-                                              context,
-                                              listen: false,
-                                            ).user.apiToken,
-                                      message: controller.text,
-                                      type: 'feedback')
-                                  .then((value) {
+                                token: widget.isProvider
+                                    ? Provider.of<ProviderProvider>(context,
+                                            listen: false)
+                                        .providerModel
+                                        .apiToken
+                                    : Provider.of<UserProvider>(
+                                        context,
+                                        listen: false,
+                                      ).user.apiToken,
+                                message: controller.text,
+                                type: 'feedback',
+                                language: context.locale.languageCode,
+                              ).then((value) {
                                 isLoading = false;
                                 setState(() {});
                                 ScaffoldMessenger.of(context).showSnackBar(

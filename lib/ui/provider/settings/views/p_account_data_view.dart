@@ -221,6 +221,7 @@ class _PaccountDataViewState extends State<PaccountDataView> {
                               FocusManager.instance.primaryFocus!.unfocus();
                               if (_formKey.currentState!.validate()) {
                                 await ProviderController.updateProfile(
+                                        language: context.locale.languageCode,
                                         token: providerModel.apiToken,
                                         providerName:
                                             providerNameController.text,

@@ -31,6 +31,7 @@ class _DuesViewState extends State<DuesView> {
       Provider.of<ProviderProvider>(context, listen: false)
           .providerModel
           .apiToken,
+      context.locale.languageCode,
     ).then((value) {
       if (value.runtimeType == DuesModel) {
         dues = value;
@@ -43,7 +44,9 @@ class _DuesViewState extends State<DuesView> {
   @override
   void initState() {
     super.initState();
-    getDues();
+    Future.delayed(Duration.zero, () {
+      getDues();
+    });
   }
 
   @override
@@ -162,6 +165,7 @@ class _DuesViewState extends State<DuesView> {
                                     isLoading = true;
                                     setState(() {});
                                     await ProviderController.makeDues(
+                                      language: context.locale.languageCode,
                                       token: Provider.of<ProviderProvider>(
                                               context,
                                               listen: false)

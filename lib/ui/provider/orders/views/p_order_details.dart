@@ -12,7 +12,7 @@ import '../../../../Common/large_button.dart';
 import '../../../../Common/text_widget.dart';
 import '../../../../constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart' as modal;
 import '../../../customer/orders/components/send_reply_botton_sheet.dart';
 import '../../../customer/orders/components/sent_reply_bottom_sheet.dart';
 import '../components/payment_sent_bottom_sheet.dart';
@@ -427,7 +427,7 @@ class _PorderDetailsViewState extends State<PorderDetailsView> {
                             GestureDetector(
                               onTap: () {
                                 Navigator.pop(context);
-                                showMaterialModalBottomSheet(
+                                modal.showMaterialModalBottomSheet(
                                   enableDrag: true,
                                   backgroundColor: Colors.transparent,
                                   context: context,
@@ -443,7 +443,7 @@ class _PorderDetailsViewState extends State<PorderDetailsView> {
                           if (widget.order.answer.makeAnswer == "true")
                             GestureDetector(
                               onTap: () {
-                                showMaterialModalBottomSheet(
+                                modal.showMaterialModalBottomSheet(
                                   enableDrag: true,
                                   backgroundColor: Colors.transparent,
                                   context: context,
@@ -515,7 +515,7 @@ class _PorderDetailsViewState extends State<PorderDetailsView> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              showMaterialModalBottomSheet<bool>(
+                              modal.showMaterialModalBottomSheet<bool>(
                                 enableDrag: true,
                                 backgroundColor: Colors.transparent,
                                 context: context,

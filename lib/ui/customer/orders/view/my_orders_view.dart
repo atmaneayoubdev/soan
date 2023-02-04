@@ -34,6 +34,7 @@ class _MyOrdersViewState extends State<MyOrdersView> {
       setState(() {});
     }
     await CostumerController.getOrdersList(
+            language: context.locale.languageCode,
             token:
                 Provider.of<UserProvider>(context, listen: false).user.apiToken,
             status: status)
@@ -49,13 +50,15 @@ class _MyOrdersViewState extends State<MyOrdersView> {
   @override
   void initState() {
     super.initState();
-    if (mounted) {
-      getOrders('process').then((value) {
-        if (mounted) {
-          getOrders('wait_for_pay');
-        }
-      });
-    }
+    Future.delayed(Duration.zero, () {
+      if (mounted) {
+        getOrders('process').then((value) {
+          if (mounted) {
+            getOrders('wait_for_pay');
+          }
+        });
+      }
+    });
   }
 
   @override

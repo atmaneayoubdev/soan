@@ -162,12 +162,13 @@ class _MyAppState extends State<MyApp> {
           supportedLocales: context.supportedLocales,
           locale: context.locale,
           debugShowCheckedModeBanner: false,
-          title: 'صون',
+          title: context.locale.languageCode == 'ar' ? 'صون' : 'Soan',
           theme: ThemeData(
             splashColor: kBlueColor,
             hintColor: kGreyColor,
-            backgroundColor: Colors.white,
+            //backgroundColor: Colors.white,
             colorScheme: ColorScheme.fromSwatch(
+              backgroundColor: Colors.white,
               primarySwatch: Colors.green,
               accentColor: kBlueColor,
             ).copyWith(

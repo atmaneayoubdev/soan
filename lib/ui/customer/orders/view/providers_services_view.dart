@@ -28,6 +28,7 @@ class _ProvidersServicesViewState extends State<ProvidersServicesView> {
 
   Future getAnswers() async {
     await CostumerController.getAnswers(
+      language: context.locale.languageCode,
       token: Provider.of<UserProvider>(context, listen: false).user.apiToken,
       id: widget.orderId,
     ).then((value) {
@@ -40,7 +41,9 @@ class _ProvidersServicesViewState extends State<ProvidersServicesView> {
   @override
   void initState() {
     super.initState();
-    getAnswers();
+    Future.delayed(Duration.zero, () {
+      getAnswers();
+    });
   }
 
   @override

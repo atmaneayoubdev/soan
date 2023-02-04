@@ -236,6 +236,7 @@ class _ChangePassViewState extends State<ChangePassView> {
                                 isLoading = true;
                                 setState(() {});
                                 await CostumerController.updatePassword(
+                                        language: context.locale.languageCode,
                                         token: user.apiToken,
                                         oldPassword: oldPasswordController.text,
                                         password: passwordController.text,

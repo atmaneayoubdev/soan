@@ -14,7 +14,7 @@ import '../../../../Common/large_button.dart';
 import '../../../../Common/text_widget.dart';
 import '../../../../constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart' as modal;
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../controllers/global_controller.dart';
 import '../components/invoice_sent_bottom_sheet.dart';
@@ -40,7 +40,8 @@ class _MakeInvoiceViewState extends State<MakeInvoiceView> {
 
   Future getSettings() async {
     if (mounted) {
-      await GlobalController.getSettings().then((value) {
+      await GlobalController.getSettings(context.locale.languageCode)
+          .then((value) {
         if (value.runtimeType == SettingsModel) {
           SettingsModel s = value;
           vat = double.parse(s.info.vat);
@@ -56,7 +57,9 @@ class _MakeInvoiceViewState extends State<MakeInvoiceView> {
   @override
   void initState() {
     super.initState();
-    getSettings();
+    Future.delayed(Duration.zero, () {
+      getSettings();
+    });
   }
 
   @override
@@ -83,7 +86,9 @@ class _MakeInvoiceViewState extends State<MakeInvoiceView> {
                     Align(
                       alignment: Alignment.bottomCenter,
                       child: TextWidget(
-                        text: LocaleKeys.titles_create_invoice.tr(),
+                        text: widget.order.orderStatus == 'done'
+                            ? ' '
+                            : LocaleKeys.titles_create_invoice.tr(),
                         size: 22,
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -395,7 +400,8 @@ class _MakeInvoiceViewState extends State<MakeInvoiceView> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    showMaterialModalBottomSheet(
+                    modal
+                        .showMaterialModalBottomSheet(
                       enableDrag: true,
                       backgroundColor: Colors.transparent,
                       context: context,
@@ -538,7 +544,8 @@ class _MakeInvoiceViewState extends State<MakeInvoiceView> {
                           ),
                         ),
                       ),
-                    ).then((value) {
+                    )
+                        .then((value) {
                       if (value != null) {
                         if (value &&
                             nameController.text.isNotEmpty &&
@@ -693,6 +700,7 @@ class _MakeInvoiceViewState extends State<MakeInvoiceView> {
                           isLoading = true;
                           setState(() {});
                           await ProviderController.addUpdateBill(
+                            language: context.locale.languageCode,
                             token: Provider.of<ProviderProvider>(
                               context,
                               listen: false,
@@ -706,13 +714,15 @@ class _MakeInvoiceViewState extends State<MakeInvoiceView> {
                             isLoading = false;
                             setState(() {});
                             if (value == "بيانات الطلب") {
-                              showMaterialModalBottomSheet(
+                              modal
+                                  .showMaterialModalBottomSheet(
                                 enableDrag: true,
                                 backgroundColor: Colors.transparent,
                                 context: context,
                                 builder: (context) =>
                                     const SentInvoiceBottomSheet(),
-                              ).then((value) {
+                              )
+                                  .then((value) {
                                 Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(

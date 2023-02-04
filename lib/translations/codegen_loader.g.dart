@@ -32,21 +32,21 @@ class CodegenLoader extends AssetLoader{
     "suggestions": "Send Feedback ",
     "terms": "Terms and Conditions",
     "my_orders": "My Orders",
-    "add_terms": "Add terms and conditions of the center",
+    "add_terms": "Add your workshop terms and conditions",
     "create_invoice": "Create Invoice",
     "orders": "Orders",
     "dues": "Soan Dues",
     "phone_verification": "Phone verification",
     "create_account": "Create Account",
-    "finish_data": "Finishing data",
+    "finish_data": "Complete data",
     "reset_password": "Reset Passwrod",
-    "singin": "Singin",
+    "singin": "Sing in",
     "offline": "Network Error"
   },
   "intoduction": {
-    "page1": "The most important thing is that after\nyou receive your digital bill and guarantee your right",
-    "page2": "Add your information ▾\n Explain your problem ▾\n Receive maintenance offers from all workshops\n relevant to your city",
-    "page3": "Greetings!!!\nWhat's in your car?\nPeace of mind and do not chill them\nWe brought you the workshops to your doorstep",
+    "page1": "Finally when the service is done\nDon't forget your E-invoice",
+    "page2": "Add your information ▾\n Explain your problem ▾\n And receive maintenance quotes  from every workshop in your city\n relevant to your city",
+    "page3": "Greetings\nSomething happened to your car ?\nTake it easy and relax\nWe brought all workshops to your doorstep",
     "skip": "Skip",
     "start_now": "Start now"
   },
@@ -60,10 +60,10 @@ class CodegenLoader extends AssetLoader{
     "i_forgot_password": "Forgot password ?",
     "account_under_review": "You’re account is under review",
     "enter": "Enter",
-    "have_no_account": "You dont have an account ?",
+    "have_no_account": "Don’t have an account ?",
     "welcome_to_soan": "Welcome\nTo Soan",
-    "costumer": "Costumer",
-    "provider": "Provider",
+    "costumer": "Customer",
+    "provider": "Workshop",
     "first_name": "First name",
     "please_enter_first_name": "Please enter you’re first name",
     "last_name": "Last name",
@@ -103,7 +103,8 @@ class CodegenLoader extends AssetLoader{
     "verification_code": "verification code",
     "save": "Save",
     "enter_code_please": "Please enter the code",
-    "reset_password": "Reset password"
+    "reset_password": "Reset password",
+    "valid_reg_number": "Please enter a valid tax number"
   },
   "costumer": {
     "home": {
@@ -112,9 +113,9 @@ class CodegenLoader extends AssetLoader{
       "add_other": "Add another",
       "modify": "Modify",
       "add_car": "Add car",
-      "car_factory": "car factory",
-      "select_factory_please": "Please select a factory",
-      "car_manufacturer": "Car manufacturer",
+      "car_factory": "manufacturing country",
+      "select_factory_please": "Please select manufacturing countries",
+      "car_manufacturer": "company name",
       "please_select_manufacturer": "Please select manufacturer",
       "car_model": "Car model",
       "please_select_model": "Please select the model",
@@ -124,8 +125,8 @@ class CodegenLoader extends AssetLoader{
       "please_select_chassis_nbr": "Please enter the chassis number",
       "please_enter_chassis_nbr": "Please enter the chassis number",
       "chassis_must_be_17": "The chassis number must be 17 characters long",
-      "year": "Year",
-      "please_enter_year": "Please enter the year",
+      "year": "manufacturing year",
+      "please_enter_year": "Please enter the manufacturing year",
       "enter_valid_year_please": "Enter a valid year please",
       "car_created_succesfully": "The car has been created successfully",
       "fill_in_your_data": "Fill in your data to upload",
@@ -152,12 +153,13 @@ class CodegenLoader extends AssetLoader{
       "contract": "contract",
       "do_you_want_contract_this_provider": "Do you really want to contract with this provider?",
       "you_will_not_be_able_to_cancel": "You will not be able to cancel the order after contracting",
-      "no_find_another_provider": "No, look for another provider"
+      "no_find_another_provider": "No, look for another provider",
+      "in_ordes_screen": "In Orders screen"
     },
     "providers": {
       "permission_denied": "Permission dine",
       "permission_denied_activate_location": "Location services are denied. Please activate the location service",
-      "we_can_not_request_permission": "Location permissions are permanently denied, and we cannot request permissions",
+      "we_can_not_request_permission": "Location permissions are permanently denied, please activate location services",
       "nearby_worshops": "Nearby workshops",
       "top_rated_workshops": "Top rated workshops"
     },
@@ -192,12 +194,12 @@ class CodegenLoader extends AssetLoader{
       "from": "From",
       "to": "To",
       "service_total_cost": "Service total cost",
-      "total_added_cost": "Total added cost",
+      "total_added_cost": "VAT",
       "download_pdf": "Download the invoice PDF",
       "order_finished": "Order finished"
     },
     "settings": {
-      "personal_profile": "Personal profile",
+      "personal_profile": "profile",
       "faq": "FAQ",
       "terms_and_conditions": "Terms and conditions",
       "technical_support ": "Technical support",
@@ -229,7 +231,9 @@ class CodegenLoader extends AssetLoader{
     "sar": "SAR",
     "soan": "Soan",
     "total": "Total",
-    "yes": "Yes"
+    "yes": "Yes",
+    "add": "Add",
+    "continue": "Continue"
   },
   "provider": {
     "settings": {
@@ -243,7 +247,8 @@ class CodegenLoader extends AssetLoader{
       "add_other_item": "Add another item",
       "invoice_was_created": "Invoice was created",
       "sent_to_client_successfully": "And sent to the client successfully ",
-      "did_you_get_the_payement": "Did you get the payement"
+      "did_you_get_the_payement": "Did you get the payement",
+      "waiting_payement": "waiting payment confirmation"
     },
     "home": {
       "region": "Region",
@@ -256,7 +261,10 @@ class CodegenLoader extends AssetLoader{
       "show_modify_inovoice": "Show/modify the invoice",
       "payement_received": "Payment has been received",
       "show": "Show",
-      "show_invoice": "Show invoice"
+      "show_invoice": "Show invoice",
+      "you_wont_change": "Saving and editing is not allowed, Contact customer service to edit",
+      "shops_terms_and_conditions": "terms and conditions",
+      "waiting_for_orders": "Waiting for customers' requests"
     }
   }
 };
@@ -349,7 +357,8 @@ static const Map<String,dynamic> ar = {
     "verification_code": "رمز التحقق",
     "save": "حفظ",
     "enter_code_please": "الرجاء إدخال الرمز",
-    "reset_password": "إعادة تعيين كلمة المرور"
+    "reset_password": "إعادة تعيين كلمة المرور",
+    "valid_reg_number": "الرجاء إدخال رقم ضريبي صحيح"
   },
   "costumer": {
     "home": {
@@ -358,9 +367,9 @@ static const Map<String,dynamic> ar = {
       "add_other": "إضافة أخرى",
       "modify": "تعديل",
       "add_car": "إضافة سيارة",
-      "car_factory": "مصنع السيارة \"",
-      "select_factory_please": "الرجاء تحديد مصنع",
-      "car_manufacturer": "مصنع السيارة",
+      "car_factory": "الدولة المصنعة",
+      "select_factory_please": "الرجاء تحديدالدول المصنعة",
+      "car_manufacturer": "اسم الشركة",
       "please_select_manufacturer": "الرجاء تحديد الشركة المصنعة",
       "car_model": "طراز السيارة",
       "please_select_model": "الرجاء تحديد طراز السيارة",
@@ -370,8 +379,8 @@ static const Map<String,dynamic> ar = {
       "please_select_chassis_nbr": "الرجاء إدخال رقم الهيكل",
       "please_enter_chassis_nbr": "الرجاء إدخال رقم الهيكل",
       "chassis_must_be_17": "يجب أن يتكون رقم الهيكل من 17 حرفًا",
-      "year": "السنة",
-      "please_enter_year": "الرجاء إدخال السنة",
+      "year": "سنة الصنع",
+      "please_enter_year": "الرجاء إدخال سنة الصنع",
       "enter_valid_year_please": "من فضلك ادخل سنة صحيحة",
       "car_created_succesfully": "تم انشاء السياره بنجاح",
       "fill_in_your_data": "املأ بياناتك لرفع",
@@ -398,12 +407,13 @@ static const Map<String,dynamic> ar = {
       "contract": "تعاقد",
       "do_you_want_contract_this_provider": "هل تريد بالفعل التعاقد مع هذا المزود ؟",
       "you_will_not_be_able_to_cancel": "لن تتمكن من الغاء الطلب بعد التعاقد",
-      "no_find_another_provider": "لا، البحث عن مزود آخر"
+      "no_find_another_provider": "لا، البحث عن مزود آخر",
+      "in_ordes_screen": "بشاشة طلباتي"
     },
     "providers": {
       "permission_denied": "تم رفض أذونات الموقع",
       "permission_denied_activate_location": "خدمات الموقع معطلة. يرجى تفعيل خدمة الموقع",
-      "we_can_not_request_permission": "أذونات الموقع مرفوضة بشكل دائم ، ولا يمكننا طلب أذونات",
+      "we_can_not_request_permission": "أذونات الموقع مرفوضة بشكل دائم ،  يرجى تفعيل خدمة الموقع",
       "nearby_worshops": "مراكز الصيانة القريبة",
       "top_rated_workshops": "مراكز الصيانة الأعلى تقييماً"
     },
@@ -475,7 +485,9 @@ static const Map<String,dynamic> ar = {
     "sar": "ريال",
     "soan": "صون",
     "total": "المجموع",
-    "yes": "نعم"
+    "yes": "نعم",
+    "add": "إضافة",
+    "continue": "متابعة"
   },
   "provider": {
     "settings": {
@@ -489,7 +501,8 @@ static const Map<String,dynamic> ar = {
       "add_other_item": "اضافه عنصر اخر",
       "invoice_was_created": "تم انشاء الفاتورة",
       "sent_to_client_successfully": "وارسالها الى العميل بنجاح",
-      "did_you_get_the_payement": "هل تم استلام المبلغ ؟"
+      "did_you_get_the_payement": "هل تم استلام المبلغ ؟",
+      "waiting_payement": " بانتظار تاكيد استلام المبلغ"
     },
     "home": {
       "region": "المنطقة",
@@ -502,7 +515,10 @@ static const Map<String,dynamic> ar = {
       "show_modify_inovoice": "عرض / تعديل الفاتوره",
       "payement_received": "تم استلام المبلغ",
       "show": "عرض",
-      "show_invoice": "عرض الفاتورة"
+      "show_invoice": "عرض الفاتورة",
+      "you_wont_change": "عند الحفظ لن تتمكن من التعديل إلا بإتصالك بالدعم الفني",
+      "shops_terms_and_conditions": "سياسة وشروط المركز",
+      "waiting_for_orders": "في انتظار طلبات العملاء"
     }
   }
 };

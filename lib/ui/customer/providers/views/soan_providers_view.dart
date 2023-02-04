@@ -28,7 +28,7 @@ class SoanProvidersView extends StatefulWidget {
 }
 
 class _SoanProvidersViewState extends State<SoanProvidersView> {
-  bool isNear = true;
+  bool isNear = false;
   List<CategoryModel> _categories = [];
   List<ProviderModel> _providers = [];
   CategoryModel? _selectedCategory;
@@ -37,7 +37,8 @@ class _SoanProvidersViewState extends State<SoanProvidersView> {
 
   Future getCategories() async {
     if (mounted) {
-      await GlobalController.getCategories().then((value) {
+      await GlobalController.getCategories(context.locale.languageCode)
+          .then((value) {
         if (mounted) {
           setState(() {
             _categories = value;
@@ -116,6 +117,7 @@ class _SoanProvidersViewState extends State<SoanProvidersView> {
         log(latLng.toString());
         if (latLng != null) {
           await CostumerController.getProvidersList(
+            language: context.locale.languageCode,
             token: token,
             isNear: true,
             categoryId: categoryId,
@@ -136,6 +138,7 @@ class _SoanProvidersViewState extends State<SoanProvidersView> {
       });
     } else {
       await CostumerController.getProvidersList(
+        language: context.locale.languageCode,
         token: token,
         isNear: false,
         categoryId: categoryId,
@@ -152,9 +155,11 @@ class _SoanProvidersViewState extends State<SoanProvidersView> {
   @override
   void initState() {
     super.initState();
-    if (mounted) {
-      getCategories();
-    }
+    Future.delayed(Duration.zero, () {
+      if (mounted) {
+        getCategories();
+      }
+    });
   }
 
   @override
@@ -348,21 +353,23 @@ class _SoanProvidersViewState extends State<SoanProvidersView> {
                         color: kBlueColor,
                       ),
                     )
-                  : ListView.separated(
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: _providers.length,
-                      separatorBuilder: (BuildContext context, int index) {
-                        return SizedBox(
-                          height: 12.h,
-                        );
-                      },
-                      itemBuilder: (BuildContext context, int index) {
-                        ProviderModel provider = _providers[index];
-                        return SoanProviderWidget(
-                          provider: provider,
-                        );
-                      },
+                  : SizedBox(
+                      child: ListView.separated(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: _providers.length,
+                        separatorBuilder: (BuildContext context, int index) {
+                          return SizedBox(
+                            height: 12.h,
+                          );
+                        },
+                        itemBuilder: (BuildContext context, int index) {
+                          ProviderModel provider = _providers[index];
+                          return SoanProviderWidget(
+                            provider: provider,
+                          );
+                        },
+                      ),
                     ),
             ),
           ],

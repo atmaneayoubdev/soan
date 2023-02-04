@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:soan/translations/locale_keys.g.dart';
 import '../../../../Common/large_button.dart';
 import '../../../../Common/text_widget.dart';
 import '../../../../constants.dart';
@@ -39,8 +41,8 @@ class PhomeAddTerms extends StatelessWidget {
             SizedBox(
               height: 20.h,
             ),
-            const TextWidget(
-              text: "اضف سياسة وشروط المركز",
+            TextWidget(
+              text: LocaleKeys.titles_add_terms.tr(),
               size: 16,
               color: kDarkBleuColor,
               fontWeight: FontWeight.normal,
@@ -49,16 +51,18 @@ class PhomeAddTerms extends StatelessWidget {
               height: 50.h,
             ),
             SizedBox(
-                width: 328.h,
-                child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: ((context) =>
-                                  const AddTermsAndConditions())));
-                    },
-                    child: const LargeButton(text: "إضافة", isButton: false)))
+              width: 328.h,
+              child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: ((context) =>
+                                const AddTermsAndConditions())));
+                  },
+                  child: LargeButton(
+                      text: LocaleKeys.common_add.tr(), isButton: false)),
+            )
           ],
         ),
       ),

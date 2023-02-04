@@ -32,7 +32,8 @@ class _CancleWidgetState extends State<CancleWidget> {
   bool isLoading = true;
 
   Future getRefusalList() async {
-    await GlobalController.getRefualList().then((value) {
+    await GlobalController.getRefualList(context.locale.languageCode)
+        .then((value) {
       _refusalList = value;
       value.isNotEmpty
           ? _selectedFefusal = value.first
@@ -45,7 +46,9 @@ class _CancleWidgetState extends State<CancleWidget> {
   @override
   void initState() {
     super.initState();
-    getRefusalList();
+    Future.delayed(Duration.zero, () {
+      getRefusalList();
+    });
   }
 
   @override
@@ -182,53 +185,56 @@ class _CancleWidgetState extends State<CancleWidget> {
                     ),
                     GestureDetector(
                       onTap: () async {
-                        isLoading = true;
-                        setState(() {});
-                        await CostumerController.cancelOrder(
-                                token: Provider.of<UserProvider>(context,
-                                        listen: false)
-                                    .user
-                                    .apiToken,
-                                orderId: widget.order.id,
-                                refusalId: _selectedFefusal!.id)
-                            .then((value) {
-                          isLoading = false;
+                        if (_selectedFefusal != null) {
+                          isLoading = true;
                           setState(() {});
-                          if (value.runtimeType == OrderModel) {
-                            Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const LandingView(
-                                  selectedIndex: 2,
+                          await CostumerController.cancelOrder(
+                                  language: context.locale.languageCode,
+                                  token: Provider.of<UserProvider>(context,
+                                          listen: false)
+                                      .user
+                                      .apiToken,
+                                  orderId: widget.order.id,
+                                  refusalId: _selectedFefusal!.id)
+                              .then((value) {
+                            isLoading = false;
+                            setState(() {});
+                            if (value.runtimeType == OrderModel) {
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const LandingView(
+                                    selectedIndex: 2,
+                                  ),
                                 ),
-                              ),
-                              (route) => false,
-                            );
+                                (route) => false,
+                              );
 
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                duration: const Duration(seconds: 3),
-                                backgroundColor: kBlueColor,
-                                content: Text(
-                                  LocaleKeys.costumer_my_orders_order_canceled
-                                      .tr(),
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  duration: const Duration(seconds: 3),
+                                  backgroundColor: kBlueColor,
+                                  content: Text(
+                                    LocaleKeys.costumer_my_orders_order_canceled
+                                        .tr(),
+                                  ),
                                 ),
-                              ),
-                            );
-                          } else {
-                            Navigator.pop(context, true);
+                              );
+                            } else {
+                              Navigator.pop(context, true);
 
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                duration: const Duration(seconds: 3),
-                                backgroundColor: Colors.red,
-                                content: Text(
-                                  value,
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  duration: const Duration(seconds: 3),
+                                  backgroundColor: Colors.red,
+                                  content: Text(
+                                    value,
+                                  ),
                                 ),
-                              ),
-                            );
-                          }
-                        });
+                              );
+                            }
+                          });
+                        }
                       },
                       child: Container(
                         height: 55.h,

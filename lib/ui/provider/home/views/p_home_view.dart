@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:soan/constants.dart';
 import 'package:soan/controllers/provider_controller.dart';
 import 'package:soan/helpers/provider.provider.dart';
 import 'package:soan/models/provider/p_order_model.dart';
@@ -28,6 +29,7 @@ class _PhomeViewState extends State<PhomeView> {
     }
     setState(() {});
     await ProviderController.getOrdersThatNeedsAnswer(
+      language: context.locale.languageCode,
       token: Provider.of<ProviderProvider>(context, listen: false)
           .providerModel
           .apiToken,
@@ -43,15 +45,17 @@ class _PhomeViewState extends State<PhomeView> {
   @override
   void initState() {
     super.initState();
-    log(Provider.of<ProviderProvider>(context, listen: false)
-        .providerModel
-        .apiToken);
-    if (Provider.of<ProviderProvider>(context, listen: false)
-            .providerModel
-            .terms !=
-        "") {
-      getOrders();
-    }
+    Future.delayed(Duration.zero, () {
+      log(Provider.of<ProviderProvider>(context, listen: false)
+          .providerModel
+          .apiToken);
+      if (Provider.of<ProviderProvider>(context, listen: false)
+              .providerModel
+              .terms !=
+          "") {
+        getOrders();
+      }
+    });
   }
 
   @override
@@ -90,26 +94,36 @@ class _PhomeViewState extends State<PhomeView> {
                       .terms !=
                   "")
                 Expanded(
-                  child: ListView.separated(
-                    padding: EdgeInsets.zero,
-                    shrinkWrap: true,
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    itemCount: _ordersList.length,
-                    separatorBuilder: (BuildContext context, int index) {
-                      return SizedBox(
-                        height: 20.h,
-                      );
-                    },
-                    itemBuilder: (BuildContext context, int index) {
-                      PorderModel order = _ordersList[index];
-                      return PhomeListWidget(
-                        order: order,
-                        getorder: () {
-                          getOrders();
-                        },
-                      );
-                    },
-                  ),
+                  child: _ordersList.isNotEmpty
+                      ? ListView.separated(
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          itemCount: _ordersList.length,
+                          separatorBuilder: (BuildContext context, int index) {
+                            return SizedBox(
+                              height: 20.h,
+                            );
+                          },
+                          itemBuilder: (BuildContext context, int index) {
+                            PorderModel order = _ordersList[index];
+                            return PhomeListWidget(
+                              order: order,
+                              getorder: () {
+                                getOrders();
+                              },
+                            );
+                          },
+                        )
+                      : Center(
+                          child: TextWidget(
+                            text: LocaleKeys.provider_home_waiting_for_orders
+                                .tr(),
+                            size: 20,
+                            color: kDarkBleuColor,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
                 ),
             ],
           )

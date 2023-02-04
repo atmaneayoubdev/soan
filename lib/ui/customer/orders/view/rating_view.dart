@@ -190,6 +190,7 @@ class _RatingViewState extends State<RatingView> {
                           isLoading = true;
                           setState(() {});
                           await CostumerController.rateProvider(
+                                  language: context.locale.languageCode,
                                   token: Provider.of<UserProvider>(context,
                                           listen: false)
                                       .user

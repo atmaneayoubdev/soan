@@ -9,7 +9,7 @@ import '../../../../Common/large_button.dart';
 import '../../../../Common/large_grey_button.dart';
 import '../../../../Common/text_widget.dart';
 import '../../../../constants.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart' as modal;
 import 'package:flutter_svg/flutter_svg.dart';
 import '../views/add_car_view.dart';
 import 'add_car_bottom_sheet.dart';
@@ -54,7 +54,7 @@ class _HomeAddWidgetState extends State<HomeAddWidget> {
               children: [
                 GestureDetector(
                     onTap: () {
-                      showMaterialModalBottomSheet<CarModel>(
+                      modal.showMaterialModalBottomSheet<CarModel>(
                         enableDrag: false,
                         backgroundColor: Colors.transparent,
                         context: context,
@@ -105,7 +105,7 @@ class _HomeAddWidgetState extends State<HomeAddWidget> {
                   alignment: Alignment.topRight,
                   child: GestureDetector(
                     onTap: () {
-                      showMaterialModalBottomSheet<CarModel>(
+                      modal.showMaterialModalBottomSheet<CarModel>(
                         enableDrag: false,
                         backgroundColor: Colors.transparent,
                         context: context,
@@ -241,7 +241,7 @@ class _HomeAddWidgetState extends State<HomeAddWidget> {
                             width: 155.w,
                             child: GestureDetector(
                                 onTap: () {
-                                  showMaterialModalBottomSheet(
+                                  modal.showMaterialModalBottomSheet(
                                     enableDrag: false,
                                     backgroundColor: Colors.transparent,
                                     context: context,

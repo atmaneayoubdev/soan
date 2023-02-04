@@ -8,7 +8,7 @@ import 'package:soan/models/constumer/order_model.dart';
 import 'package:soan/translations/locale_keys.g.dart';
 import '../../../../Common/text_widget.dart';
 import '../../../../constants.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart' as modal;
 import 'cancle_widget.dart';
 import '../view/order_details_view.dart';
 import '../view/providers_services_view.dart';
@@ -26,7 +26,7 @@ class PendingOrderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: 351.w,
-      height: 280.h,
+      //height: 280.h,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -57,7 +57,7 @@ class PendingOrderWidget extends StatelessWidget {
               )
             ],
           ),
-          const Spacer(),
+          //const Spacer(),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
@@ -274,38 +274,39 @@ class PendingOrderWidget extends StatelessWidget {
                             SizedBox(
                               width: 10.w,
                             ),
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () {
-                                  showMaterialModalBottomSheet(
-                                    enableDrag: true,
-                                    backgroundColor: Colors.transparent,
-                                    context: context,
-                                    builder: (context) => CancleWidget(
-                                      order: order,
-                                    ),
-                                  ).then((value) {
-                                    if (value == true) {
-                                      onOrderUpdated();
-                                    }
-                                  });
-                                },
-                                child: Container(
-                                  height: 41.h,
-                                  //width: 73.w,
-                                  decoration: BoxDecoration(
-                                    color: kLightLightPinkColor,
-                                    borderRadius: BorderRadius.circular(15.r),
+                            GestureDetector(
+                              onTap: () {
+                                modal
+                                    .showMaterialModalBottomSheet(
+                                  enableDrag: true,
+                                  backgroundColor: Colors.transparent,
+                                  context: context,
+                                  builder: (context) => CancleWidget(
+                                    order: order,
                                   ),
-                                  child: Center(
-                                    child: TextWidget(
-                                      text: LocaleKeys
-                                          .costumer_my_orders_cancel_order
-                                          .tr(),
-                                      size: 12,
-                                      color: kPinkColor,
-                                      fontWeight: FontWeight.normal,
-                                    ),
+                                )
+                                    .then((value) {
+                                  if (value == true) {
+                                    onOrderUpdated();
+                                  }
+                                });
+                              },
+                              child: Container(
+                                height: 41.h,
+                                //width: 73.w,
+                                padding: EdgeInsets.symmetric(horizontal: 5.w),
+                                decoration: BoxDecoration(
+                                  color: kLightLightPinkColor,
+                                  borderRadius: BorderRadius.circular(15.r),
+                                ),
+                                child: Center(
+                                  child: TextWidget(
+                                    text: LocaleKeys
+                                        .costumer_my_orders_cancel_order
+                                        .tr(),
+                                    size: 12,
+                                    color: kPinkColor,
+                                    fontWeight: FontWeight.normal,
                                   ),
                                 ),
                               ),
@@ -319,7 +320,7 @@ class PendingOrderWidget extends StatelessWidget {
               ),
             ],
           ),
-          const Spacer(),
+          //const Spacer(),
           const Divider(
             color: kLightGreyColor,
           ),

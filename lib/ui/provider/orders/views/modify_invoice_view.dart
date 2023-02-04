@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:soan/helpers/invoice_service_en.dart';
 import 'package:soan/translations/locale_keys.g.dart';
 import '../../../../Common/back_button.dart';
 import '../../../../Common/large_button.dart';
@@ -8,13 +9,13 @@ import '../../../../Common/loading_widget.dart';
 import '../../../../Common/text_widget.dart';
 import '../../../../constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart' as modal;
 import 'package:google_fonts/google_fonts.dart';
-import '../../../../controllers/global_controller.dart';
 import '../../../../controllers/provider_controller.dart';
+import '../../../../helpers/invoice_service_ar.dart';
 import '../../../../helpers/provider.provider.dart';
 import '../../../../models/global/inoice_item_model.dart';
-import '../../../../models/global/settings_model.dart';
+import '../../../../models/global/invoice_model.dart';
 import '../../../../models/provider/p_order_model.dart';
 import '../../p_landing_view.dart';
 import '../components/invoice_sent_bottom_sheet.dart';
@@ -38,30 +39,38 @@ class _ModifyInvoiceViewState extends State<ModifyInvoiceView> {
   double total = 0;
   bool isLoading = false;
 
-  Future getSettings() async {
-    if (mounted) {
-      await GlobalController.getSettings().then((value) {
-        if (value.runtimeType == SettingsModel) {
-          SettingsModel s = value;
-          vat = double.parse(s.info.vat);
-        }
-        isLoading = false;
-        if (mounted) {
-          setState(() {});
-        }
-      });
-    }
+  InvoiceModel? invoice;
+
+  Future getInvoice() async {
+    await ProviderController.getInvoice(
+      language: context.locale.languageCode,
+      token: Provider.of<ProviderProvider>(context, listen: false)
+          .providerModel
+          .apiToken,
+      id: widget.order.id,
+    ).then((value) {
+      isLoading = false;
+      setState(() {});
+      if (value.runtimeType == InvoiceModel) {
+        invoice = value;
+        DateTime date = DateTime.parse(invoice!.createdAt);
+        invoice!.createdAt = DateFormat('MM/dd/yyyy').format(date);
+        setState(() {});
+      }
+    });
   }
 
   @override
   void initState() {
     super.initState();
-    getSettings();
+    Future.delayed(Duration.zero, () {
+      getInvoice();
 
-    items = widget.order.invoiceItems;
-    subTotal = double.parse(widget.order.price.subTotal);
-    totalVat = double.parse(widget.order.price.vat);
-    total = double.parse(widget.order.price.total);
+      items = widget.order.invoiceItems;
+      subTotal = double.parse(widget.order.price.subTotal);
+      totalVat = double.parse(widget.order.price.vat);
+      total = double.parse(widget.order.price.total);
+    });
   }
 
   @override
@@ -87,7 +96,9 @@ class _ModifyInvoiceViewState extends State<ModifyInvoiceView> {
                     Align(
                       alignment: Alignment.bottomCenter,
                       child: TextWidget(
-                        text: LocaleKeys.titles_create_invoice.tr(),
+                        text: widget.order.orderStatus == 'done'
+                            ? ''
+                            : LocaleKeys.titles_create_invoice.tr(),
                         size: 22,
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -146,7 +157,7 @@ class _ModifyInvoiceViewState extends State<ModifyInvoiceView> {
                               height: 5.h,
                             ),
                             TextWidget(
-                                text: widget.order.createdAt,
+                                text: invoice == null ? '' : invoice!.createdAt,
                                 size: 18,
                                 color: kDarkBleuColor,
                                 fontWeight: FontWeight.normal)
@@ -377,7 +388,8 @@ class _ModifyInvoiceViewState extends State<ModifyInvoiceView> {
                           widget.order.orderStatus != "cancel")
                         GestureDetector(
                           onTap: () {
-                            showMaterialModalBottomSheet(
+                            modal
+                                .showMaterialModalBottomSheet(
                               enableDrag: true,
                               backgroundColor: Colors.transparent,
                               context: context,
@@ -532,7 +544,8 @@ class _ModifyInvoiceViewState extends State<ModifyInvoiceView> {
                                   ),
                                 ),
                               ),
-                            ).then((value) {
+                            )
+                                .then((value) {
                               if (value != null) {
                                 if (value &&
                                     nameController.text.isNotEmpty &&
@@ -595,8 +608,8 @@ class _ModifyInvoiceViewState extends State<ModifyInvoiceView> {
             child: Container(
               height: widget.order.orderStatus != "done" &&
                       widget.order.orderStatus != "cancel"
-                  ? 260.h
-                  : 210.h,
+                  ? 280.h
+                  : 260.h,
               padding: EdgeInsets.symmetric(horizontal: 25.w),
               decoration: const BoxDecoration(color: Colors.white, boxShadow: [
                 BoxShadow(
@@ -624,7 +637,7 @@ class _ModifyInvoiceViewState extends State<ModifyInvoiceView> {
                           fontWeight: FontWeight.w600,
                         ),
                         TextWidget(
-                          text: " ${LocaleKeys.common_sar.tr()} $subTotal",
+                          text: "$subTotal ${LocaleKeys.common_sar.tr()} ",
                           size: 16,
                           color: kGreyColor,
                           fontWeight: FontWeight.w600,
@@ -648,7 +661,7 @@ class _ModifyInvoiceViewState extends State<ModifyInvoiceView> {
                           fontWeight: FontWeight.w600,
                         ),
                         TextWidget(
-                          text: "$totalVat ${LocaleKeys.common_sar}",
+                          text: "$totalVat ${LocaleKeys.common_sar.tr()}",
                           size: 16,
                           color: kGreyColor,
                           fontWeight: FontWeight.w600,
@@ -696,6 +709,7 @@ class _ModifyInvoiceViewState extends State<ModifyInvoiceView> {
                         isLoading = true;
                         setState(() {});
                         await ProviderController.addUpdateBill(
+                          language: context.locale.languageCode,
                           token: Provider.of<ProviderProvider>(
                             context,
                             listen: false,
@@ -709,13 +723,15 @@ class _ModifyInvoiceViewState extends State<ModifyInvoiceView> {
                           isLoading = false;
                           setState(() {});
                           if (value == "بيانات الطلب") {
-                            showMaterialModalBottomSheet(
+                            modal
+                                .showMaterialModalBottomSheet(
                               enableDrag: true,
                               backgroundColor: Colors.transparent,
                               context: context,
                               builder: (context) =>
                                   const SentInvoiceBottomSheet(),
-                            ).then((value) {
+                            )
+                                .then((value) {
                               Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
@@ -745,6 +761,24 @@ class _ModifyInvoiceViewState extends State<ModifyInvoiceView> {
                   SizedBox(
                     height: 16.h,
                   ),
+                  if (widget.order.orderStatus == 'done')
+                    GestureDetector(
+                      onTap: () async {
+                        if (context.locale.languageCode == 'ar') {
+                          final pdfFile =
+                              await PdfInvoiceServiceAr.generate(invoice!);
+                          PdfInvoiceServiceAr.openFile(pdfFile);
+                        } else {
+                          final pdfFile =
+                              await PdfInvoiceServiceEn.generate(invoice!);
+                          PdfInvoiceServiceEn.openFile(pdfFile);
+                        }
+                      },
+                      child: LargeButton(
+                        text: LocaleKeys.costumer_my_orders_download_pdf.tr(),
+                        isButton: false,
+                      ),
+                    )
                 ],
               ),
             ),
