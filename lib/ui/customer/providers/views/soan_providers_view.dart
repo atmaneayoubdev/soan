@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:developer';
+import 'dart:math' as mat;
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -108,6 +109,17 @@ class _SoanProvidersViewState extends State<SoanProvidersView> {
     });
   }
 
+  double calculateDistance(lat1, lon1, lat2, lon2) {
+    var p = 0.017453292519943295;
+    var a = 0.5 -
+        mat.cos((lat2 - lat1) * p) / 2 +
+        mat.cos(lat1 * p) *
+            mat.cos(lat2 * p) *
+            (1 - mat.cos((lon2 - lon1) * p)) /
+            2;
+    return 12742 * mat.asin(mat.sqrt(a));
+  }
+
   Future getProviders(
       String token, String categoryId, bool searchTopRate) async {
     isLoading = true;
@@ -125,7 +137,16 @@ class _SoanProvidersViewState extends State<SoanProvidersView> {
                 ? LatLng(latLng!.latitude, latLng!.longitude)
                 : null,
           ).then((value) {
-            _providers = value;
+            for (var item in value) {
+              if (calculateDistance(
+                      double.parse(item.lat),
+                      double.parse(item.lng),
+                      latLng!.latitude,
+                      latLng!.longitude) <=
+                  20) {
+                _providers.add(item);
+              }
+            }
             isLoading = false;
             if (mounted) {
               setState(() {});
@@ -353,24 +374,39 @@ class _SoanProvidersViewState extends State<SoanProvidersView> {
                         color: kBlueColor,
                       ),
                     )
-                  : SizedBox(
-                      child: ListView.separated(
-                        physics: const AlwaysScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: _providers.length,
-                        separatorBuilder: (BuildContext context, int index) {
-                          return SizedBox(
-                            height: 12.h,
-                          );
-                        },
-                        itemBuilder: (BuildContext context, int index) {
-                          ProviderModel provider = _providers[index];
-                          return SoanProviderWidget(
-                            provider: provider,
-                          );
-                        },
-                      ),
-                    ),
+                  : _providers.isEmpty
+                      ? Center(
+                          child: TextWidget(
+                              text: isNear
+                                  ? LocaleKeys
+                                      .costumer_providers_no_near_workshops
+                                      .tr()
+                                  : LocaleKeys
+                                      .costumer_providers_no_workshop_to_show
+                                      .tr(),
+                              size: 16,
+                              color: kDarkBleuColor,
+                              fontWeight: FontWeight.normal),
+                        )
+                      : SizedBox(
+                          child: ListView.separated(
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: _providers.length,
+                            separatorBuilder:
+                                (BuildContext context, int index) {
+                              return SizedBox(
+                                height: 12.h,
+                              );
+                            },
+                            itemBuilder: (BuildContext context, int index) {
+                              ProviderModel provider = _providers[index];
+                              return SoanProviderWidget(
+                                provider: provider,
+                              );
+                            },
+                          ),
+                        ),
             ),
           ],
         )

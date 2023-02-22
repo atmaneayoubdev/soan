@@ -244,7 +244,9 @@ class _PchangePassViewState extends State<PchangePassView> {
                                   isLoading = false;
                                   setState(() {});
                                   if (value.toString() ==
-                                      'تم تغير كلمه المرور') {
+                                          'تم تغير كلمه المرور' ||
+                                      value.toString() ==
+                                          'Your Password Has Been Changed') {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                         duration: const Duration(seconds: 3),

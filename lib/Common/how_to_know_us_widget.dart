@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../constants.dart';
+import '../constants.dart';
 
 class HowToKnowUsWidgt extends StatelessWidget {
   const HowToKnowUsWidgt({

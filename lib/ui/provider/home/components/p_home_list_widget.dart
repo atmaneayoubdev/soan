@@ -198,7 +198,7 @@ class _PhomeListWidgetState extends State<PhomeListWidget> {
                   children: [
                     FittedBox(
                       child: Text(
-                        " ${LocaleKeys.provider_home_region.tr()}: "
+                        " ${LocaleKeys.provider_home_region.tr()} : "
                         "${widget.order.location.region.name}",
                         style: GoogleFonts.tajawal(
                           fontSize: 14.sp,
@@ -289,7 +289,8 @@ class _PhomeListWidgetState extends State<PhomeListWidget> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     TextWidget(
-                      text: " ${LocaleKeys.auth_city.tr()}: " "riyadh",
+                      text:
+                          " ${LocaleKeys.auth_city.tr()} : ${widget.order.location.city.name}",
                       size: 14,
                       color: kLightDarkBleuColor,
                       fontWeight: FontWeight.normal,

@@ -353,7 +353,7 @@ class _PsettingsViewState extends State<PsettingsView> {
                           setState(() {
                             isLoading = false;
                           });
-                          if (value == 'تم تسجيل الخروج') {
+                          if (value == 'تم تسجيل الخروج' || value == 'LogOut') {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 duration: const Duration(seconds: 3),
@@ -518,7 +518,8 @@ class _PsettingsViewState extends State<PsettingsView> {
                                 .then((value) async {
                               isLoading = false;
                               setState(() {});
-                              if (value == "تم مسح الحساب") {
+                              if (value == "تم مسح الحساب" ||
+                                  value == 'Your Account Has Deleted') {
                                 Provider.of<ProviderProvider>(context,
                                         listen: false)
                                     .clearUser();

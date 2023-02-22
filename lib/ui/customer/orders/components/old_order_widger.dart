@@ -100,7 +100,9 @@ class OldOrderWidget extends StatelessWidget {
                         height: 10.h,
                       ),
                       TextWidget(
-                        text: order.provider!.providerName,
+                        text: order.provider != null
+                            ? order.provider!.providerName
+                            : '',
                         size: 14,
                         color: kDarkBleuColor,
                         fontWeight: FontWeight.normal,
@@ -114,7 +116,9 @@ class OldOrderWidget extends StatelessWidget {
                         child: ListView.separated(
                           padding: EdgeInsets.zero,
                           scrollDirection: Axis.horizontal,
-                          itemCount: order.provider!.categories.length,
+                          itemCount: order.provider != null
+                              ? order.provider!.categories.length
+                              : 0,
                           separatorBuilder: (BuildContext context, int index) {
                             return SizedBox(
                               width: 5.w,
@@ -122,7 +126,9 @@ class OldOrderWidget extends StatelessWidget {
                           },
                           itemBuilder: (BuildContext context, int index) {
                             return TypeWidget(
-                              name: order.provider!.categories[index].name,
+                              name: order.provider != null
+                                  ? order.provider!.categories[index].name
+                                  : '',
                             );
                           },
                         ),
@@ -174,8 +180,9 @@ class OldOrderWidget extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 TextWidget(
-                                  text:
-                                      "(${order.provider!.ratesCount} ${LocaleKeys.common_ratings.tr()}) ",
+                                  text: order.provider != null
+                                      ? "(${order.provider!.ratesCount} ${LocaleKeys.common_ratings.tr()}) "
+                                      : '',
                                   size: 12,
                                   color: kGreyColor,
                                   fontWeight: FontWeight.w500,
@@ -184,7 +191,9 @@ class OldOrderWidget extends StatelessWidget {
                                   width: 10.w,
                                 ),
                                 TextWidget(
-                                  text: order.provider!.rates,
+                                  text: order.provider != null
+                                      ? order.provider!.rates
+                                      : '',
                                   size: 12,
                                   color: kDarkBleuColor,
                                   fontWeight: FontWeight.w500,

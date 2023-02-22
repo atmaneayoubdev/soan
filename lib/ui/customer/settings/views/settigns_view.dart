@@ -132,13 +132,13 @@ class _SettingsViewState extends State<SettingsView> {
                     ),
                     // GestureDetector(
                     //   onTap: () async {
-                    //     // final InAppReview inAppReview = InAppReview.instance;
+                    // final InAppReview inAppReview = InAppReview.instance;
 
-                    //     // if (await inAppReview.isAvailable()) {
-                    //     //   inAppReview.requestReview();
-                    //     // } else {
-                    //     //   debugPrint('Rate Not availbale');
-                    //     // }
+                    // if (await inAppReview.isAvailable()) {
+                    //   inAppReview.requestReview();
+                    // } else {
+                    //   debugPrint('Rate Not availbale');
+                    // }
                     //   },
                     //   child: const SettingsWidget(
                     //     name: "قيم التطبيق",
@@ -296,37 +296,31 @@ class _SettingsViewState extends State<SettingsView> {
                           },
                         );
                       },
-                      child: SizedBox(
-                        // height: 123.w,
-                        width: 95.w,
-                        child: Column(children: [
-                          Container(
-                            height: 95.h,
-                            width: 95.w,
-                            decoration: BoxDecoration(
-                              color: kLightLightGreyColor,
-                              borderRadius: BorderRadius.circular(10.r),
-                            ),
-                            child: const Center(
-                              child: Icon(
-                                Icons.language,
-                                color: kBlueColor,
-                              ),
+                      child: Column(children: [
+                        Container(
+                          height: 95.h,
+                          width: 95.w,
+                          decoration: BoxDecoration(
+                            color: kLightLightGreyColor,
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
+                          child: const Center(
+                            child: Icon(
+                              Icons.language,
+                              color: kBlueColor,
                             ),
                           ),
-                          SizedBox(
-                            height: 10.h,
+                        ),
+                        2.verticalSpace,
+                        FittedBox(
+                          child: TextWidget(
+                            text: LocaleKeys.costumer_settings_language.tr(),
+                            size: 14,
+                            color: kDarkBleuColor,
+                            fontWeight: FontWeight.normal,
                           ),
-                          FittedBox(
-                            child: TextWidget(
-                              text: LocaleKeys.costumer_settings_language.tr(),
-                              size: 14,
-                              color: kDarkBleuColor,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                        ]),
-                      ),
+                        ),
+                      ]),
                     ),
                     GestureDetector(
                       onTap: () async {
@@ -372,34 +366,28 @@ class _SettingsViewState extends State<SettingsView> {
                           }
                         });
                       },
-                      child: SizedBox(
-                        // height: 123.w,
-                        width: 95.w,
-                        child: Column(children: [
-                          Container(
-                            height: 95.h,
-                            width: 95.w,
-                            decoration: BoxDecoration(
-                                color: kLightLightPinkColor,
-                                borderRadius: BorderRadius.circular(10.r)),
-                            child: Center(
-                                child: SvgPicture.asset(
-                              "assets/icons/logout.svg",
-                            )),
+                      child: Column(children: [
+                        Container(
+                          height: 95.h,
+                          width: 95.w,
+                          decoration: BoxDecoration(
+                              color: kLightLightPinkColor,
+                              borderRadius: BorderRadius.circular(10.r)),
+                          child: Center(
+                              child: SvgPicture.asset(
+                            "assets/icons/logout.svg",
+                          )),
+                        ),
+                        2.verticalSpace,
+                        FittedBox(
+                          child: TextWidget(
+                            text: LocaleKeys.costumer_settings_logout.tr(),
+                            size: 14,
+                            color: kPinkColor,
+                            fontWeight: FontWeight.normal,
                           ),
-                          SizedBox(
-                            height: 10.h,
-                          ),
-                          FittedBox(
-                            child: TextWidget(
-                              text: LocaleKeys.costumer_settings_logout.tr(),
-                              size: 14,
-                              color: kPinkColor,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                        ]),
-                      ),
+                        ),
+                      ]),
                     ),
                     GestureDetector(
                       onTap: () async {
@@ -506,7 +494,8 @@ class _SettingsViewState extends State<SettingsView> {
                                 .then((value) async {
                               isLoading = false;
                               setState(() {});
-                              if (value == "تم مسح الحساب") {
+                              if (value == "تم مسح الحساب" ||
+                                  value == 'Your Account Has Deleted') {
                                 Provider.of<UserProvider>(context,
                                         listen: false)
                                     .clearUser();
@@ -548,36 +537,30 @@ class _SettingsViewState extends State<SettingsView> {
                           }
                         });
                       },
-                      child: SizedBox(
-                        // height: 123.w,
-                        width: 95.w,
-                        child: Column(children: [
-                          Container(
-                            height: 95.h,
-                            width: 95.w,
-                            decoration: BoxDecoration(
-                                color: kLightLightPinkColor,
-                                borderRadius: BorderRadius.circular(10.r)),
-                            child: const Center(
-                                child: Icon(
-                              Icons.delete_outline_rounded,
-                              color: kPinkColor,
-                            )),
+                      child: Column(children: [
+                        Container(
+                          height: 95.h,
+                          width: 95.w,
+                          decoration: BoxDecoration(
+                              color: kLightLightPinkColor,
+                              borderRadius: BorderRadius.circular(10.r)),
+                          child: const Center(
+                              child: Icon(
+                            Icons.delete_outline_rounded,
+                            color: kPinkColor,
+                          )),
+                        ),
+                        2.verticalSpace,
+                        FittedBox(
+                          child: TextWidget(
+                            text: LocaleKeys.costumer_settings_delete_account
+                                .tr(),
+                            size: 14,
+                            color: kPinkColor,
+                            fontWeight: FontWeight.normal,
                           ),
-                          SizedBox(
-                            height: 10.h,
-                          ),
-                          FittedBox(
-                            child: TextWidget(
-                              text: LocaleKeys.costumer_settings_delete_account
-                                  .tr(),
-                              size: 14,
-                              color: kPinkColor,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                        ]),
-                      ),
+                        ),
+                      ]),
                     )
                   ],
                 ),

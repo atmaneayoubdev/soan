@@ -65,7 +65,7 @@
     "registration_number": "رقم السجل التجاري ",
     "enter_registration_number": "الرجاء إدخال رقم التسجيل الخاص بك",
     "tax_number": "الرقم الضريبي",
-    "enter_tax_number": "الرجاء إدخال رقمك الضريبي",
+    "enter_tax_number": "يجب أن يتكون الرقم الضريبي من 15 رقمًا",
     "admin_region": "المنطقة الإدارية",
     "city": "المدينة",
     "select_city": "الرجاء تحديد مدينة",
@@ -88,7 +88,7 @@
     "save": "حفظ",
     "enter_code_please": "الرجاء إدخال الرمز",
     "reset_password": "إعادة تعيين كلمة المرور",
-    "valid_reg_number": "الرجاء إدخال رقم ضريبي صحيح"
+    "valid_reg_number": "يجب أن يتكون رقم السجل التجاري من 10 أرقام"
   },
   "costumer": {
     "home": {
@@ -127,7 +127,7 @@
       "optional": "(اختياري)",
       "by_sending_providers_will_contact_you": "بالضغط على ارسال سيقوم مزودي الخدمة بالتواصل معك",
       "orders_sent_sucessfully": "تم ارسال الطلب بنجاح",
-      "be_ready_to_recieve": "خليك جاهز لاستقبال عروض مزودي الخدمة بشاشة طلباتي",
+      "be_ready_to_recieve": "خليك جاهز لاستقبال عروض مزودي الخدمة",
       "send": "ارسال",
       "car_location": "حدد موقع السيارة",
       "please_select_car_location": "حدد موقع السيارة",
@@ -145,7 +145,9 @@
       "permission_denied_activate_location": "خدمات الموقع معطلة. يرجى تفعيل خدمة الموقع",
       "we_can_not_request_permission": "أذونات الموقع مرفوضة بشكل دائم ،  يرجى تفعيل خدمة الموقع",
       "nearby_worshops": "مراكز الصيانة القريبة",
-      "top_rated_workshops": "مراكز الصيانة الأعلى تقييماً"
+      "top_rated_workshops": "مراكز الصيانة الأعلى تقييماً",
+      "no_workshop_to_show": "لا توجد ورش صيانة لعرضها",
+      "no_near_workshops": "لا توجد ورش صيانة بالقرب من موقعك"
     },
     "my_orders": {
       "current_orders": "الطلبات الحالية",
@@ -167,7 +169,7 @@
       "contracted": "تم التعاقد",
       "workshop_response": "رد المركز",
       "provider_response": "رد مركز الصيانة",
-      "invoice_not_issued_yet": "لم يتم إصدار الفاتورة حتى الان",
+      "invoice_not_issued_yet": "حتى تتمكن من عرض الفاتورة بمجرد إصدارها",
       "rate_the_provider_first": "قم بتقييم مزود الخدمة أولاً",
       "in_order_to_see_it_when_issued": "حتى تتمكن من إستعراض الفاتورة حال إصدارها",
       "rate": "تقييم",
@@ -202,7 +204,7 @@
       "new_password": "كلمة المرور الجديدة",
       "confirm_new_password": "تأكيد كلمة المرور الجديدة",
       "long_faq": "الاسئلة الشائعة",
-      "share_with_us_your_opinion": "شاركنا برأيك",
+      "share_with_us_your_opinion": "شارك تجربتك معنا",
       "to_get_better_service": "عشان نقدر نخدمك بشكل أحسن..",
       "rate_app": "قيم التطبيق"
     }
@@ -217,7 +219,8 @@
     "total": "المجموع",
     "yes": "نعم",
     "add": "إضافة",
-    "continue": "متابعة"
+    "continue": "متابعة",
+    "no_notificatoins": "لا توجد إشعارات حاليا"
   },
   "provider": {
     "settings": {
@@ -248,7 +251,8 @@
       "show_invoice": "عرض الفاتورة",
       "you_wont_change": "عند الحفظ لن تتمكن من التعديل إلا بإتصالك بالدعم الفني",
       "shops_terms_and_conditions": "سياسة وشروط المركز",
-      "waiting_for_orders": "في انتظار طلبات العملاء"
+      "waiting_for_orders": "هنا ستظهر طلبات العملاء الجدد\nالرجاء الإنتظار",
+      "if_you_skip": "في حال التخطي لن تستقبل أي طلبات حتى تتم إضافة سياسة و شروط المركز"
     }
   }
 }

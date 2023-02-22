@@ -16,34 +16,28 @@ class SettingsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      // height: 123.w,
-      width: 95.w,
-      child: Column(children: [
-        Container(
-          height: 95.h,
-          width: 95.w,
-          decoration: BoxDecoration(
-              color: kLightLightGreyColor,
-              borderRadius: BorderRadius.circular(10.r)),
-          child: Center(
-              child: SvgPicture.asset(
-            image,
-            color: kBlueColor,
-          )),
+    return Column(children: [
+      Container(
+        height: 95.h,
+        width: 95.w,
+        decoration: BoxDecoration(
+            color: kLightLightGreyColor,
+            borderRadius: BorderRadius.circular(10.r)),
+        child: Center(
+            child: SvgPicture.asset(
+          image,
+          color: kBlueColor,
+        )),
+      ),
+      2.verticalSpace,
+      FittedBox(
+        child: TextWidget(
+          text: name,
+          size: 14,
+          color: kDarkBleuColor,
+          fontWeight: FontWeight.normal,
         ),
-        SizedBox(
-          height: 10.h,
-        ),
-        FittedBox(
-          child: TextWidget(
-            text: name,
-            size: 14,
-            color: kDarkBleuColor,
-            fontWeight: FontWeight.normal,
-          ),
-        ),
-      ]),
-    );
+      ),
+    ]);
   }
 }

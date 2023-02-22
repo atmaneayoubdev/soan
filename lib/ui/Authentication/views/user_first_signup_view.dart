@@ -1,6 +1,7 @@
+import 'dart:math';
+
 import 'package:easy_localization/easy_localization.dart' as loc;
 import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:soan/Common/back_button.dart';
@@ -11,7 +12,7 @@ import 'package:soan/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:soan/models/global/how_to_know_us_model.dart';
 import 'package:soan/translations/locale_keys.g.dart';
-import 'package:soan/ui/Authentication/components/how_to_know_us_widget.dart';
+import 'package:soan/Common/how_to_know_us_widget.dart';
 import 'package:soan/ui/Authentication/views/signin_view.dart';
 import 'package:soan/ui/Authentication/views/user_second_signup_view.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
@@ -202,8 +203,7 @@ class _UserFirstSignUpViewState extends State<UserFirstSignUpView> {
 
                                     phoneController.clear();
                                   },
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
+                                  autovalidateMode: AutovalidateMode.always,
                                   validator: (value) {
                                     String pattern = r'[0-9]';
                                     RegExp regExp = RegExp(pattern);
@@ -319,7 +319,9 @@ class _UserFirstSignUpViewState extends State<UserFirstSignUpView> {
                                       fontWeight: FontWeight.w500,
                                     ),
                                     SizedBox(
-                                      width: 10.h,
+                                      width: context.locale.languageCode == 'en'
+                                          ? 30.h
+                                          : 10.h,
                                     ),
                                     GestureDetector(
                                       onTap: () {
@@ -330,18 +332,50 @@ class _UserFirstSignUpViewState extends State<UserFirstSignUpView> {
                                           builder: (BuildContext ctx) {
                                             return AlertDialog(
                                               contentPadding: EdgeInsets.zero,
-                                              content: InAppWebView(
-                                                initialUrlRequest: URLRequest(
-                                                  url: Uri.parse(
-                                                      "https://cpanel-soan.com/privacy-policy"),
+                                              content: Container(
+                                                height: 800.h,
+                                                width: 350.w,
+                                                padding:
+                                                    const EdgeInsets.all(20),
+                                                child: SingleChildScrollView(
+                                                  child: FutureBuilder(
+                                                    future: GlobalController
+                                                        .getPrivacy(context
+                                                            .locale
+                                                            .languageCode),
+                                                    initialData: '',
+                                                    builder:
+                                                        (BuildContext context,
+                                                            AsyncSnapshot
+                                                                snapshot) {
+                                                      return Text(
+                                                        snapshot.data
+                                                            .toString(),
+                                                        style:
+                                                            GoogleFonts.tajawal(
+                                                          height: 1.5,
+                                                          fontSize: 16.sp,
+                                                          color: kGreyColor,
+                                                          fontWeight:
+                                                              FontWeight.normal,
+                                                        ),
+                                                      );
+                                                    },
+                                                  ),
                                                 ),
                                               ),
                                             );
                                           },
                                         );
                                       },
-                                      child: SvgPicture.asset(
-                                        "assets/icons/question_circle.svg",
+                                      child: Transform(
+                                        transform:
+                                            context.locale.languageCode == 'en'
+                                                ? Matrix4.rotationY(pi)
+                                                : Matrix4.rotationY(0),
+                                        child: SvgPicture.asset(
+                                          "assets/icons/question_circle.svg",
+                                        ),
                                       ),
                                     ),
                                   ],

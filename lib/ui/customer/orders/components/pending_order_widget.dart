@@ -163,8 +163,8 @@ class PendingOrderWidget extends StatelessWidget {
                           context.locale.languageCode == 'en'
                               ? TextWidget(
                                   text: order.answers.acceptCout != '0'
-                                      ? 'you have (${order.answers.acceptCout}) offers from providers'
-                                      : 'waiting for providers offers',
+                                      ? 'you have (${order.answers.acceptCout}) offer(s) from workshops'
+                                      : 'waiting for workshops offers',
                                   size: 12,
                                   color: order.answers.acceptCout != '0'
                                       ? kGreenColor

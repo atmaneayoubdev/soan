@@ -278,8 +278,8 @@ class ProviderController with ChangeNotifier {
       var response = await dio.post(
         "${baseUrl}provider/dues",
         options: Options(
-          followRedirects: false,
-          validateStatus: (status) => true,
+          // followRedirects: false,
+          // validateStatus: (status) => true,
           headers: headers,
         ),
       );

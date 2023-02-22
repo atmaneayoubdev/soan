@@ -42,9 +42,11 @@ class _PayementViewState extends State<PayementView> {
             padding: EdgeInsets.symmetric(vertical: 20.h),
             height: 120.h,
             child: Stack(children: [
-              const Align(
-                alignment: Alignment.bottomRight,
-                child: BackButtonWidget(),
+              Align(
+                alignment: context.locale.languageCode == 'en'
+                    ? Alignment.bottomLeft
+                    : Alignment.bottomRight,
+                child: const BackButtonWidget(),
               ),
               Align(
                 alignment: Alignment.bottomCenter,

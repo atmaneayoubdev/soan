@@ -722,7 +722,8 @@ class _ModifyInvoiceViewState extends State<ModifyInvoiceView> {
                         ).then((value) {
                           isLoading = false;
                           setState(() {});
-                          if (value == "بيانات الطلب") {
+                          if (value == "بيانات الطلب" ||
+                              value == 'Order Information') {
                             modal
                                 .showMaterialModalBottomSheet(
                               enableDrag: true,

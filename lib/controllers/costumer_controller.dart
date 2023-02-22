@@ -353,7 +353,6 @@ class CostumerController with ChangeNotifier {
         'Accept': 'application/json',
         'Accept-Language': language,
         'Authorization': "Bearer $token",
-        'Accept-Language': language,
       };
       Dio dio = Dio();
 

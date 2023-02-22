@@ -255,11 +255,12 @@ class _OrderDetailsViewState extends State<OrderDetailsView> {
                       borderRadius: BorderRadius.circular(5.r),
                       color: kLightLightGreyColor,
                     ),
-                    child: TextWidget(
-                      text: widget.order.description,
-                      size: 12,
-                      color: kLightDarkBleuColor,
-                      fontWeight: FontWeight.normal,
+                    child: SelectableText(
+                      widget.order.description,
+                      style: GoogleFonts.tajawal(
+                        fontSize: 14.sp,
+                        color: kGreyColor,
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -276,24 +277,24 @@ class _OrderDetailsViewState extends State<OrderDetailsView> {
                   ),
                   Row(
                     children: [
-                      Container(
-                        height: 23.h,
-                        width: 23.w,
-                        padding: const EdgeInsets.all(2),
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: kBlueColor,
-                        ),
-                        child: const FittedBox(
-                          child: Icon(
-                            Icons.check,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10.w,
-                      ),
+                      // Container(
+                      //   height: 23.h,
+                      //   width: 23.w,
+                      //   padding: const EdgeInsets.all(2),
+                      //   decoration: const BoxDecoration(
+                      //     shape: BoxShape.circle,
+                      //     color: kBlueColor,
+                      //   ),
+                      //   child: const FittedBox(
+                      //     child: Icon(
+                      //       Icons.check,
+                      //       color: Colors.white,
+                      //     ),
+                      //   ),
+                      // ),
+                      // SizedBox(
+                      //   width: 10.w,
+                      // ),
                       TextWidget(
                         text: LocaleKeys
                             .costumer_my_orders_workshop_will_get_the_car

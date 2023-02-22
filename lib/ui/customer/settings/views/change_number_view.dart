@@ -213,7 +213,8 @@ class _ChangeNumberViewState extends State<ChangeNumberView> {
                                 ).then((value) {
                                   isLoading = false;
                                   setState(() {});
-                                  if (value == 'تم تغير الجوال') {
+                                  if (value == 'تم تغير الجوال' ||
+                                      value == 'Your Phone Has Been Changes') {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                         duration: const Duration(seconds: 3),

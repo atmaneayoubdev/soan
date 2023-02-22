@@ -149,7 +149,9 @@ class _PaccountDataViewState extends State<PaccountDataView> {
                             child: GestureDetector(
                               onTap: () async {
                                 await _picker
-                                    .pickImage(source: ImageSource.gallery)
+                                    .pickImage(
+                                  source: ImageSource.gallery,
+                                )
                                     .then((value) {
                                   if (value != null) {
                                     setState(() {

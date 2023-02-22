@@ -1,7 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:soan/controllers/costumer_controller.dart';
 import 'package:soan/models/constumer/order_model.dart';
 import 'package:soan/models/global/inoice_item_model.dart';
@@ -400,6 +402,21 @@ class _InvoiceWidgetState extends State<InvoiceWidget> {
                                     await PdfInvoiceServiceEn.generate(
                                         invoice!);
                                 PdfInvoiceServiceEn.openFile(pdfFile);
+                              }
+                              final prefs =
+                                  await SharedPreferences.getInstance();
+                              if (prefs.getBool('apprated') != null) {
+                                if (prefs.getBool('apprate') == false) {
+                                  final InAppReview inAppReview =
+                                      InAppReview.instance;
+
+                                  if (await inAppReview.isAvailable()) {
+                                    inAppReview.requestReview();
+                                  } else {
+                                    debugPrint('Rate Not availbale');
+                                  }
+                                  prefs.setBool('apprate', true);
+                                }
                               }
                             },
                             child: LargeButton(

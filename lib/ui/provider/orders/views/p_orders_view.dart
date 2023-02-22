@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:soan/Common/loading_widget.dart';
 import 'package:soan/translations/locale_keys.g.dart';
 import 'package:soan/ui/provider/orders/components/p_old_orders_widget.dart';
 import '../../../../Common/text_widget.dart';
@@ -219,45 +218,50 @@ class _PordersViewState extends State<PordersView> {
                     /////////////////////////////////////////////////////////////////////////////////////
                     /////////////////////////////////////////////////////////////////////////////////////
                     Expanded(
-                      child: _ordersList.isNotEmpty
-                          ? ListView.separated(
-                              itemCount: _ordersList.length,
-                              separatorBuilder:
-                                  (BuildContext context, int index) {
-                                return SizedBox(
-                                  height: 20.h,
-                                );
-                              },
-                              itemBuilder: (BuildContext context, int index) {
-                                PorderModel order = _ordersList[index];
-                                return order.orderStatus == "done" ||
-                                        order.orderStatus == "cancel"
-                                    ? PoldOrdersWidget(order: order)
-                                    : PcurrentOrdersWidget(
-                                        order: order,
-                                      );
-                              },
-                            )
-                          : Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Image.asset(
-                                  'assets/images/home_add_image.png',
-                                  height: 82.h,
-                                  width: 140.w,
-                                ),
-                                SizedBox(
-                                  height: 20.h,
-                                ),
-                                TextWidget(
-                                  text: LocaleKeys
-                                      .costumer_my_orders_no_orders_now
-                                      .tr(),
-                                  size: 18,
-                                  color: kDarkBleuColor,
-                                  fontWeight: FontWeight.normal,
+                      child: !isLoading
+                          ? _ordersList.isNotEmpty
+                              ? ListView.separated(
+                                  itemCount: _ordersList.length,
+                                  separatorBuilder:
+                                      (BuildContext context, int index) {
+                                    return SizedBox(
+                                      height: 20.h,
+                                    );
+                                  },
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    PorderModel order = _ordersList[index];
+                                    return order.orderStatus == "done" ||
+                                            order.orderStatus == "cancel"
+                                        ? PoldOrdersWidget(order: order)
+                                        : PcurrentOrdersWidget(
+                                            order: order,
+                                          );
+                                  },
                                 )
-                              ],
+                              : Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/home_add_image.png',
+                                      height: 82.h,
+                                      width: 140.w,
+                                    ),
+                                    SizedBox(
+                                      height: 20.h,
+                                    ),
+                                    TextWidget(
+                                      text: LocaleKeys
+                                          .costumer_my_orders_no_orders_now
+                                          .tr(),
+                                      size: 18,
+                                      color: kDarkBleuColor,
+                                      fontWeight: FontWeight.normal,
+                                    )
+                                  ],
+                                )
+                          : const Center(
+                              child: CircularProgressIndicator(),
                             ),
                     )
                   ],
@@ -266,7 +270,6 @@ class _PordersViewState extends State<PordersView> {
             ),
           ],
         ),
-        if (isLoading) const LoadingWidget(),
       ]),
     );
   }

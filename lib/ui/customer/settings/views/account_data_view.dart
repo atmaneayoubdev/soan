@@ -150,7 +150,12 @@ class _AccountDataViewState extends State<AccountDataView> {
                               child: GestureDetector(
                                 onTap: () async {
                                   await _picker
-                                      .pickImage(source: ImageSource.camera)
+                                      .pickImage(
+                                    source: ImageSource.camera,
+                                    imageQuality: 70,
+                                    preferredCameraDevice: CameraDevice.front,
+                                    requestFullMetadata: false,
+                                  )
                                       .then((value) {
                                     if (value != null) {
                                       setState(() {

@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:soan/constants.dart';
 import 'package:soan/controllers/provider_controller.dart';
@@ -21,13 +22,15 @@ class PhomeView extends StatefulWidget {
 }
 
 class _PhomeViewState extends State<PhomeView> {
-  bool isLoading = true;
+  bool isLoading = false;
+  bool isSkiped = false;
   List<PorderModel> _ordersList = [];
+
   Future getOrders() async {
     if (mounted) {
       isLoading = true;
+      setState(() {});
     }
-    setState(() {});
     await ProviderController.getOrdersThatNeedsAnswer(
       language: context.locale.languageCode,
       token: Provider.of<ProviderProvider>(context, listen: false)
@@ -85,45 +88,59 @@ class _PhomeViewState extends State<PhomeView> {
                 height: 21.h,
               ),
               if (Provider.of<ProviderProvider>(context, listen: false)
-                      .providerModel
-                      .terms ==
-                  "")
-                const PhomeAddTerms(),
+                          .providerModel
+                          .terms ==
+                      "" &&
+                  isSkiped == false)
+                PhomeAddTerms(
+                  skip: () {
+                    setState(() {
+                      isSkiped = true;
+                    });
+                    getOrders();
+                  },
+                ),
               if (Provider.of<ProviderProvider>(context, listen: false)
-                      .providerModel
-                      .terms !=
-                  "")
+                          .providerModel
+                          .terms !=
+                      "" ||
+                  isSkiped == true)
                 Expanded(
-                  child: _ordersList.isNotEmpty
-                      ? ListView.separated(
-                          padding: EdgeInsets.zero,
-                          shrinkWrap: true,
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          itemCount: _ordersList.length,
-                          separatorBuilder: (BuildContext context, int index) {
-                            return SizedBox(
-                              height: 20.h,
-                            );
-                          },
-                          itemBuilder: (BuildContext context, int index) {
-                            PorderModel order = _ordersList[index];
-                            return PhomeListWidget(
-                              order: order,
-                              getorder: () {
-                                getOrders();
+                  child: !isLoading
+                      ? _ordersList.isNotEmpty
+                          ? ListView.separated(
+                              padding: EdgeInsets.zero,
+                              shrinkWrap: true,
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              itemCount: _ordersList.length,
+                              separatorBuilder:
+                                  (BuildContext context, int index) {
+                                return SizedBox(
+                                  height: 20.h,
+                                );
                               },
-                            );
-                          },
-                        )
-                      : Center(
-                          child: TextWidget(
-                            text: LocaleKeys.provider_home_waiting_for_orders
-                                .tr(),
-                            size: 20,
-                            color: kDarkBleuColor,
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
+                              itemBuilder: (BuildContext context, int index) {
+                                PorderModel order = _ordersList[index];
+                                return PhomeListWidget(
+                                  order: order,
+                                  getorder: () {
+                                    getOrders();
+                                  },
+                                );
+                              },
+                            )
+                          : Center(
+                              child: Text(
+                                LocaleKeys.provider_home_waiting_for_orders
+                                    .tr(),
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.tajawal(
+                                  color: kDarkBleuColor,
+                                  fontSize: 16.sp,
+                                ),
+                              ),
+                            )
+                      : const Center(child: CircularProgressIndicator()),
                 ),
             ],
           )

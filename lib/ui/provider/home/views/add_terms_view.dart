@@ -49,12 +49,15 @@ class _AddTermsAndConditionsState extends State<AddTermsAndConditions> {
                   ),
                   Align(
                     alignment: Alignment.bottomCenter,
-                    child: FittedBox(
-                      child: TextWidget(
-                        text: LocaleKeys.titles_add_terms.tr(),
-                        size: 22,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
+                    child: SizedBox(
+                      width: 280.w,
+                      child: FittedBox(
+                        child: TextWidget(
+                          text: LocaleKeys.titles_add_terms.tr(),
+                          size: 22,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                   ),
@@ -174,7 +177,8 @@ class _AddTermsAndConditionsState extends State<AddTermsAndConditions> {
                                   isLoading = false;
                                   setState(() {});
                                   if (value ==
-                                      'الشروط والأحكام الخاصه بك تم تغيرها بالفعل') {
+                                          'الشروط والأحكام الخاصه بك تم تغيرها بالفعل' ||
+                                      value == 'Your Terms Has Been Changes') {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                         duration: const Duration(seconds: 3),

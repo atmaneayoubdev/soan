@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:soan/Common/loading_widget.dart';
 import 'package:soan/models/provider/p_order_model.dart';
 import 'package:soan/translations/locale_keys.g.dart';
@@ -105,7 +107,8 @@ class _PayementRecievedBottomSheetState
                               ).then((value) {
                                 isLoading = false;
                                 setState(() {});
-                                if (value == "بيانات الطلب") {
+                                if (value == "بيانات الطلب" ||
+                                    value == 'Order Information') {
                                   Navigator.pushAndRemoveUntil(
                                     context,
                                     MaterialPageRoute(
@@ -114,7 +117,23 @@ class _PayementRecievedBottomSheetState
                                       ),
                                     ),
                                     (route) => false,
-                                  );
+                                  ).then((value) async {
+                                    final prefs =
+                                        await SharedPreferences.getInstance();
+                                    if (prefs.getBool('apprated') != null) {
+                                      if (prefs.getBool('apprate') == false) {
+                                        final InAppReview inAppReview =
+                                            InAppReview.instance;
+
+                                        if (await inAppReview.isAvailable()) {
+                                          inAppReview.requestReview();
+                                        } else {
+                                          debugPrint('Rate Not availbale');
+                                        }
+                                        prefs.setBool('apprate', true);
+                                      }
+                                    }
+                                  });
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(

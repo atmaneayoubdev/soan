@@ -211,7 +211,7 @@ class _RatingViewState extends State<RatingView> {
                                 ),
                               ),
                             );
-                            if (value == "شكرا لك") {
+                            if (value == "شكرا لك" || value == 'Thank you') {
                               Navigator.pop(context, true);
                             }
                           });

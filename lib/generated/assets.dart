@@ -12,6 +12,7 @@ class Assets {
   static const String assetsImagesAddTermsConditions = 'assets/images/add_terms_conditions.svg';
   static const String assetsImagesHomeAddImage = 'assets/images/home_add_image.svg';
   static const String assetsImagesNoConnection = 'assets/images/no_connection.svg';
+  static const String fontsARIBL0 = 'assets/fonts/ARIBL0.ttf';
   static const String iconsAddBin = 'assets/icons/add_bin.svg';
   static const String iconsAddCamera = 'assets/icons/add_camera.svg';
   static const String iconsAddCar = 'assets/icons/add_car.svg';

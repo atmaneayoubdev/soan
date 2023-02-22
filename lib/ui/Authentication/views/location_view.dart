@@ -75,6 +75,7 @@ class _LocationViewState extends State<LocationView> {
           child: Stack(
             children: [
               GoogleMap(
+                padding: EdgeInsets.symmetric(vertical: 50.h),
                 //markers: _markers,
                 onCameraIdle: onCameraStoped,
                 onCameraMove: _onCameraMove,

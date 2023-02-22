@@ -264,7 +264,8 @@ class _SignInViewState extends State<SignInView> {
                                         language: context.locale.languageCode,
                                         token: p.apiToken,
                                       ).then((value) {
-                                        if (value == 'تم تسجيل الخروج') {
+                                        if (value == 'تم تسجيل الخروج' ||
+                                            value == 'LogOut') {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(
                                             SnackBar(

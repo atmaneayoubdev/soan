@@ -10,7 +10,6 @@ import 'package:soan/Common/loading_widget.dart';
 import 'package:soan/models/constumer/car_model.dart';
 import 'package:soan/models/global/categories_model.dart';
 import 'package:soan/translations/locale_keys.g.dart';
-import 'package:soan/ui/customer/landing_view.dart';
 import '../../../../Common/back_button.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../Common/large_button.dart';
@@ -25,6 +24,7 @@ import '../../../../models/global/area_model.dart';
 import '../../../../models/global/city_model.dart';
 import '../../../Authentication/views/location_view.dart';
 import '../../../Authentication/views/provider_first_register_view.dart';
+import '../components/succesfull_sent_order_bottom_sheet.dart';
 
 class CreateOrderView extends StatefulWidget {
   const CreateOrderView({Key? key, required this.categoryModel})
@@ -374,6 +374,8 @@ class _CreateOrderViewState extends State<CreateOrderView> {
                                             setState(() {
                                               _selectedArea = newArea!;
                                             });
+                                            getAreaCities(
+                                                int.parse(_selectedArea!.id));
                                           },
                                         ),
                                       ],
@@ -604,6 +606,10 @@ class _CreateOrderViewState extends State<CreateOrderView> {
                                               await _picker
                                                   .pickImage(
                                                 source: ImageSource.camera,
+                                                imageQuality: 70,
+                                                preferredCameraDevice:
+                                                    CameraDevice.rear,
+                                                requestFullMetadata: false,
                                               )
                                                   .then((value) {
                                                 if (value != null) {
@@ -864,129 +870,20 @@ class _CreateOrderViewState extends State<CreateOrderView> {
                                           isLoading = false;
                                           setState(() {});
 
-                                          if (value == "بيانات الطلب") {
-                                            modal.showMaterialModalBottomSheet(
+                                          if (value == "بيانات الطلب" ||
+                                              value == 'Order Information') {
+                                            modal
+                                                .showMaterialModalBottomSheet(
                                               enableDrag: true,
                                               backgroundColor:
                                                   Colors.transparent,
                                               context: context,
-                                              builder: (context) => Container(
-                                                height: 826.h,
-                                                decoration: BoxDecoration(
-                                                  color: Colors.white,
-                                                  borderRadius:
-                                                      BorderRadius.only(
-                                                    topLeft:
-                                                        Radius.circular(19.r),
-                                                    topRight:
-                                                        Radius.circular(19.r),
-                                                  ),
-                                                ),
-                                                child: Column(
-                                                  children: [
-                                                    SizedBox(
-                                                      height: 20.h,
-                                                    ),
-                                                    Container(
-                                                      height: 5.h,
-                                                      width: 50.w,
-                                                      decoration: BoxDecoration(
-                                                        color: kGreyColor,
-                                                        borderRadius:
-                                                            BorderRadius.only(
-                                                          topLeft:
-                                                              Radius.circular(
-                                                                  19.r),
-                                                          topRight:
-                                                              Radius.circular(
-                                                                  19.r),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 122.h,
-                                                    ),
-                                                    SizedBox(
-                                                      width: 350.w,
-                                                      child: Image.asset(
-                                                          "assets/images/send_service_image_bottom.png"),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 80.h,
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              horizontal: 25.w),
-                                                      child: TextWidget(
-                                                        text:
-                                                            " ${LocaleKeys.costumer_home_orders_sent_sucessfully.tr()} ",
-                                                        size: 22,
-                                                        color: kDarkBleuColor,
-                                                        fontWeight:
-                                                            FontWeight.normal,
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              horizontal: 25.w),
-                                                      child: TextWidget(
-                                                        text: LocaleKeys
-                                                            .costumer_home_be_ready_to_recieve
-                                                            .tr(),
-                                                        size: 22,
-                                                        color: kDarkBleuColor,
-                                                        fontWeight:
-                                                            FontWeight.normal,
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              horizontal: 25.w),
-                                                      child: TextWidget(
-                                                        text: LocaleKeys
-                                                            .costumer_home_in_ordes_screen
-                                                            .tr(),
-                                                        size: 22,
-                                                        color: kDarkBleuColor,
-                                                        fontWeight:
-                                                            FontWeight.normal,
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 50.h,
-                                                    ),
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        Navigator.of(context)
-                                                            .pushAndRemoveUntil(
-                                                          MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                const LandingView(
-                                                                    selectedIndex:
-                                                                        2),
-                                                          ),
-                                                          (route) => false,
-                                                        );
-                                                      },
-                                                      child: Container(
-                                                        margin: EdgeInsets
-                                                            .symmetric(
-                                                          horizontal: 25.w,
-                                                        ),
-                                                        child: LargeButton(
-                                                            text: LocaleKeys
-                                                                .titles_my_orders
-                                                                .tr(),
-                                                            isButton: true),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            );
+                                              builder: (context) =>
+                                                  const SuccesfullSentOrderBottomSheet(),
+                                            )
+                                                .then((value) {
+                                              Navigator.of(context).pop();
+                                            });
                                           } else {
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(

@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:soan/Common/back_button.dart';
 import 'package:soan/translations/locale_keys.g.dart';
 import '../../../constants.dart';
 import 'provider_first_register_view.dart';
@@ -35,21 +36,29 @@ class _SignUpTypeViewState extends State<SignUpTypeView> {
               ),
             ),
             Container(
-              margin: EdgeInsets.symmetric(vertical: 100.h, horizontal: 27.w),
-              child: Text(
-                LocaleKeys.auth_welcome_to_soan.tr(),
-                style: GoogleFonts.tajawal(
-                  color: Colors.white,
-                  fontSize: 40.sp,
-                  fontWeight: FontWeight.bold,
-                ),
+              margin: EdgeInsets.symmetric(vertical: 80.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const BackButtonWidget(),
+                  20.verticalSpace,
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 27.w),
+                    child: Text(
+                      LocaleKeys.auth_welcome_to_soan.tr(),
+                      style: GoogleFonts.tajawal(
+                        color: Colors.white,
+                        fontSize: 40.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             )
           ],
         ),
-        SizedBox(
-          height: 30.h,
-        ),
+        30.verticalSpace,
         Center(
           child: Text(
             LocaleKeys.titles_create_account.tr(),
@@ -60,9 +69,7 @@ class _SignUpTypeViewState extends State<SignUpTypeView> {
             ),
           ),
         ),
-        SizedBox(
-          height: 30.h,
-        ),
+        30.verticalSpace,
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

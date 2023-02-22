@@ -23,7 +23,7 @@ class SoanProviderWidget extends StatelessWidget {
     return Center(
       child: SizedBox(
         width: 383.w,
-        height: 145.h,
+        height: 150.h,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,

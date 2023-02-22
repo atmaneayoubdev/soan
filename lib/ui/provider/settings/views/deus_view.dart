@@ -167,10 +167,9 @@ class _DuesViewState extends State<DuesView> {
                                     await ProviderController.makeDues(
                                       language: context.locale.languageCode,
                                       token: Provider.of<ProviderProvider>(
-                                              context,
-                                              listen: false)
-                                          .providerModel
-                                          .apiToken,
+                                        context,
+                                        listen: false,
+                                      ).providerModel.apiToken,
                                     ).then((value) {
                                       isLoading = false;
                                       setState(() {});

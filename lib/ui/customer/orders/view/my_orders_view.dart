@@ -34,11 +34,10 @@ class _MyOrdersViewState extends State<MyOrdersView> {
       setState(() {});
     }
     await CostumerController.getOrdersList(
-            language: context.locale.languageCode,
-            token:
-                Provider.of<UserProvider>(context, listen: false).user.apiToken,
-            status: status)
-        .then((value) {
+      language: context.locale.languageCode,
+      token: Provider.of<UserProvider>(context, listen: false).user.apiToken,
+      status: status,
+    ).then((value) {
       _ordersList.addAll(value);
       isLoading = false;
       if (mounted) {
@@ -251,66 +250,67 @@ class _MyOrdersViewState extends State<MyOrdersView> {
                         /////////////////////////////////////////////////////////////////////////////////////
 
                         Expanded(
-                          child: _ordersList.isNotEmpty
-                              ? ListView.separated(
-                                  itemCount: _ordersList.length,
-                                  separatorBuilder:
-                                      (BuildContext context, int index) {
-                                    return SizedBox(
-                                      height: 20.h,
-                                    );
-                                  },
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    OrderModel order = _ordersList[index];
-                                    return selectedPage == 0
-                                        ? CurrentOrderWidget(
-                                            order: order,
-                                          )
-                                        : selectedPage == 1
-                                            ? PendingOrderWidget(
-                                                order: order,
-                                                onOrderUpdated: () {
-                                                  getOrders("new");
-                                                },
-                                              )
-                                            : selectedPage == 2
-                                                ? OldOrderWidget(
-                                                    order: order,
-                                                  )
-                                                : const SizedBox();
-                                  },
-                                )
-                              : Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Image.asset(
-                                      'assets/images/home_add_image.png',
-                                      height: 82.h,
-                                      width: 140.w,
-                                    ),
-                                    SizedBox(
-                                      height: 20.h,
-                                    ),
-                                    TextWidget(
-                                      text: LocaleKeys
-                                          .costumer_my_orders_no_orders_now
-                                          .tr(),
-                                      size: 18,
-                                      color: kDarkBleuColor,
-                                      fontWeight: FontWeight.normal,
+                          child: isLoading
+                              ? const Center(
+                                  child: CircularProgressIndicator(
+                                  color: kBlueColor,
+                                ))
+                              : _ordersList.isEmpty
+                                  ? Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Image.asset(
+                                          'assets/images/home_add_image.png',
+                                          height: 82.h,
+                                          width: 140.w,
+                                        ),
+                                        SizedBox(
+                                          height: 20.h,
+                                        ),
+                                        TextWidget(
+                                          text: LocaleKeys
+                                              .costumer_my_orders_no_orders_now
+                                              .tr(),
+                                          size: 18,
+                                          color: kDarkBleuColor,
+                                          fontWeight: FontWeight.normal,
+                                        )
+                                      ],
                                     )
-                                  ],
-                                ),
+                                  : ListView.separated(
+                                      itemCount: _ordersList.length,
+                                      separatorBuilder:
+                                          (BuildContext context, int index) {
+                                        return SizedBox(
+                                          height: 20.h,
+                                        );
+                                      },
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        OrderModel order = _ordersList[index];
+                                        return selectedPage == 0
+                                            ? CurrentOrderWidget(
+                                                order: order,
+                                              )
+                                            : selectedPage == 1
+                                                ? PendingOrderWidget(
+                                                    order: order,
+                                                    onOrderUpdated: () {
+                                                      getOrders("new");
+                                                    },
+                                                  )
+                                                : selectedPage == 2
+                                                    ? OldOrderWidget(
+                                                        order: order,
+                                                      )
+                                                    : const SizedBox();
+                                      },
+                                    ),
                         ),
                       ],
                     ),
                   ),
-                  if (isLoading)
-                    const Center(
-                        child: CircularProgressIndicator(
-                      color: kBlueColor,
-                    )),
                 ],
               ),
             ),

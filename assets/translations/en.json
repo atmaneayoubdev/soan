@@ -1,7 +1,7 @@
 {
   "titles": {
     "home": "Home",
-    "providers": "Providers",
+    "providers": "Workshops",
     "settings": "Settings",
     "notifications": "Notifications",
     "add_car": "Add Car",
@@ -24,7 +24,7 @@
     "create_account": "Create Account",
     "finish_data": "Complete data",
     "reset_password": "Reset Passwrod",
-    "singin": "Sing in",
+    "singin": "Sign in",
     "offline": "Network Error"
   },
   "intoduction": {
@@ -65,7 +65,7 @@
     "registration_number": "Commercial Registration No",
     "enter_registration_number": "Please enter your registration number",
     "tax_number": "Tax number",
-    "enter_tax_number": "Please enter the tax number",
+    "enter_tax_number": "Tax number should be 15 numbers",
     "admin_region": "Administrative region",
     "city": "City",
     "select_city": "Please select the city",
@@ -88,7 +88,7 @@
     "save": "Save",
     "enter_code_please": "Please enter the code",
     "reset_password": "Reset password",
-    "valid_reg_number": "Please enter a valid tax number"
+    "valid_reg_number": "Commercial  Register number should have 10 characters"
   },
   "costumer": {
     "home": {
@@ -125,9 +125,9 @@
       "please_enter_problem_description": "Please enter the problem description",
       "add_car_images": "Add car images",
       "optional": "(Optional)",
-      "by_sending_providers_will_contact_you": "By clicking on send, the service providers will contact you",
-      "orders_sent_sucessfully": "Ordes sent successfully ",
-      "be_ready_to_recieve": "Be ready to receive the offers of service providers on the \"My Orders\" screen.",
+      "by_sending_providers_will_contact_you": "By clicking on send, workshop will contact you",
+      "orders_sent_sucessfully": "Order sent successfully ",
+      "be_ready_to_recieve": "Be ready to receive the offers of service",
       "send": "Send",
       "car_location": "Car location",
       "please_select_car_location": "Please select the car location",
@@ -135,24 +135,26 @@
       "thanks_for_your_trust": "Thank you for your trust in Soan",
       "you_can_track_order_status": "You can now track the status of your order",
       "contract": "contract",
-      "do_you_want_contract_this_provider": "Do you really want to contract with this provider?",
+      "do_you_want_contract_this_provider": "Sure to contract with this workshop?",
       "you_will_not_be_able_to_cancel": "You will not be able to cancel the order after contracting",
-      "no_find_another_provider": "No, look for another provider",
-      "in_ordes_screen": "In Orders screen"
+      "no_find_another_provider": "No, look for another workshop",
+      "in_ordes_screen": "In \"My Orders\" screen"
     },
     "providers": {
       "permission_denied": "Permission dine",
       "permission_denied_activate_location": "Location services are denied. Please activate the location service",
       "we_can_not_request_permission": "Location permissions are permanently denied, please activate location services",
       "nearby_worshops": "Nearby workshops",
-      "top_rated_workshops": "Top rated workshops"
+      "top_rated_workshops": "Top rated workshops",
+      "no_workshop_to_show": "There are no workshops to show",
+      "no_near_workshops": "There are no workshops near you location"
     },
     "my_orders": {
       "current_orders": "Current orders",
       "pending_orders": "Pending orders",
       "finished_orders": "Finished orders",
       "no_orders_now": "There are no orders",
-      "providers_offers": "Providers offers",
+      "providers_offers": "Workshops offers",
       "orders_details": "Order details",
       "cancel_order": "Cancel order",
       "car_details": "Car details",
@@ -160,15 +162,15 @@
       "car_delivery": "Car delivery/receipt",
       "car_images": "Car images",
       "workshop_will_get_the_car": "The Worshop will receive the car from its location",
-      "do_you_want_to_cancel": "Do you really want to cancel the order?",
+      "do_you_want_to_cancel": "Sure to cancel the order?",
       "cancel_reason": "Reason...",
-      "continue_request": "Continue request",
+      "continue_request": "Continue order",
       "order_canceled": "The order was cance",
       "contracted": "Contracted",
       "workshop_response": "Response",
       "provider_response": "Provider response",
-      "invoice_not_issued_yet": "The invoice has not been issued yet",
-      "rate_the_provider_first": "Rate the provider first",
+      "invoice_not_issued_yet": "So you can view the invoice as soon as it is issued",
+      "rate_the_provider_first": "Rate the workshop first",
       "in_order_to_see_it_when_issued": "So you can view the invoice as it is issued",
       "rate": "Rate",
       "your_opinion_matters": "Your opinion is important to us",
@@ -202,7 +204,7 @@
       "new_password": "New password",
       "confirm_new_password": "Confim new password",
       "long_faq": "Frequently Asked Questions",
-      "share_with_us_your_opinion": "Share your opinion",
+      "share_with_us_your_opinion": "Share your experience with us",
       "to_get_better_service": "In order for us to serve you better.",
       "rate_app": "Rate us"
     }
@@ -217,7 +219,8 @@
     "total": "Total",
     "yes": "Yes",
     "add": "Add",
-    "continue": "Continue"
+    "continue": "Continue",
+    "no_notificatoins": "There are no notifications for now"
   },
   "provider": {
     "settings": {
@@ -248,7 +251,8 @@
       "show_invoice": "Show invoice",
       "you_wont_change": "Saving and editing is not allowed, Contact customer service to edit",
       "shops_terms_and_conditions": "terms and conditions",
-      "waiting_for_orders": "Waiting for customers' requests"
+      "waiting_for_orders": "This is where new customer orders will appear\nplease wait",
+      "if_you_skip": "If you skip you won't receive orders until you add your workshop's terms and conditions"
     }
   }
 }

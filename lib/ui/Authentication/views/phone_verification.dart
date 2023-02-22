@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:developer';
 
 import 'package:easy_localization/easy_localization.dart' as loc;
@@ -45,8 +47,10 @@ class _PhoneVerificationState extends State<PhoneVerification> {
   }
 
   void onEnd() {
-    canResend = true;
-    setState(() {});
+    if (mounted) {
+      canResend = true;
+      setState(() {});
+    }
   }
 
   @override
@@ -130,7 +134,8 @@ class _PhoneVerificationState extends State<PhoneVerification> {
                                       token: p.apiToken,
                                       language: context.locale.languageCode)
                                   .then((value) {
-                                if (value == 'تم تسجيل الخروج') {
+                                if (value == 'تم تسجيل الخروج' ||
+                                    value == 'LogOut') {
                                   Navigator.of(context).pushAndRemoveUntil(
                                       MaterialPageRoute(
                                           builder: (context) =>

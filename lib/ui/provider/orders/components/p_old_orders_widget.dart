@@ -20,7 +20,7 @@ class PoldOrdersWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 300.h,
+      //height: 300.h,
       //padding: EdgeInsets.all(10.h),
       //width: 385.w,
       //margin: EdgeInsets.symmetric(horizontal: 20.w),
@@ -54,18 +54,14 @@ class PoldOrdersWidget extends StatelessWidget {
               )
             ],
           ),
-          SizedBox(
-            height: 12.h,
-          ),
+          12.verticalSpace,
           TextWidget(
             text: "${order.car!.manufacturer} ${order.car!.vds}",
             size: 23,
             color: kDarkBleuColor,
             fontWeight: FontWeight.bold,
           ),
-          SizedBox(
-            height: 17.h,
-          ),
+          17.verticalSpace,
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -149,95 +145,93 @@ class PoldOrdersWidget extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(
-            height: 17.h,
-          ),
+          17.verticalSpace,
           SizedBox(
             width: 350.w,
-            child: Column(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Row(
-                        children: [
-                          Container(
-                            height: 11.h,
-                            width: 11.w,
-                            decoration: const BoxDecoration(
-                              color: kPinkColor,
-                              shape: BoxShape.circle,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 5.w,
-                          ),
-                          Text(
-                            "${LocaleKeys.costumer_my_orders_order_finished.tr()} ${order.completedAt}  ",
-                            style: GoogleFonts.tajawal(
-                                fontSize: 14.r,
-                                color: kPinkColor,
-                                fontWeight: FontWeight.normal),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        "${LocaleKeys.costumer_my_orders_service_total_cost.tr()} ${order.price.total} ${LocaleKeys.common_sar.tr()}",
-                        style: GoogleFonts.tajawal(
-                          fontSize: 14.r,
-                          color: kDarkBleuColor,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
-                    )
-                  ],
-                ),
                 SizedBox(
-                  height: 10.h,
-                ),
-                SizedBox(
-                  width: 323505.w,
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => PorderDetailsView(
-                            order: order,
-                            isFromHome: false,
-                          ),
+                  width: 173.w,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        height: 11.h,
+                        width: 11.w,
+                        decoration: const BoxDecoration(
+                          color: kPinkColor,
+                          shape: BoxShape.circle,
                         ),
-                      );
-                    },
-                    child: Container(
-                      width: 155.w,
-                      height: 45.h,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(
-                          10.r,
-                        ),
-                        color: kLightLightBlueColor,
                       ),
-                      child: Center(
+                      5.horizontalSpace,
+                      Flexible(
                         child: Text(
-                          LocaleKeys.titles_order_details.tr(),
+                          "${LocaleKeys.costumer_my_orders_order_finished.tr()} ${order.completedAt} ",
+                          //maxLines: 3,
                           style: GoogleFonts.tajawal(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.normal,
-                            color: kDarkBleuColor,
-                          ),
+                              fontSize: 14.r,
+                              color: kPinkColor,
+                              fontWeight: FontWeight.normal),
                         ),
                       ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  width: 173.w,
+                  child: Text(
+                    "${LocaleKeys.costumer_my_orders_service_total_cost.tr()} ${order.price.total} ${LocaleKeys.common_sar.tr()}",
+                    maxLines: 1,
+                    style: GoogleFonts.tajawal(
+                      fontSize: 14.r,
+                      color: kDarkBleuColor,
+                      fontWeight: FontWeight.normal,
                     ),
                   ),
                 ),
               ],
             ),
           ),
-          const Spacer(),
+          10.verticalSpace,
+          SizedBox(
+            width: double.infinity,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PorderDetailsView(
+                      order: order,
+                      isFromHome: false,
+                    ),
+                  ),
+                );
+              },
+              child: Container(
+                width: 155.w,
+                height: 45.h,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(
+                    10.r,
+                  ),
+                  color: kLightLightBlueColor,
+                ),
+                child: Center(
+                  child: Text(
+                    LocaleKeys.titles_order_details.tr(),
+                    style: GoogleFonts.tajawal(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.normal,
+                      color: kDarkBleuColor,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          //const Spacer(),
+          10.verticalSpace,
           const Divider(
             color: kLightGreyColor,
           ),

@@ -143,7 +143,9 @@ class _AddCarButtonSheetState extends State<AddCarButtonSheet> {
                                                   .apiToken,
                                               id: int.parse(car.id),
                                             ).then((value) {
-                                              if (value == "تم مسح السياره") {
+                                              if (value == "تم مسح السياره" ||
+                                                  value ==
+                                                      'Your Car Has Been Deleted') {
                                                 getMyCarsList();
                                                 if (_selectedCar == car) {
                                                   _selectedCar = null;
@@ -151,12 +153,18 @@ class _AddCarButtonSheetState extends State<AddCarButtonSheet> {
                                                 if (Provider.of<CarProvider>(
                                                       context,
                                                       listen: false,
-                                                    ).currentCar!.vin ==
-                                                    car.vin) {
-                                                  Provider.of<CarProvider>(
-                                                    context,
-                                                    listen: false,
-                                                  ).clearCar();
+                                                    ).currentCar !=
+                                                    null) {
+                                                  if (Provider.of<CarProvider>(
+                                                        context,
+                                                        listen: false,
+                                                      ).currentCar!.vin ==
+                                                      car.vin) {
+                                                    Provider.of<CarProvider>(
+                                                      context,
+                                                      listen: false,
+                                                    ).clearCar();
+                                                  }
                                                 }
                                               }
                                             });
