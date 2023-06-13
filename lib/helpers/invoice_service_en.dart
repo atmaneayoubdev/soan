@@ -210,6 +210,7 @@ class PdfInvoiceServiceEn {
                                 pw.Center(
                                   child: pw.Text(
                                     invoice.createdAt,
+                                    textDirection: pw.TextDirection.rtl,
                                   ),
                                 )
                               ]),
@@ -315,6 +316,7 @@ class PdfInvoiceServiceEn {
                             child: pw.Center(
                                 child: pw.Text(
                               x.name,
+                              textDirection: pw.TextDirection.rtl,
                               maxLines: 2,
                               softWrap: true,
                               overflow: pw.TextOverflow.clip,

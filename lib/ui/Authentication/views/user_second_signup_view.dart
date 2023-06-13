@@ -172,7 +172,7 @@ class _UserSecondSignUpViewState extends State<UserSecondSignUpView> {
                                     child: Icon(
                                       Icons.visibility,
                                       color: !isPassVisible
-                                          ? kPinkColor
+                                          ? kOrangeColor
                                           : kGreenColor,
                                     ),
                                   ),
@@ -229,7 +229,7 @@ class _UserSecondSignUpViewState extends State<UserSecondSignUpView> {
                                     child: Icon(
                                       Icons.visibility,
                                       color: !isPassConfVisible
-                                          ? kPinkColor
+                                          ? kOrangeColor
                                           : kGreenColor,
                                     ),
                                   ),

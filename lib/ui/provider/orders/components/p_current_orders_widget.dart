@@ -247,6 +247,7 @@ class _PcurrentOrdersWidgetState extends State<PcurrentOrdersWidget> {
                           children: [
                             SvgPicture.asset(
                               "assets/icons/phone.svg",
+                              // ignore: deprecated_member_use
                               color: Colors.white,
                             ),
                             SizedBox(

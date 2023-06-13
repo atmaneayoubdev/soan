@@ -143,7 +143,7 @@
     "providers": {
       "permission_denied": "تم رفض أذونات الموقع",
       "permission_denied_activate_location": "خدمات الموقع معطلة. يرجى تفعيل خدمة الموقع",
-      "we_can_not_request_permission": "أذونات الموقع مرفوضة بشكل دائم ،  يرجى تفعيل خدمة الموقع",
+      "we_can_not_request_permission": "أذونات الموقع مرفوضة بشكل دائم ، يرجى تفعيل إذن الموقع من إعدادات التطبيق",
       "nearby_worshops": "مراكز الصيانة القريبة",
       "top_rated_workshops": "مراكز الصيانة الأعلى تقييماً",
       "no_workshop_to_show": "لا توجد ورش صيانة لعرضها",
@@ -161,7 +161,7 @@
       "car_addresse": "عنوان السيارة",
       "car_delivery": "توصيل / استلام السيارة",
       "car_images": "صور السيارة",
-      "workshop_will_get_the_car": "المركز سيستلم السيارة من موقعها",
+      "workshop_will_get_the_car": "سوف أقوم بإيصال السيارة للمركز",
       "do_you_want_to_cancel": "هل تريد بالفعل الغاء الطلب ؟",
       "cancel_reason": "السبب…",
       "continue_request": "متابعة الطلب",
@@ -220,7 +220,9 @@
     "yes": "نعم",
     "add": "إضافة",
     "continue": "متابعة",
-    "no_notificatoins": "لا توجد إشعارات حاليا"
+    "no_notificatoins": "لا توجد إشعارات حاليا",
+    "could_not_upload": "نواجه مشاكل في تحميل طلبك ، حاول لاحقًا",
+    "enter_suggestion": " الرجاء عدم ترك الرسالة فارغه"
   },
   "provider": {
     "settings": {
@@ -252,7 +254,8 @@
       "you_wont_change": "عند الحفظ لن تتمكن من التعديل إلا بإتصالك بالدعم الفني",
       "shops_terms_and_conditions": "سياسة وشروط المركز",
       "waiting_for_orders": "هنا ستظهر طلبات العملاء الجدد\nالرجاء الإنتظار",
-      "if_you_skip": "في حال التخطي لن تستقبل أي طلبات حتى تتم إضافة سياسة و شروط المركز"
+      "if_you_skip": "في حال التخطي لن تستقبل أي طلبات حتى تتم إضافة سياسة و شروط المركز",
+      "locatoin_should_be_in": "يجب أن يكون الموقع في"
     }
   }
 }

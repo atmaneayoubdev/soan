@@ -28,6 +28,7 @@ class _NotificationViewState extends State<NotificationView> {
 
   Future getNotifications() async {
     await CostumerController.getNotifications(
+      // ignore: deprecated_member_use
       language: window.locale.languageCode,
       token: Provider.of<UserProvider>(context, listen: false).user.apiToken,
     ).then((value) {

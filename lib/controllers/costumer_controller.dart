@@ -1,7 +1,7 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,6 +13,7 @@ import 'package:soan/models/constumer/notification_model.dart';
 import 'package:soan/models/constumer/order_model.dart';
 import 'package:soan/models/global/answer_list_model.dart';
 import 'package:soan/models/global/invoice_model.dart';
+import 'package:soan/translations/locale_keys.g.dart';
 
 class CostumerController with ChangeNotifier {
   ////////////////////////////change user info///////////////////////////
@@ -47,7 +48,7 @@ class CostumerController with ChangeNotifier {
           headers: headers,
         ),
       );
-      log(response.data.toString());
+      debugPrint(response.data.toString());
       UserModel user;
       user = UserModel.fromJson(response.data["data"]);
       final prefs = await SharedPreferences.getInstance();
@@ -74,7 +75,7 @@ class CostumerController with ChangeNotifier {
           headers: headers,
         ),
       );
-      log(response.data.toString());
+      debugPrint(response.data.toString());
       UserModel user;
       user = UserModel.fromJson(response.data["data"]);
       final prefs = await SharedPreferences.getInstance();
@@ -103,8 +104,8 @@ class CostumerController with ChangeNotifier {
         'Authorization': "Bearer $token",
         'Accept-Language': language,
       };
-      log(password);
-      log(phone);
+      debugPrint(password);
+      debugPrint(phone);
       var response = await dio.post(
         "${baseUrl}customer/my-profile/change-phone",
         data: {
@@ -117,7 +118,7 @@ class CostumerController with ChangeNotifier {
           headers: headers,
         ),
       );
-      log(response.data.toString());
+      debugPrint(response.data.toString());
       if (response.statusCode == 200) {
         final prefs = await SharedPreferences.getInstance();
 
@@ -130,7 +131,7 @@ class CostumerController with ChangeNotifier {
             : response.data['message'];
       }
     } on DioError catch (error) {
-      log(error.message);
+      debugPrint(error.message!);
       return error.response!.data['message'];
     }
   }
@@ -163,7 +164,7 @@ class CostumerController with ChangeNotifier {
           headers: headers,
         ),
       );
-      log(response.data.toString());
+      debugPrint(response.data.toString());
       if (response.statusCode == 200) {
         return response.data['message'];
       } else {
@@ -172,7 +173,7 @@ class CostumerController with ChangeNotifier {
             : response.data['message'];
       }
     } on DioError catch (error) {
-      log(error.message);
+      debugPrint(error.message!);
       return error.response!.data['message'];
     }
   }
@@ -196,7 +197,7 @@ class CostumerController with ChangeNotifier {
           headers: headers,
         ),
       );
-      log(response.data.toString());
+      debugPrint(response.data.toString());
       if (response.statusCode == 200) {
         List<CarModel> cars = [];
         cars = (response.data['data'] as List)
@@ -206,7 +207,7 @@ class CostumerController with ChangeNotifier {
       }
       return [];
     } on DioError catch (error) {
-      log(error.message);
+      debugPrint(error.message!);
       return [];
     }
   }
@@ -233,13 +234,13 @@ class CostumerController with ChangeNotifier {
           headers: headers,
         ),
       );
-      log(response.data.toString());
+      debugPrint(response.data.toString());
       if (response.statusCode == 200) {
         return response.data['message'];
       }
       return response.data['message'];
     } on DioError catch (error) {
-      log(error.message);
+      debugPrint(error.message!);
       return error.response!.data['message'];
     }
   }
@@ -278,7 +279,7 @@ class CostumerController with ChangeNotifier {
           headers: headers,
         ),
       );
-      log(response.data.toString());
+      debugPrint(response.data.toString());
       if (response.statusCode == 200) {
         CarModel car = CarModel.fromJson(response.data["data"]);
         return car;
@@ -288,7 +289,7 @@ class CostumerController with ChangeNotifier {
             : response.data['message'];
       }
     } on DioError catch (error) {
-      log(error.message);
+      debugPrint(error.message!);
       return error.response!.data['message'];
     }
   }
@@ -328,7 +329,7 @@ class CostumerController with ChangeNotifier {
           headers: headers,
         ),
       );
-      log(response.data.toString());
+      debugPrint(response.data.toString());
       if (response.statusCode == 200) {
         CarModel car = CarModel.fromJson(response.data["data"]);
         return car;
@@ -338,7 +339,7 @@ class CostumerController with ChangeNotifier {
             : response.data['message'];
       }
     } on DioError catch (error) {
-      log(error.message);
+      debugPrint(error.message!);
       return error.response!.data['message'];
     }
   }
@@ -364,7 +365,7 @@ class CostumerController with ChangeNotifier {
           headers: headers,
         ),
       );
-      log(response.data.toString());
+      debugPrint(response.data.toString());
       if (response.statusCode == 200) {
         List<NotificationModel> notifications = [];
         notifications = (response.data['data'] as List)
@@ -374,7 +375,7 @@ class CostumerController with ChangeNotifier {
       }
       return [];
     } on DioError catch (error) {
-      log(error.message);
+      debugPrint(error.message!);
       return [];
     }
   }
@@ -413,7 +414,7 @@ class CostumerController with ChangeNotifier {
           headers: headers,
         ),
       );
-      log(response.data.toString());
+      debugPrint(response.data.toString());
       if (response.statusCode == 200) {
         List<ProviderModel> notifications = [];
         notifications = (response.data['data'] as List)
@@ -423,7 +424,7 @@ class CostumerController with ChangeNotifier {
       }
       return [];
     } on DioError catch (error) {
-      log(error.message);
+      debugPrint(error.message!);
       return [];
     }
   }
@@ -444,58 +445,70 @@ class CostumerController with ChangeNotifier {
       required List<File?> images,
       required String language}) async {
     Dio dio = Dio();
-    Map<String, String> headers = {
-      'Content-type': 'multipart/from-data',
-      "Accept": "application/json",
-      'Authorization': "Bearer $token",
-      'Accept-Language': language,
-    };
+    try {
+      Map<String, String> headers = {
+        'Content-type': 'multipart/from-data',
+        "Accept": "application/json",
+        'Authorization': "Bearer $token",
+        'Accept-Language': language,
+      };
 
-    //String fileName = image.path.split('/').last;
-    List<MultipartFile> imagesList = [];
-    for (var image in images) {
-      if (image != null) {
-        String fileName = image.path.split('/').last;
-        imagesList
-            .add(await MultipartFile.fromFile(image.path, filename: fileName));
+      //String fileName = image.path.split('/').last;
+      List<MultipartFile> imagesList = [];
+      for (var image in images) {
+        if (image != null) {
+          String fileName = image.path.split('/').last;
+          imagesList.add(
+              await MultipartFile.fromFile(image.path, filename: fileName));
+        }
       }
-    }
 
-    List<MultipartFile> files = [];
-    for (var item in images) {
-      if (item != null) {
-        String fileName = item.path.split('/').last;
-        files.add(await MultipartFile.fromFile(
-          item.path,
-          filename: fileName,
-        ));
+      List<MultipartFile> files = [];
+      for (var item in images) {
+        if (item != null) {
+          String fileName = item.path.split('/').last;
+          files.add(await MultipartFile.fromFile(
+            item.path,
+            filename: fileName,
+          ));
+        }
       }
-    }
-    FormData formData = FormData.fromMap({
-      'car_id': carId,
-      "category_id": catId,
-      "address_name": adressName,
-      "location_name": locationName,
-      "lat": lat,
-      "lng": lng,
-      "order_place": orderPlace,
-      "description": desc,
-      "region_id": regionId,
-      "city_id": cityId,
-      "images[]": files,
-    });
+      FormData formData = FormData.fromMap({
+        'car_id': carId,
+        "category_id": catId,
+        "address_name": adressName,
+        "location_name": locationName,
+        "lat": lat,
+        "lng": lng,
+        "order_place": orderPlace,
+        "description": desc,
+        "region_id": regionId,
+        "city_id": cityId,
+        "images[]": files,
+      });
 
-    var response = await dio.post(
-      "${baseUrl}customer/orders",
-      data: formData,
-      options: Options(
-        followRedirects: false,
-        validateStatus: (status) => true,
-        headers: headers,
-      ),
-    );
-    log(response.data.toString());
-    return response.data['message'];
+      var response = await dio.post(
+        "${baseUrl}customer/orders",
+        data: formData,
+        options: Options(
+          followRedirects: false,
+          validateStatus: (status) => true,
+          receiveDataWhenStatusError: true,
+          sendTimeout: const Duration(seconds: 60),
+          receiveTimeout: const Duration(seconds: 60),
+          headers: headers,
+        ),
+      );
+      debugPrint(response.data.toString());
+      return response.data['message'];
+    } on DioError catch (ex) {
+      if (ex.type == DioErrorType.connectionTimeout ||
+          ex.type == DioErrorType.sendTimeout ||
+          ex.type == DioErrorType.receiveTimeout) {
+        return LocaleKeys.common_could_not_upload.tr();
+      }
+      throw Exception(ex.message);
+    }
   }
 
   ////////////////////get orders list//////////////////////
@@ -519,7 +532,7 @@ class CostumerController with ChangeNotifier {
           headers: headers,
         ),
       );
-      log(response.data.toString());
+      debugPrint(response.data.toString());
 
       if (response.statusCode == 200) {
         List<OrderModel> orders = [];
@@ -530,7 +543,7 @@ class CostumerController with ChangeNotifier {
       }
       return [];
     } on DioError catch (error) {
-      log(error.message);
+      debugPrint(error.message!);
       return [];
     }
   }
@@ -560,7 +573,7 @@ class CostumerController with ChangeNotifier {
           headers: headers,
         ),
       );
-      log(response.data.toString());
+      debugPrint(response.data.toString());
       if (response.statusCode == 200) {
         OrderModel order = OrderModel.fromJson(response.data["data"]);
 
@@ -571,7 +584,7 @@ class CostumerController with ChangeNotifier {
       }
       return "error";
     } on DioError catch (error) {
-      log(error.message);
+      debugPrint(error.message!);
       if (error.response!.statusCode == 400) {
         return error.response!.data["message"];
       }
@@ -600,7 +613,7 @@ class CostumerController with ChangeNotifier {
           headers: headers,
         ),
       );
-      log(response.data.toString());
+      debugPrint(response.data.toString());
       if (response.statusCode == 200) {
         List<AnswerListModel> answers = [];
         answers = (response.data['data'] as List)
@@ -610,7 +623,7 @@ class CostumerController with ChangeNotifier {
       }
       return [];
     } on DioError catch (error) {
-      log(error.message);
+      debugPrint(error.message!);
       return [];
     }
   }
@@ -637,10 +650,10 @@ class CostumerController with ChangeNotifier {
           headers: headers,
         ),
       );
-      log(response.data.toString());
+      debugPrint(response.data.toString());
       return response.data["message"];
     } on DioError catch (error) {
-      log(error.message);
+      debugPrint(error.message!);
       if (error.response!.statusCode == 400) {
         return error.response!.data["message"];
       }
@@ -678,11 +691,11 @@ class CostumerController with ChangeNotifier {
           headers: headers,
         ),
       );
-      log(response.data.toString());
+      debugPrint(response.data.toString());
       return response.data["message"].toString();
     } on DioError catch (error) {
-      log(error.message);
-      return error.message;
+      debugPrint(error.message!);
+      return error.message!;
     }
   }
 
@@ -707,12 +720,12 @@ class CostumerController with ChangeNotifier {
           headers: headers,
         ),
       );
-      log(response.data.toString());
+      debugPrint(response.data.toString());
 
       return OrderModel.fromJson(response.data["data"]);
     } on DioError catch (error) {
-      log(error.message);
-      return error.message;
+      debugPrint(error.message!);
+      return error.message!;
     }
   }
 
@@ -737,12 +750,12 @@ class CostumerController with ChangeNotifier {
           headers: headers,
         ),
       );
-      log(response.data.toString());
+      debugPrint(response.data.toString());
 
       return InvoiceModel.fromJson(response.data["data"]);
     } on DioError catch (error) {
-      log(error.message);
-      return error.message;
+      debugPrint(error.message!);
+      return error.message!;
     }
   }
 
@@ -767,11 +780,11 @@ class CostumerController with ChangeNotifier {
           headers: headers,
         ),
       );
-      log(response.data.toString());
+      debugPrint(response.data.toString());
       return CarModel.fromJson(response.data['data']);
     } on DioError catch (error) {
-      log(error.message);
-      return error.message;
+      debugPrint(error.message!);
+      return error.message!;
     }
   }
 }

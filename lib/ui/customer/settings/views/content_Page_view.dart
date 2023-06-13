@@ -1,21 +1,26 @@
+// ignore_for_file: file_names
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:soan/controllers/global_controller.dart';
-import 'package:soan/translations/locale_keys.g.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../../../Common/back_button.dart';
 import '../../../../Common/text_widget.dart';
 import '../../../../constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
+import '../../../../controllers/global_controller.dart';
+import 'package:html/parser.dart';
 
-class TermsAndConditionView extends StatefulWidget {
-  const TermsAndConditionView({Key? key}) : super(key: key);
+class ContentPageView extends StatefulWidget {
+  const ContentPageView({Key? key, required this.name, required this.id})
+      : super(key: key);
+  final String name;
+  final String id;
 
   @override
-  State<TermsAndConditionView> createState() => _TermsAndConditionViewState();
+  State<ContentPageView> createState() => _ContentPageViewState();
 }
 
-class _TermsAndConditionViewState extends State<TermsAndConditionView> {
+class _ContentPageViewState extends State<ContentPageView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +40,7 @@ class _TermsAndConditionViewState extends State<TermsAndConditionView> {
               Align(
                 alignment: Alignment.bottomCenter,
                 child: TextWidget(
-                  text: LocaleKeys.titles_terms.tr(),
+                  text: widget.name,
                   size: 22,
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -49,7 +54,7 @@ class _TermsAndConditionViewState extends State<TermsAndConditionView> {
           Expanded(
             child: Container(
               width: double.infinity,
-              padding: EdgeInsets.symmetric(horizontal: 15.w),
+              padding: EdgeInsets.symmetric(horizontal: 30.w),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -63,7 +68,7 @@ class _TermsAndConditionViewState extends State<TermsAndConditionView> {
                     height: 20.h,
                   ),
                   TextWidget(
-                    text: LocaleKeys.titles_terms.tr(),
+                    text: widget.name,
                     size: 20,
                     color: kDarkBleuColor,
                     fontWeight: FontWeight.normal,
@@ -73,21 +78,30 @@ class _TermsAndConditionViewState extends State<TermsAndConditionView> {
                   ),
                   Expanded(
                     child: FutureBuilder(
-                      future: GlobalController.getTermsAndConditions(
-                          context.locale.languageCode),
+                      future: GlobalController.getContentInfo(
+                        context.locale.languageCode,
+                        widget.id,
+                      ),
                       initialData: '',
                       builder: (BuildContext context, AsyncSnapshot snapshot) {
-                        return Text(
-                          snapshot.data.toString(),
-                          style: GoogleFonts.tajawal(
-                            fontSize: 14.sp,
-                            color: kGreyColor,
-                            fontWeight: FontWeight.normal,
-                          ),
-                        );
+                        var text = parse(snapshot.data);
+                        return snapshot.data.isNotEmpty
+                            ? SingleChildScrollView(
+                                child: Text(
+                                  text.body!.innerHtml,
+                                  style: GoogleFonts.tajawal(
+                                      fontSize: 22.sp, color: kDarkBleuColor),
+                                ),
+                              )
+                            : SizedBox(
+                                height: 800.h,
+                                child: const Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              );
                       },
                     ),
-                  ),
+                  )
                 ],
               ),
             ),

@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:soan/translations/locale_keys.g.dart';
 import '../../../../Common/text_widget.dart';
 import '../../../../constants.dart';
@@ -67,11 +68,16 @@ class ReplyBottomSheetWidget extends StatelessWidget {
                 color: kLightLightGreyColor,
                 borderRadius: BorderRadius.circular(9.r),
               ),
-              child: TextWidget(
-                text: response,
-                size: 18,
-                color: kDarkBleuColor,
-                fontWeight: FontWeight.w500,
+              child: SingleChildScrollView(
+                child: Text(
+                  response,
+                  maxLines: null,
+                  style: GoogleFonts.tajawal(
+                    fontSize: 18,
+                    color: kDarkBleuColor,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
               ),
             ),
           ),

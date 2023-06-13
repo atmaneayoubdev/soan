@@ -388,7 +388,7 @@ class _ProviderSecondRegisterViewState
                                         child: Icon(
                                           Icons.visibility,
                                           color: !isPassVisible
-                                              ? kPinkColor
+                                              ? kOrangeColor
                                               : kGreenColor,
                                         ),
                                       ),
@@ -449,7 +449,7 @@ class _ProviderSecondRegisterViewState
                                         child: Icon(
                                           Icons.visibility,
                                           color: !isPassConfVisible
-                                              ? kPinkColor
+                                              ? kOrangeColor
                                               : kGreenColor,
                                         ),
                                       ),

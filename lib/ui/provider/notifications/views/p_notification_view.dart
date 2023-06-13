@@ -32,6 +32,7 @@ class _PnotificationViewState extends State<PnotificationView> {
   Future getNotifications() async {
     if (mounted) {
       await ProviderController.getNotifications(
+        // ignore: deprecated_member_use
         language: window.locale.languageCode,
         token: Provider.of<ProviderProvider>(context, listen: false)
             .providerModel

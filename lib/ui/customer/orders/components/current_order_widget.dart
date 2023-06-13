@@ -195,6 +195,7 @@ class _CurrentOrderWidgetState extends State<CurrentOrderWidget> {
                                 children: [
                                   SvgPicture.asset(
                                     'assets/icons/phone.svg',
+                                    // ignore: deprecated_member_use
                                     color: kGreenColor,
                                   ),
                                   TextWidget(

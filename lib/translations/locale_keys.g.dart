@@ -298,6 +298,8 @@ abstract class LocaleKeys {
   static const common_add = 'common.add';
   static const common_continue = 'common.continue';
   static const common_no_notificatoins = 'common.no_notificatoins';
+  static const common_could_not_upload = 'common.could_not_upload';
+  static const common_enter_suggestion = 'common.enter_suggestion';
   static const common = 'common';
   static const provider_settings_pay_dues = 'provider.settings.pay_dues';
   static const provider_settings_dues_completed =
@@ -337,6 +339,8 @@ abstract class LocaleKeys {
   static const provider_home_waiting_for_orders =
       'provider.home.waiting_for_orders';
   static const provider_home_if_you_skip = 'provider.home.if_you_skip';
+  static const provider_home_locatoin_should_be_in =
+      'provider.home.locatoin_should_be_in';
   static const provider_home = 'provider.home';
   static const provider = 'provider';
 }

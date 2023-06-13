@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -41,8 +40,8 @@ class AuthController with ChangeNotifier {
               'Accept-Language': language,
             }),
       );
-      log(response.toString());
-      log(response.statusCode.toString());
+      debugPrint(response.toString());
+      debugPrint(response.statusCode.toString());
 
       if (response.statusCode == 200) {
         return response.data['otp'].toString();
@@ -51,8 +50,8 @@ class AuthController with ChangeNotifier {
         return response.data['message'].toString();
       }
     } on DioError catch (error) {
-      log(error.message.toString());
-      log(error.response!.data.toString());
+      debugPrint(error.message.toString());
+      debugPrint(error.response!.data.toString());
       if (error.response!.statusCode == 400) {
         return error.response!.data['message'].toString();
       }
@@ -107,8 +106,8 @@ class AuthController with ChangeNotifier {
               'Accept-Language': language,
             }),
       );
-      log(response.toString());
-      log(response.statusCode.toString());
+      debugPrint(response.toString());
+      debugPrint(response.statusCode.toString());
 
       if (response.statusCode == 200) {
         return response.data['otp'].toString();
@@ -117,8 +116,8 @@ class AuthController with ChangeNotifier {
         return response.data['message'].toString();
       }
     } on DioError catch (error) {
-      log(error.message.toString());
-      log(error.response!.data.toString());
+      debugPrint(error.message.toString());
+      debugPrint(error.response!.data.toString());
       if (error.response!.statusCode == 400) {
         return error.response!.data['message'].toString();
       }
@@ -132,7 +131,7 @@ class AuthController with ChangeNotifier {
     required String otp,
     required String language,
   }) async {
-    log("this is check phone $phone");
+    debugPrint("this is check phone $phone");
     try {
       Dio dio = Dio();
       var response = await dio.post(
@@ -146,7 +145,7 @@ class AuthController with ChangeNotifier {
           'otp': otp,
         },
       );
-      log(response.data.toString());
+      debugPrint(response.data.toString());
       if (response.statusCode == 200) {
         UserModel user;
         user = UserModel.fromJson(response.data["data"]);
@@ -166,8 +165,8 @@ class AuthController with ChangeNotifier {
         return response.data['message'];
       }
     } on DioError catch (error) {
-      log(error.response!.data.toString());
-      log(error.message.toString());
+      debugPrint(error.response!.data.toString());
+      debugPrint(error.message.toString());
       if (error.response!.statusCode == 400) {
         return error.response!.data['message'];
       }
@@ -181,7 +180,7 @@ class AuthController with ChangeNotifier {
     required String otp,
     required String language,
   }) async {
-    log("this is check phone $phone");
+    debugPrint("this is check phone $phone");
     try {
       Dio dio = Dio();
       var response = await dio.post(
@@ -194,7 +193,7 @@ class AuthController with ChangeNotifier {
           'otp': otp,
         },
       );
-      log(response.data.toString());
+      debugPrint(response.data.toString());
       if (response.statusCode == 200) {
         ProviderModel provider;
         provider = ProviderModel.fromJson(response.data['data']);
@@ -224,8 +223,8 @@ class AuthController with ChangeNotifier {
         return response.data['message'];
       }
     } on DioError catch (error) {
-      log(error.response!.data.toString());
-      log(error.message.toString());
+      debugPrint(error.response!.data.toString());
+      debugPrint(error.message.toString());
       if (error.response!.statusCode == 400) {
         return error.response!.data['message'];
       }
@@ -238,7 +237,7 @@ class AuthController with ChangeNotifier {
     String phone,
     String language,
   ) async {
-    log("this is check phone $phone");
+    debugPrint("this is check phone $phone");
     try {
       Dio dio = Dio();
       var response = await dio.post(
@@ -253,7 +252,7 @@ class AuthController with ChangeNotifier {
           'phone': int.parse(phone),
         },
       );
-      log(response.data.toString());
+      debugPrint(response.data.toString());
 
       if (response.statusCode == 200) {
         return response.data['otp'].toString();
@@ -262,7 +261,7 @@ class AuthController with ChangeNotifier {
         return response.data['message'].toString();
       }
     } on DioError catch (error) {
-      log(error.message.toString());
+      debugPrint(error.message.toString());
       if (error.response!.statusCode == 400) {
         return error.response!.data['message'].toString();
       }
@@ -276,29 +275,28 @@ class AuthController with ChangeNotifier {
     required String password,
     required String language,
   }) async {
-    log(password);
-    log(phoneNumber);
     try {
       Dio dio = Dio();
 
       var response = await dio.post(
         "${baseUrl}login",
-        options: Options(headers: {
-          'Accept-Language': language,
-        }),
+        options: Options(
+            followRedirects: false,
+            validateStatus: (status) => true,
+            headers: {
+              'Accept-Language': language,
+            }),
         data: {
           'phone': phoneNumber,
           'password': password,
           "devices_token": "123456789",
         },
       );
-      log(response.data["data"].toString());
-
-      log(response.data.toString());
+      debugPrint(response.data.toString());
       if (response.statusCode == 200 &&
           response.data["data"].containsKey("first_name")) {
-        log('this is a user');
-        log(response.data['api_token']);
+        debugPrint('this is a user');
+        debugPrint(response.data['api_token']);
         UserModel user;
         user = UserModel.fromJson(response.data["data"]);
         final prefs = await SharedPreferences.getInstance();
@@ -314,7 +312,7 @@ class AuthController with ChangeNotifier {
       }
       if (response.statusCode == 200 &&
           response.data["data"].containsKey('provider_name')) {
-        log('this is a provider');
+        debugPrint('this is a provider');
         ProviderModel provider;
         provider = ProviderModel.fromJson(response.data['data']);
         final prefs = await SharedPreferences.getInstance();
@@ -339,15 +337,12 @@ class AuthController with ChangeNotifier {
         return provider;
       }
       if (response.statusCode == 400) {
-        return response.data['message'];
+        return response.data['message'].toString();
       }
     } on DioError catch (error) {
-      log(error.message.toString());
-      log(error.message.toString());
-      if (error.response!.statusCode == 400) {
-        return error.response!.data['message'];
-      }
-      return "error";
+      debugPrint(error.message.toString());
+
+      return error.message;
     }
   }
 
@@ -371,16 +366,16 @@ class AuthController with ChangeNotifier {
           headers: headers,
         ),
       );
-      log(response.data.toString());
+      debugPrint(response.data.toString());
       if (response.statusCode == 200) {
         final prefs = await SharedPreferences.getInstance();
         prefs.clear();
         return response.data['message'];
       }
     } on DioError catch (error) {
-      log(error.response!.statusCode.toString());
-      log(error.message);
-      return error.message.toString();
+      debugPrint(error.response!.statusCode.toString());
+      debugPrint(error.message!);
+      return error.message!.toString();
     }
   }
 
@@ -403,7 +398,7 @@ class AuthController with ChangeNotifier {
             followRedirects: false,
             validateStatus: (status) => true,
           ));
-      log(response.data.toString());
+      debugPrint(response.data.toString());
       if (response.statusCode == 400) {
         return response.data["message"];
       }
@@ -436,11 +431,11 @@ class AuthController with ChangeNotifier {
           "otp": otp,
         },
       );
-      log(response.data["message"].toString());
+      debugPrint(response.data["message"].toString());
       return response.data["message"].toString();
     } on DioError catch (e) {
-      log(e.response!.data.toString());
-      log(e.response!.statusCode.toString());
+      debugPrint(e.response!.data.toString());
+      debugPrint(e.response!.statusCode.toString());
       return e.response!.data["message"].toString();
     }
   }
@@ -468,10 +463,10 @@ class AuthController with ChangeNotifier {
           headers: headers,
         ),
       );
-      log(response.data.toString());
+      debugPrint(response.data.toString());
       return response.data['message'];
     } on DioError catch (error) {
-      log(error.message);
+      debugPrint(error.message!);
       return error.response!.data['message'];
     }
   }

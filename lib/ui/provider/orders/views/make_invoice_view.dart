@@ -253,11 +253,12 @@ class _MakeInvoiceViewState extends State<MakeInvoiceView> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 TextWidget(
-                                    text:
-                                        '${widget.order.costumer.lastName} ${widget.order.costumer.firstName}',
-                                    size: 14,
-                                    color: kDarkBleuColor,
-                                    fontWeight: FontWeight.normal),
+                                  text:
+                                      '${widget.order.costumer.lastName} ${widget.order.costumer.firstName}',
+                                  size: 14,
+                                  color: kDarkBleuColor,
+                                  fontWeight: FontWeight.normal,
+                                ),
                                 TextWidget(
                                     text: widget.order.location.region.name,
                                     size: 14,

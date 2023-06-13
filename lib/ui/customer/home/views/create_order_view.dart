@@ -1,9 +1,12 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:location/location.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart' as modal;
 import 'package:provider/provider.dart';
 import 'package:soan/Common/loading_widget.dart';
@@ -94,6 +97,9 @@ class _CreateOrderViewState extends State<CreateOrderView> {
   }
 
   Future getAreaCities(int id) async {
+    setState(() {
+      _selectedCity = null;
+    });
     await GlobalController.getAreaCities(id, context.locale.languageCode)
         .then((value) {
       setState(() {
@@ -103,6 +109,110 @@ class _CreateOrderViewState extends State<CreateOrderView> {
         _selectedCity = value.first;
       }
     });
+  }
+
+  // Future<bool> _handleLocationPermission() async {
+  //   bool serviceEnabled;
+  //   LocationPermission permission;
+
+  //   serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  //   if (!serviceEnabled) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(
+  //         backgroundColor: Colors.red,
+  //         content: Text(LocaleKeys
+  //             .costumer_providers_permission_denied_activate_location
+  //             .tr()),
+  //       ),
+  //     );
+  //     return false;
+  //   }
+  //   permission = await Geolocator.checkPermission();
+
+  //   if (permission == LocationPermission.denied) {
+  //     permission = await Geolocator.requestPermission();
+  //     if (permission == LocationPermission.denied) {
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(
+  //           backgroundColor: Colors.red,
+  //           content: Text(LocaleKeys.costumer_providers_permission_denied.tr()),
+  //         ),
+  //       );
+  //       return false;
+  //     }
+  //   }
+  //   if (permission == LocationPermission.deniedForever) {
+  //     permission = await Geolocator.requestPermission();
+  //     if (permission == LocationPermission.deniedForever) {
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(
+  //           backgroundColor: Colors.red,
+  //           content: Text(LocaleKeys
+  //               .costumer_providers_we_can_not_request_permission
+  //               .tr()),
+  //         ),
+  //       );
+  //       return false;
+  //     }
+  //   }
+
+  //   return true;
+  // }
+
+  Future<bool> _handleLocationPermission() async {
+    Location location = Location();
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
+
+    serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.red,
+            content: Text(LocaleKeys
+                .costumer_providers_permission_denied_activate_location
+                .tr()),
+          ),
+        );
+        return false;
+      }
+    }
+
+    permissionGranted = await location.hasPermission();
+    if (permissionGranted != PermissionStatus.granted) {
+      if (permissionGranted == PermissionStatus.denied) {
+        permissionGranted = await location.requestPermission();
+        if (permissionGranted == PermissionStatus.denied) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Colors.red,
+              content:
+                  Text(LocaleKeys.costumer_providers_permission_denied.tr()),
+            ),
+          );
+          return false;
+        }
+      }
+
+      if (permissionGranted == PermissionStatus.deniedForever) {
+        permissionGranted = await location.requestPermission();
+        if (permissionGranted == PermissionStatus.deniedForever) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Colors.red,
+              content: Text(LocaleKeys
+                  .costumer_providers_we_can_not_request_permission
+                  .tr()),
+            ),
+          );
+          return false;
+        }
+      }
+    }
+
+    return true;
   }
 
   @override
@@ -149,18 +259,6 @@ class _CreateOrderViewState extends State<CreateOrderView> {
                                   color: kDarkBleuColor,
                                   fontWeight: FontWeight.bold),
                             ))),
-                        // FittedBox(
-                        //   child: SizedBox(
-                        //     width: 162.w,
-                        //     child: TextWidget(
-                        //       text:
-                        //           LocaleKeys.costumer_home_service_request.tr(),
-                        //       size: 22,
-                        //       color: kDarkBleuColor,
-                        //       fontWeight: FontWeight.bold,
-                        //     ),
-                        //   ),
-                        // )
                       ],
                     ),
                     Image.asset(
@@ -427,6 +525,7 @@ class _CreateOrderViewState extends State<CreateOrderView> {
                                             },
                                             onChanged: (CityModel? newCity) {
                                               setState(() {
+                                                locationController.clear();
                                                 _selectedCity = newCity!;
                                               });
                                             },
@@ -458,24 +557,44 @@ class _CreateOrderViewState extends State<CreateOrderView> {
                                     height: 12.h,
                                   ),
                                   TextFormField(
+                                    showCursor: false,
                                     onTap: () {
-                                      //Focus.of(context).unfocus();
-                                      Navigator.push<LocModel>(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const LocationView(),
-                                        ),
-                                      ).then((value) {
-                                        FocusManager.instance.primaryFocus!
-                                            .unfocus();
-                                        if (value != null) {
-                                          _locModel = value;
-                                          locationController.text =
-                                              value.address;
-                                          setState(() {});
-                                        }
-                                      });
+                                      if (_selectedCity != null) {
+                                        //Focus.of(context).unfocus();
+                                        _handleLocationPermission()
+                                            .then((value) {
+                                          if (value == true) {
+                                            Navigator.push<LocModel>(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    LocationView(
+                                                        selectedCity:
+                                                            _selectedCity!
+                                                                .name),
+                                              ),
+                                            ).then((value) {
+                                              FocusManager
+                                                  .instance.primaryFocus!
+                                                  .unfocus();
+                                              if (value != null) {
+                                                _locModel = value;
+                                                locationController.text =
+                                                    value.address;
+                                                setState(() {});
+                                              }
+                                            });
+                                          }
+                                        });
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(SnackBar(
+                                          content: Text(
+                                            LocaleKeys.auth_select_city.tr(),
+                                          ),
+                                          backgroundColor: Colors.red,
+                                        ));
+                                      }
                                     },
                                     controller: locationController,
                                     validator: (value) {
@@ -496,23 +615,45 @@ class _CreateOrderViewState extends State<CreateOrderView> {
                                           child: Center(
                                             child: GestureDetector(
                                               onTap: () {
-                                                Navigator.push<LocModel>(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const LocationView(),
-                                                  ),
-                                                ).then((value) {
-                                                  FocusManager
-                                                      .instance.primaryFocus!
-                                                      .unfocus();
-                                                  if (value != null) {
-                                                    _locModel = value;
-                                                    locationController.text =
-                                                        value.address;
-                                                    setState(() {});
-                                                  }
-                                                });
+                                                if (_selectedCity != null) {
+                                                  //Focus.of(context).unfocus();
+                                                  _handleLocationPermission()
+                                                      .then((value) {
+                                                    if (value == true) {
+                                                      Navigator.push<LocModel>(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              LocationView(
+                                                                  selectedCity:
+                                                                      _selectedCity!
+                                                                          .name),
+                                                        ),
+                                                      ).then((value) {
+                                                        FocusManager.instance
+                                                            .primaryFocus!
+                                                            .unfocus();
+                                                        if (value != null) {
+                                                          _locModel = value;
+                                                          locationController
+                                                                  .text =
+                                                              value.address;
+                                                          setState(() {});
+                                                        }
+                                                      });
+                                                    }
+                                                  });
+                                                } else {
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(SnackBar(
+                                                    content: Text(
+                                                      LocaleKeys
+                                                          .auth_select_city
+                                                          .tr(),
+                                                    ),
+                                                    backgroundColor: Colors.red,
+                                                  ));
+                                                }
                                               },
                                               child: SvgPicture.asset(
                                                 'assets/icons/pick_location.svg',
@@ -606,7 +747,7 @@ class _CreateOrderViewState extends State<CreateOrderView> {
                                               await _picker
                                                   .pickImage(
                                                 source: ImageSource.camera,
-                                                imageQuality: 70,
+                                                imageQuality: 50,
                                                 preferredCameraDevice:
                                                     CameraDevice.rear,
                                                 requestFullMetadata: false,
@@ -675,8 +816,9 @@ class _CreateOrderViewState extends State<CreateOrderView> {
                                             onTap: () async {
                                               await _picker
                                                   .pickImage(
-                                                      source:
-                                                          ImageSource.gallery)
+                                                source: ImageSource.gallery,
+                                                imageQuality: 50,
+                                              )
                                                   .then((value) {
                                                 if (value != null) {
                                                   setState(() {
@@ -741,8 +883,9 @@ class _CreateOrderViewState extends State<CreateOrderView> {
                                             onTap: () async {
                                               await _picker
                                                   .pickImage(
-                                                      source:
-                                                          ImageSource.gallery)
+                                                source: ImageSource.gallery,
+                                                imageQuality: 50,
+                                              )
                                                   .then((value) {
                                                 if (value != null) {
                                                   setState(() {

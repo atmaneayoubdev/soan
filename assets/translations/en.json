@@ -141,9 +141,9 @@
       "in_ordes_screen": "In \"My Orders\" screen"
     },
     "providers": {
-      "permission_denied": "Permission dine",
+      "permission_denied": "Permission denied",
       "permission_denied_activate_location": "Location services are denied. Please activate the location service",
-      "we_can_not_request_permission": "Location permissions are permanently denied, please activate location services",
+      "we_can_not_request_permission": "Location permissions are permanently denied, Please activate location permission from app settings",
       "nearby_worshops": "Nearby workshops",
       "top_rated_workshops": "Top rated workshops",
       "no_workshop_to_show": "There are no workshops to show",
@@ -161,7 +161,7 @@
       "car_addresse": "Car addresse",
       "car_delivery": "Car delivery/receipt",
       "car_images": "Car images",
-      "workshop_will_get_the_car": "The Worshop will receive the car from its location",
+      "workshop_will_get_the_car": "I will take the car to the center",
       "do_you_want_to_cancel": "Sure to cancel the order?",
       "cancel_reason": "Reason...",
       "continue_request": "Continue order",
@@ -220,7 +220,9 @@
     "yes": "Yes",
     "add": "Add",
     "continue": "Continue",
-    "no_notificatoins": "There are no notifications for now"
+    "no_notificatoins": "There are no notifications for now",
+    "could_not_upload": "We are having problems uploading your order, Try later",
+    "enter_suggestion": "Enter your message please"
   },
   "provider": {
     "settings": {
@@ -252,7 +254,8 @@
       "you_wont_change": "Saving and editing is not allowed, Contact customer service to edit",
       "shops_terms_and_conditions": "terms and conditions",
       "waiting_for_orders": "This is where new customer orders will appear\nplease wait",
-      "if_you_skip": "If you skip you won't receive orders until you add your workshop's terms and conditions"
+      "if_you_skip": "If you skip you won't receive orders until you add your workshop's terms and conditions",
+      "locatoin_should_be_in": "The location should be in"
     }
   }
 }

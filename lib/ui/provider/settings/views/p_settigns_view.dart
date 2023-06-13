@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,17 +18,17 @@ import '../../../../Common/settings_widget.dart';
 import '../../../../Common/text_widget.dart';
 import '../../../../constants.dart';
 import '../../../../controllers/global_controller.dart';
+import '../../../../models/global/content_model.dart';
 import '../../../../models/global/info_model.dart';
 import '../../../../models/global/settings_model.dart';
 import '../../../../models/global/social_model.dart';
+import '../../../customer/settings/views/content_Page_view.dart';
 import 'p_profile_view.dart';
 import 'deus_view.dart';
 import '../../../../Common/title_widget.dart';
 import '../../../customer/orders/components/rating_heading_widget.dart';
-import '../../../customer/settings/views/faq_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../../customer/settings/views/suggestions_view.dart';
-import '../../../customer/settings/views/terms_and_condition_view.dart';
 
 class PsettingsView extends StatefulWidget {
   const PsettingsView({Key? key}) : super(key: key);
@@ -40,6 +41,18 @@ class _PsettingsViewState extends State<PsettingsView> {
   late ProviderModel provider;
   bool isLoading = false;
 
+  List<ContentModel> _contents = [];
+
+  Future getContents() async {
+    await GlobalController.getContents(context.locale.languageCode)
+        .then((value) {
+      if (value.runtimeType == List<ContentModel>) {
+        _contents = value;
+        setState(() {});
+      }
+    });
+  }
+
   late SettingsModel settingsModel = SettingsModel(
       social: SocialModel(facebook: "", instagram: "", twitter: ''),
       info: InfoModel(
@@ -50,9 +63,8 @@ class _PsettingsViewState extends State<PsettingsView> {
       await GlobalController.getSettings(context.locale.languageCode)
           .then((value) {
         settingsModel = value;
-        if (mounted) {
-          setState(() {});
-        }
+        getContents();
+        setState(() {});
       });
     }
   }
@@ -139,38 +151,51 @@ class _PsettingsViewState extends State<PsettingsView> {
                         name: LocaleKeys.titles_dues.tr(),
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: ((context) => const FaqView()),
-                          ),
-                        );
-                      },
-                      child: SettingsWidget(
-                        name: LocaleKeys.titles_faq.tr(),
-                        image: "assets/icons/faq.svg",
-                      ),
-                    ),
-                    // GestureDetector(
-                    //   onTap: () {},
-                    //   child: SettingsWidget(
-                    //       name: LocaleKeys.costumer_settings_rate_app.tr(),
-                    //       image: "assets/icons/settings_star.svg"),
-                    // ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
+                    for (ContentModel content in _contents)
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: ((context) =>
-                                    const TermsAndConditionView())));
-                      },
-                      child: SettingsWidget(
-                          name: LocaleKeys.titles_terms.tr(),
-                          image: "assets/icons/terms_and_conditions.svg"),
-                    ),
+                              builder: ((context) => ContentPageView(
+                                    name: content.title,
+                                    id: content.id,
+                                  )),
+                            ),
+                          );
+                        },
+                        child: Column(children: [
+                          Container(
+                            height: 95.h,
+                            width: 95.w,
+                            padding: const EdgeInsets.all(15),
+                            decoration: BoxDecoration(
+                                color: kLightLightGreyColor,
+                                borderRadius: BorderRadius.circular(10.r)),
+                            child: Center(
+                                child: CachedNetworkImage(
+                              imageUrl: content.image,
+                              fit: BoxFit.contain,
+                              placeholder: (context, url) => const Center(
+                                child: CircularProgressIndicator(
+                                  color: kLightLightSkyBlueColor,
+                                ),
+                              ),
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.error),
+                            )),
+                          ),
+                          2.verticalSpace,
+                          FittedBox(
+                            child: TextWidget(
+                              text: content.title,
+                              size: 14,
+                              color: kDarkBleuColor,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                        ]),
+                      ),
                     GestureDetector(
                       onTap: () {
                         _launchUrl(
@@ -313,7 +338,7 @@ class _PsettingsViewState extends State<PsettingsView> {
                             ),
                           ),
                           SizedBox(
-                            height: 10.h,
+                            height: 2.h,
                           ),
                           FittedBox(
                             child: TextWidget(
@@ -349,35 +374,25 @@ class _PsettingsViewState extends State<PsettingsView> {
                                   listen: false)
                               .providerModel
                               .apiToken,
-                        ).then((value) {
+                        ).then((value) async {
                           setState(() {
                             isLoading = false;
                           });
                           if (value == 'تم تسجيل الخروج' || value == 'LogOut') {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                duration: const Duration(seconds: 3),
-                                backgroundColor: kBlueColor,
-                                content: Text(
-                                  value.toString(),
-                                ),
-                              ),
-                            );
                             Navigator.pushAndRemoveUntil(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => const SignInView()),
                                 (route) => false);
                           } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                duration: const Duration(seconds: 3),
-                                backgroundColor: kBlueColor,
-                                content: Text(
-                                  value.toString(),
-                                ),
-                              ),
-                            );
+                            await SharedPreferences.getInstance().then((value) {
+                              value.clear();
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const SignInView()),
+                                  (route) => false);
+                            });
                           }
                         });
                       },
@@ -397,7 +412,7 @@ class _PsettingsViewState extends State<PsettingsView> {
                             )),
                           ),
                           SizedBox(
-                            height: 10.h,
+                            height: 2.h,
                           ),
                           FittedBox(
                             child: TextWidget(
@@ -579,7 +594,7 @@ class _PsettingsViewState extends State<PsettingsView> {
                             )),
                           ),
                           SizedBox(
-                            height: 10.h,
+                            height: 2.h,
                           ),
                           FittedBox(
                             child: TextWidget(

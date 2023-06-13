@@ -240,7 +240,7 @@ class _InvoiceWidgetState extends State<InvoiceWidget> {
                           children: [
                             TextWidget(
                                 text:
-                                    "${widget.order.costumer.firstName} ${widget.order.costumer.firstName}",
+                                    "${widget.order.costumer.firstName} ${widget.order.costumer.lastName}",
                                 size: 14,
                                 color: kDarkBleuColor,
                                 fontWeight: FontWeight.normal),

@@ -166,7 +166,6 @@ class _MyAppState extends State<MyApp> {
           theme: ThemeData(
             splashColor: kBlueColor,
             hintColor: kGreyColor,
-            //backgroundColor: Colors.white,
             colorScheme: ColorScheme.fromSwatch(
               backgroundColor: Colors.white,
               primarySwatch: Colors.green,

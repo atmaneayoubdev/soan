@@ -240,13 +240,13 @@ class _SignInViewState extends State<SignInView> {
                                 isLoading = true;
                                 setState(() {});
                                 await AuthController.login(
-                                        language: context.locale.languageCode,
-                                        phoneNumber: finalPhone,
-                                        password: passwordController.text)
-                                    .then((value) async {
+                                  language: context.locale.languageCode,
+                                  phoneNumber: finalPhone,
+                                  password: passwordController.text,
+                                ).then((value) async {
                                   isLoading = false;
                                   setState(() {});
-                                  log(value.runtimeType.toString());
+                                  debugPrint(value.runtimeType.toString());
                                   if (value.runtimeType == UserModel) {
                                     Provider.of<UserProvider>(context,
                                             listen: false)

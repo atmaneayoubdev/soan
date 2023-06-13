@@ -1,9 +1,9 @@
-import 'dart:math';
+import 'dart:async';
 
 import 'package:easy_localization/easy_localization.dart' as loc;
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:soan/Common/back_button.dart';
 import 'package:soan/Common/large_button.dart';
 import 'package:soan/Common/loading_widget.dart';
@@ -29,7 +29,6 @@ class UserFirstSignUpView extends StatefulWidget {
 
 class _UserFirstSignUpViewState extends State<UserFirstSignUpView> {
   TextEditingController phoneController = TextEditingController();
-
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -54,6 +53,23 @@ class _UserFirstSignUpViewState extends State<UserFirstSignUpView> {
       });
     });
   }
+
+  InAppWebViewController? webViewController;
+  InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
+      crossPlatform: InAppWebViewOptions(
+        useShouldOverrideUrlLoading: true,
+        mediaPlaybackRequiresUserGesture: false,
+      ),
+      android: AndroidInAppWebViewOptions(
+        useHybridComposition: true,
+      ),
+      ios: IOSInAppWebViewOptions(
+        allowsInlineMediaPlayback: true,
+      ));
+
+  String url = "";
+  double progress = 0;
+  final urlController = TextEditingController();
 
   @override
   void initState() {
@@ -203,7 +219,8 @@ class _UserFirstSignUpViewState extends State<UserFirstSignUpView> {
 
                                     phoneController.clear();
                                   },
-                                  autovalidateMode: AutovalidateMode.always,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                   validator: (value) {
                                     String pattern = r'[0-9]';
                                     RegExp regExp = RegExp(pattern);
@@ -307,77 +324,73 @@ class _UserFirstSignUpViewState extends State<UserFirstSignUpView> {
                                             : const SizedBox(),
                                       ),
                                     ),
-                                    SizedBox(
-                                      width: 10.h,
-                                    ),
-                                    TextWidget(
-                                      text: LocaleKeys
-                                          .auth_agree_terms_and_conditions
-                                          .tr(),
-                                      size: 14,
-                                      color: kDarkBleuColor,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                    SizedBox(
-                                      width: context.locale.languageCode == 'en'
-                                          ? 30.h
-                                          : 10.h,
-                                    ),
+                                    10.horizontalSpace,
                                     GestureDetector(
                                       onTap: () {
-                                        showDialog<void>(
+                                        showDialog(
                                           context: context,
                                           barrierDismissible:
                                               true, // user must tap button!
                                           builder: (BuildContext ctx) {
                                             return AlertDialog(
                                               contentPadding: EdgeInsets.zero,
-                                              content: Container(
+                                              content: SizedBox(
                                                 height: 800.h,
                                                 width: 350.w,
-                                                padding:
-                                                    const EdgeInsets.all(20),
-                                                child: SingleChildScrollView(
-                                                  child: FutureBuilder(
-                                                    future: GlobalController
-                                                        .getPrivacy(context
-                                                            .locale
-                                                            .languageCode),
-                                                    initialData: '',
-                                                    builder:
-                                                        (BuildContext context,
-                                                            AsyncSnapshot
-                                                                snapshot) {
-                                                      return Text(
-                                                        snapshot.data
-                                                            .toString(),
-                                                        style:
-                                                            GoogleFonts.tajawal(
-                                                          height: 1.5,
-                                                          fontSize: 16.sp,
-                                                          color: kGreyColor,
-                                                          fontWeight:
-                                                              FontWeight.normal,
-                                                        ),
-                                                      );
-                                                    },
-                                                  ),
+                                                child: InAppWebView(
+                                                  initialUrlRequest: URLRequest(
+                                                      url: Uri.parse(
+                                                    "https://cpanel-soan.com/privacy-policy",
+                                                  )),
+                                                  initialOptions: options,
+                                                  onWebViewCreated:
+                                                      (controller) {
+                                                    webViewController =
+                                                        controller;
+                                                  },
+                                                  androidOnPermissionRequest:
+                                                      (controller, origin,
+                                                          resources) async {
+                                                    return PermissionRequestResponse(
+                                                        resources: resources,
+                                                        action:
+                                                            PermissionRequestResponseAction
+                                                                .GRANT);
+                                                  },
                                                 ),
                                               ),
                                             );
                                           },
                                         );
                                       },
-                                      child: Transform(
-                                        transform:
-                                            context.locale.languageCode == 'en'
-                                                ? Matrix4.rotationY(pi)
-                                                : Matrix4.rotationY(0),
-                                        child: SvgPicture.asset(
-                                          "assets/icons/question_circle.svg",
-                                        ),
+                                      child: Row(
+                                        children: [
+                                          TextWidget(
+                                            text: LocaleKeys
+                                                .auth_agree_terms_and_conditions
+                                                .tr(),
+                                            size: 14,
+                                            color: kDarkBleuColor,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                          SizedBox(
+                                            width: 10.h,
+                                          ),
+                                          Container(
+                                            padding: const EdgeInsets.all(2),
+                                            decoration: const BoxDecoration(
+                                              color: kGreenColor,
+                                              shape: BoxShape.circle,
+                                            ),
+                                            child: const FittedBox(
+                                                child: Icon(
+                                              Icons.question_mark_sharp,
+                                              color: Colors.white,
+                                            )),
+                                          ),
+                                        ],
                                       ),
-                                    ),
+                                    )
                                   ],
                                 ),
                               ),

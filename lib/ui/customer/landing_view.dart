@@ -9,7 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'home/views/home_view.dart';
 import 'orders/view/my_orders_view.dart';
-import 'settings/views/settigns_view.dart';
+import 'settings/views/settings_view.dart';
 import 'providers/views/soan_providers_view.dart';
 import 'package:provider/provider.dart';
 
@@ -77,6 +77,7 @@ class _LandingViewState extends State<LandingView> {
             children: [
               SvgPicture.asset(
                 icon,
+                // ignore: deprecated_member_use
                 color: _selectedIndex == index ? kDarkBleuColor : kGreyColor,
                 height: _selectedIndex != index ? 20.h : 25.h,
               ),

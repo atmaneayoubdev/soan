@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 const String baseUrl = "https://cpanel-soan.com/api/";
+//const String baseUrl = "http://soun.tufahatin-sa.com/api/";
 
 const Color kBlueColor = Color.fromRGBO(15, 76, 129, 1);
 const Color kLightBlueColor = Color.fromRGBO(15, 76, 129, 0.5);
@@ -78,6 +79,4 @@ InputDecoration? formFieldDecoration = const InputDecoration(
   ),
 );
 
-String googleMapApiKey = 'AIzaSyDAzLPkHKe18dOKCiDwPMubwQNehhuawaw';
-
-//String googleMapApiKey = 'AIzaSyD9fNGyHKGq2IYTX9jqXoKcOdqcnZ5MVdw';
+//String googleMapApiKey = 'AIzaSyDAzLPkHKe18dOKCiDwPMubwQNehhuawaw';

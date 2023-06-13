@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -44,7 +43,7 @@ class ProviderController with ChangeNotifier {
           headers: headers,
         ),
       );
-      log(response.data.toString());
+      debugPrint(response.data.toString());
       ProviderModel provider;
       provider = ProviderModel.fromJson(response.data['data']);
       final prefs = await SharedPreferences.getInstance();
@@ -81,7 +80,7 @@ class ProviderController with ChangeNotifier {
           headers: headers,
         ),
       );
-      log(response.data.toString());
+      debugPrint(response.data.toString());
       ProviderModel provider;
       provider = ProviderModel.fromJson(response.data['data']);
       final prefs = await SharedPreferences.getInstance();
@@ -129,13 +128,13 @@ class ProviderController with ChangeNotifier {
           headers: headers,
         ),
       );
-      log(response.data['message']);
+      debugPrint(response.data['message']);
       ProviderModel provider;
       provider = ProviderModel.fromJson(response.data['data']);
       return provider;
     } on DioError catch (error) {
-      log(error.message);
-      return error.message;
+      debugPrint(error.message!);
+      return error.message!;
     }
   }
 
@@ -153,8 +152,8 @@ class ProviderController with ChangeNotifier {
         'Authorization': "Bearer $token",
         'Accept-Language': language,
       };
-      log(password);
-      log(phone);
+      debugPrint(password);
+      debugPrint(phone);
       var response = await dio.post(
         "${baseUrl}provider/my-profile/change-phone",
         data: {
@@ -167,7 +166,7 @@ class ProviderController with ChangeNotifier {
           headers: headers,
         ),
       );
-      log(response.data.toString());
+      debugPrint(response.data.toString());
       if (response.statusCode == 200) {
         final prefs = await SharedPreferences.getInstance();
 
@@ -180,7 +179,7 @@ class ProviderController with ChangeNotifier {
             : response.data['message'];
       }
     } on DioError catch (error) {
-      log(error.message);
+      debugPrint(error.message!);
       return error.response!.data['message'];
     }
   }
@@ -214,7 +213,7 @@ class ProviderController with ChangeNotifier {
           headers: headers,
         ),
       );
-      log(response.data.toString());
+      debugPrint(response.data.toString());
       if (response.statusCode == 200) {
         return response.data['message'];
       } else {
@@ -223,7 +222,7 @@ class ProviderController with ChangeNotifier {
             : response.data['message'];
       }
     } on DioError catch (error) {
-      log(error.message);
+      debugPrint(error.message!);
       return error.response!.data['message'];
     }
   }
@@ -249,7 +248,7 @@ class ProviderController with ChangeNotifier {
           headers: headers,
         ),
       );
-      log(response.data.toString());
+      debugPrint(response.data.toString());
       if (response.statusCode == 200) {
         DuesModel dues = DuesModel.fromJson(response.data["data"]);
         return dues;
@@ -257,7 +256,7 @@ class ProviderController with ChangeNotifier {
         return "error";
       }
     } on DioError catch (error) {
-      log(error.message);
+      debugPrint(error.message!);
       return "error";
     }
   }
@@ -283,13 +282,13 @@ class ProviderController with ChangeNotifier {
           headers: headers,
         ),
       );
-      log(response.data.toString());
+      debugPrint(response.data.toString());
       if (response.statusCode == 200) {
         return response.data["data"]["InvoiceURL"].toString();
       }
       return response.data['message'];
     } on DioError catch (error) {
-      log(error.message);
+      debugPrint(error.message!);
       return error.response!.data['message'];
     }
   }
@@ -313,7 +312,7 @@ class ProviderController with ChangeNotifier {
           headers: headers,
         ),
       );
-      log(response.data.toString());
+      debugPrint(response.data.toString());
       if (response.statusCode == 200) {
         List<NotificationModel> notifications = [];
         notifications = (response.data['data'] as List)
@@ -323,7 +322,7 @@ class ProviderController with ChangeNotifier {
       }
       return [];
     } on DioError catch (error) {
-      log(error.message);
+      debugPrint(error.message!);
       return [];
     }
   }
@@ -350,7 +349,7 @@ class ProviderController with ChangeNotifier {
           headers: headers,
         ),
       );
-      log(response.data.toString());
+      debugPrint(response.data.toString());
 
       if (response.statusCode == 200) {
         List<PorderModel> orders = [];
@@ -361,7 +360,7 @@ class ProviderController with ChangeNotifier {
       }
       return [];
     } on DioError catch (error) {
-      log(error.message);
+      debugPrint(error.message!);
       return [];
     }
   }
@@ -387,7 +386,7 @@ class ProviderController with ChangeNotifier {
           headers: headers,
         ),
       );
-      log(response.data.toString());
+      debugPrint(response.data.toString());
 
       if (response.statusCode == 200) {
         List<PorderModel> orders = [];
@@ -398,7 +397,7 @@ class ProviderController with ChangeNotifier {
       }
       return [];
     } on DioError catch (error) {
-      log(error.message);
+      debugPrint(error.message!);
       return [];
     }
   }
@@ -429,11 +428,11 @@ class ProviderController with ChangeNotifier {
           headers: headers,
         ),
       );
-      log(response.data['message']);
+      debugPrint(response.data['message']);
       return response.data['message'];
     } on DioError catch (error) {
-      log(error.message);
-      return error.message;
+      debugPrint(error.message!);
+      return error.message!;
     }
   }
 
@@ -459,11 +458,11 @@ class ProviderController with ChangeNotifier {
           headers: headers,
         ),
       );
-      log(response.data['message']);
+      debugPrint(response.data['message']);
       return response.data['message'];
     } on DioError catch (error) {
-      log(error.message);
-      return error.message;
+      debugPrint(error.message!);
+      return error.message!;
     }
   }
 
@@ -500,11 +499,11 @@ class ProviderController with ChangeNotifier {
           headers: headers,
         ),
       );
-      log(response.data['message']);
+      debugPrint(response.data['message']);
       return response.data['message'];
     } on DioError catch (error) {
-      log(error.message);
-      return error.message;
+      debugPrint(error.message!);
+      return error.message!;
     }
   }
 
@@ -533,11 +532,11 @@ class ProviderController with ChangeNotifier {
           headers: headers,
         ),
       );
-      log(response.data.toString());
+      debugPrint(response.data.toString());
       return response.data['message'];
     } on DioError catch (error) {
-      log(error.message);
-      return error.message;
+      debugPrint(error.message!);
+      return error.message!;
     }
   }
 
@@ -563,12 +562,12 @@ class ProviderController with ChangeNotifier {
           headers: headers,
         ),
       );
-      log(response.data.toString());
+      debugPrint(response.data.toString());
 
       return InvoiceModel.fromJson(response.data["data"]);
     } on DioError catch (error) {
-      log(error.message);
-      return error.message;
+      debugPrint(error.message!);
+      return error.message!;
     }
   }
 }

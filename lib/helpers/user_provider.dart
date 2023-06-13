@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../models/auth/user_model.dart';
 
 class UserProvider with ChangeNotifier {
@@ -16,7 +17,7 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void clearUser() {
+  Future<void> clearUser() async {
     user = UserModel(
       firstName: '',
       lastName: '',
@@ -25,6 +26,8 @@ class UserProvider with ChangeNotifier {
       email: '',
       avatar: '',
     );
+    final prefs = await SharedPreferences.getInstance();
+    prefs.clear;
     notifyListeners();
   }
 }

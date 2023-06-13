@@ -26,6 +26,7 @@ class SettingsWidget extends StatelessWidget {
         child: Center(
             child: SvgPicture.asset(
           image,
+          // ignore: deprecated_member_use
           color: kBlueColor,
         )),
       ),

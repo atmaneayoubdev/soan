@@ -1,11 +1,13 @@
-import 'dart:math';
+// ignore_for_file: use_build_context_synchronously
 
 import 'package:easy_localization/easy_localization.dart' as loc;
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:location/location.dart';
 import 'package:soan/Common/loading_widget.dart';
 import 'package:soan/controllers/global_controller.dart';
 import 'package:soan/models/global/area_model.dart';
@@ -35,14 +37,12 @@ class ProviderFirstRegisterView extends StatefulWidget {
 
 class _ProviderFirstRegisterViewState extends State<ProviderFirstRegisterView> {
   TextEditingController phoneController = TextEditingController();
-
+  final _formKey = GlobalKey<FormState>();
   TextEditingController companyNameController = TextEditingController();
   TextEditingController registerNbrController = TextEditingController();
   TextEditingController taxNbrController = TextEditingController();
   TextEditingController locationController = TextEditingController();
   String finalPhone = '';
-
-  final _formKey = GlobalKey<FormState>();
   bool agreeOnTermsAndConditions = false;
   bool isLoading = true;
   bool isHowError = false;
@@ -87,6 +87,77 @@ class _ProviderFirstRegisterViewState extends State<ProviderFirstRegisterView> {
       setState(() {});
     });
   }
+
+  Future<bool> _handleLocationPermission() async {
+    Location location = Location();
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
+
+    serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.red,
+            content: Text(LocaleKeys
+                .costumer_providers_permission_denied_activate_location
+                .tr()),
+          ),
+        );
+        return false;
+      }
+    }
+
+    permissionGranted = await location.hasPermission();
+    if (permissionGranted != PermissionStatus.granted) {
+      if (permissionGranted == PermissionStatus.denied) {
+        permissionGranted = await location.requestPermission();
+        if (permissionGranted == PermissionStatus.denied) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Colors.red,
+              content:
+                  Text(LocaleKeys.costumer_providers_permission_denied.tr()),
+            ),
+          );
+          return false;
+        }
+      }
+
+      if (permissionGranted == PermissionStatus.deniedForever) {
+        permissionGranted = await location.requestPermission();
+        if (permissionGranted == PermissionStatus.deniedForever) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Colors.red,
+              content: Text(LocaleKeys
+                  .costumer_providers_we_can_not_request_permission
+                  .tr()),
+            ),
+          );
+          return false;
+        }
+      }
+    }
+
+    return true;
+  }
+
+  final GlobalKey webViewKey = GlobalKey();
+
+  InAppWebViewController? webViewController;
+  InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
+      crossPlatform: InAppWebViewOptions(
+        useShouldOverrideUrlLoading: true,
+        mediaPlaybackRequiresUserGesture: false,
+      ),
+      android: AndroidInAppWebViewOptions(
+        useHybridComposition: true,
+      ),
+      ios: IOSInAppWebViewOptions(
+        allowsInlineMediaPlayback: true,
+      ));
 
   @override
   void initState() {
@@ -215,11 +286,24 @@ class _ProviderFirstRegisterViewState extends State<ProviderFirstRegisterView> {
                               SizedBox(
                                 height: 16.h,
                               ),
-                              TextWidget(
-                                text: " ${LocaleKeys.auth_tax_number.tr()} ",
-                                size: 16,
-                                color: kDarkBleuColor,
-                                fontWeight: FontWeight.w500,
+                              Row(
+                                children: [
+                                  TextWidget(
+                                    text:
+                                        " ${LocaleKeys.auth_tax_number.tr()} ",
+                                    size: 16,
+                                    color: kDarkBleuColor,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  5.horizontalSpace,
+                                  TextWidget(
+                                    text:
+                                        LocaleKeys.costumer_home_optional.tr(),
+                                    size: 16,
+                                    color: kDarkBleuColor,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ],
                               ),
                               SizedBox(
                                 height: 12.h,
@@ -230,9 +314,7 @@ class _ProviderFirstRegisterViewState extends State<ProviderFirstRegisterView> {
                                 autovalidateMode:
                                     AutovalidateMode.onUserInteraction,
                                 validator: (value) {
-                                  if (value == null ||
-                                      value.isEmpty ||
-                                      value.length != 15) {
+                                  if (value!.isNotEmpty && value.length != 15) {
                                     return LocaleKeys.auth_enter_tax_number
                                         .tr();
                                   }
@@ -375,18 +457,25 @@ class _ProviderFirstRegisterViewState extends State<ProviderFirstRegisterView> {
                               TextFormField(
                                 onTap: () {
                                   //Focus.of(context).unfocus();
-                                  Navigator.push<LocModel>(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const LocationView()),
-                                  ).then((value) {
-                                    FocusManager.instance.primaryFocus!
-                                        .unfocus();
-                                    if (value != null) {
-                                      _locModel = value;
-                                      locationController.text = value.address;
-                                      setState(() {});
+                                  _handleLocationPermission().then((value) {
+                                    if (value == true) {
+                                      Navigator.push<LocModel>(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => LocationView(
+                                                  selectedCity:
+                                                      _selectedCity!.name,
+                                                )),
+                                      ).then((value) {
+                                        FocusManager.instance.primaryFocus!
+                                            .unfocus();
+                                        if (value != null) {
+                                          _locModel = value;
+                                          locationController.text =
+                                              value.address;
+                                          setState(() {});
+                                        }
+                                      });
                                     }
                                   });
                                 },
@@ -404,19 +493,26 @@ class _ProviderFirstRegisterViewState extends State<ProviderFirstRegisterView> {
                                 decoration: formFieldDecoration!.copyWith(
                                   suffixIcon: InkWell(
                                     onTap: () {
-                                      Navigator.push<LocModel>(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const LocationView()),
-                                      ).then((value) {
-                                        FocusManager.instance.primaryFocus!
-                                            .unfocus();
-                                        if (value != null) {
-                                          _locModel = value;
-                                          locationController.text =
-                                              value.address;
-                                          setState(() {});
+                                      _handleLocationPermission().then((value) {
+                                        if (value == true) {
+                                          Navigator.push<LocModel>(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    LocationView(
+                                                      selectedCity:
+                                                          _selectedCity!.name,
+                                                    )),
+                                          ).then((value) {
+                                            FocusManager.instance.primaryFocus!
+                                                .unfocus();
+                                            if (value != null) {
+                                              _locModel = value;
+                                              locationController.text =
+                                                  value.address;
+                                              setState(() {});
+                                            }
+                                          });
                                         }
                                       });
                                     },
@@ -475,10 +571,13 @@ class _ProviderFirstRegisterViewState extends State<ProviderFirstRegisterView> {
                                     if (value == null ||
                                         value.number.isEmpty ||
                                         !regExp.hasMatch(value.number)) {
-                                      return LocaleKeys.auth;
+                                      return LocaleKeys
+                                          .auth_enter_valid_phone_number
+                                          .tr();
                                     }
                                     if (value.number.length != 9) {
-                                      return 'يجب أن يحتوي رقم الهاتف على 9 أرقام';
+                                      return LocaleKeys.auth_phone_must_be_9
+                                          .tr();
                                     }
 
                                     return null;
@@ -566,72 +665,71 @@ class _ProviderFirstRegisterViewState extends State<ProviderFirstRegisterView> {
                                     SizedBox(
                                       width: 10.h,
                                     ),
-                                    TextWidget(
-                                      text: LocaleKeys
-                                          .auth_agree_terms_and_conditions
-                                          .tr(),
-                                      size: 14,
-                                      color: kDarkBleuColor,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                    SizedBox(
-                                      width: context.locale.languageCode == 'en'
-                                          ? 30.h
-                                          : 10.h,
-                                    ),
                                     GestureDetector(
                                       onTap: () {
-                                        showDialog<void>(
+                                        showDialog(
                                           context: context,
                                           barrierDismissible:
                                               true, // user must tap button!
                                           builder: (BuildContext ctx) {
                                             return AlertDialog(
                                               contentPadding: EdgeInsets.zero,
-                                              content: Container(
+                                              content: SizedBox(
                                                 height: 800.h,
                                                 width: 350.w,
-                                                padding:
-                                                    const EdgeInsets.all(20),
-                                                child: SingleChildScrollView(
-                                                  child: FutureBuilder(
-                                                    future: GlobalController
-                                                        .getPrivacy(context
-                                                            .locale
-                                                            .languageCode),
-                                                    initialData: '',
-                                                    builder:
-                                                        (BuildContext context,
-                                                            AsyncSnapshot
-                                                                snapshot) {
-                                                      return Text(
-                                                        snapshot.data
-                                                            .toString(),
-                                                        style:
-                                                            GoogleFonts.tajawal(
-                                                          height: 1.5,
-                                                          fontSize: 16.sp,
-                                                          color: kGreyColor,
-                                                          fontWeight:
-                                                              FontWeight.normal,
-                                                        ),
-                                                      );
-                                                    },
-                                                  ),
+                                                child: InAppWebView(
+                                                  key: webViewKey,
+                                                  initialUrlRequest: URLRequest(
+                                                      url: Uri.parse(
+                                                    "https://cpanel-soan.com/privacy-policy",
+                                                  )),
+                                                  initialOptions: options,
+                                                  onWebViewCreated:
+                                                      (controller) {
+                                                    webViewController =
+                                                        controller;
+                                                  },
+                                                  androidOnPermissionRequest:
+                                                      (controller, origin,
+                                                          resources) async {
+                                                    return PermissionRequestResponse(
+                                                        resources: resources,
+                                                        action:
+                                                            PermissionRequestResponseAction
+                                                                .GRANT);
+                                                  },
                                                 ),
                                               ),
                                             );
                                           },
                                         );
                                       },
-                                      child: Transform(
-                                        transform:
-                                            context.locale.languageCode == 'en'
-                                                ? Matrix4.rotationY(pi)
-                                                : Matrix4.rotationY(0),
-                                        child: SvgPicture.asset(
-                                          "assets/icons/question_circle.svg",
-                                        ),
+                                      child: Row(
+                                        children: [
+                                          TextWidget(
+                                            text: LocaleKeys
+                                                .auth_agree_terms_and_conditions
+                                                .tr(),
+                                            size: 14,
+                                            color: kDarkBleuColor,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                          SizedBox(
+                                            width: 10.h,
+                                          ),
+                                          Container(
+                                            padding: const EdgeInsets.all(2),
+                                            decoration: const BoxDecoration(
+                                              color: kGreenColor,
+                                              shape: BoxShape.circle,
+                                            ),
+                                            child: const FittedBox(
+                                                child: Icon(
+                                              Icons.question_mark_sharp,
+                                              color: Colors.white,
+                                            )),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ],

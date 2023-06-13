@@ -275,41 +275,20 @@ class _OrderDetailsViewState extends State<OrderDetailsView> {
                   SizedBox(
                     height: 11.h,
                   ),
-                  Row(
-                    children: [
-                      // Container(
-                      //   height: 23.h,
-                      //   width: 23.w,
-                      //   padding: const EdgeInsets.all(2),
-                      //   decoration: const BoxDecoration(
-                      //     shape: BoxShape.circle,
-                      //     color: kBlueColor,
-                      //   ),
-                      //   child: const FittedBox(
-                      //     child: Icon(
-                      //       Icons.check,
-                      //       color: Colors.white,
-                      //     ),
-                      //   ),
-                      // ),
-                      // SizedBox(
-                      //   width: 10.w,
-                      // ),
-                      TextWidget(
-                        text: LocaleKeys
-                            .costumer_my_orders_workshop_will_get_the_car
-                            .tr(),
-                        size: 16,
-                        color: kLightDarkBleuColor,
-                        fontWeight: FontWeight.normal,
-                      ),
-                    ],
+                  TextWidget(
+                    text: LocaleKeys
+                        .costumer_my_orders_workshop_will_get_the_car
+                        .tr(),
+                    size: 16,
+                    color: kLightDarkBleuColor,
+                    fontWeight: FontWeight.normal,
                   ),
                   SizedBox(
                     height: 30.h,
                   ),
                   if (widget.order.images.isNotEmpty)
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         TextWidget(
                           text: LocaleKeys.costumer_my_orders_car_images.tr(),

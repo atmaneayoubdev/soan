@@ -6,7 +6,10 @@ import 'dart:math' as mat;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+// ignore: library_prefixes
+import 'package:geolocator/geolocator.dart' as geoLoc;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:soan/controllers/costumer_controller.dart';
 import 'package:soan/helpers/user_provider.dart';
@@ -19,7 +22,6 @@ import '../../../../controllers/global_controller.dart';
 import '../../../../models/global/categories_model.dart';
 import '../../../../Common/title_widget.dart';
 import '../components/soan_providers_widger.dart';
-import 'package:geolocator/geolocator.dart';
 
 class SoanProvidersView extends StatefulWidget {
   const SoanProvidersView({Key? key}) : super(key: key);
@@ -58,54 +60,127 @@ class _SoanProvidersViewState extends State<SoanProvidersView> {
     }
   }
 
-  Future<bool> _handleLocationPermission() async {
-    bool serviceEnabled;
-    LocationPermission permission;
+  // Future<bool> _handleLocationPermission() async {
+  //   bool serviceEnabled;
+  //   LocationPermission permission;
 
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  //   serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  //   if (!serviceEnabled) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(
+  //         backgroundColor: Colors.red,
+  //         content: Text(LocaleKeys
+  //             .costumer_providers_permission_denied_activate_location
+  //             .tr()),
+  //       ),
+  //     );
+  //     return false;
+  //   }
+  //   permission = await Geolocator.checkPermission();
+
+  //   if (permission == LocationPermission.denied) {
+  //     permission = await Geolocator.requestPermission();
+  //     if (permission == LocationPermission.denied) {
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(
+  //           backgroundColor: Colors.red,
+  //           content: Text(LocaleKeys.costumer_providers_permission_denied.tr()),
+  //         ),
+  //       );
+  //       return false;
+  //     }
+  //   }
+  //   if (permission == LocationPermission.deniedForever) {
+  //     permission = await Geolocator.requestPermission();
+  //     if (permission == LocationPermission.deniedForever) {
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(
+  //           backgroundColor: Colors.red,
+  //           content: Text(LocaleKeys.costumer_providers_we_can_not_request_permission
+  //               .tr()),
+  //         ),
+  //       );
+  //       return false;
+  //     }
+  //   }
+
+  //   return true;
+  // }
+
+  // Future<void> _getCurrentPosition() async {
+  //   final hasPermission = await _handleLocationPermission();
+  //   if (!hasPermission) return;
+  //   await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+  //       .then((Position position) {
+  //     log(position.latitude.toString());
+  //     setState(() => latLng = LatLng(position.latitude, position.longitude));
+  //   }).catchError((e) {
+  //     debugPrint(e);
+  //   });
+  // }
+
+  Future _getCurrentPosition() async {
+    Location location = Location();
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
+
+    serviceEnabled = await location.serviceEnabled();
     if (!serviceEnabled) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(LocaleKeys
-              .costumer_providers_permission_denied_activate_location
-              .tr()),
-        ),
-      );
-      return false;
-    }
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
+            backgroundColor: Colors.red,
+            content: Text(LocaleKeys
+                .costumer_providers_permission_denied_activate_location
+                .tr()),
+          ),
+        );
+        return;
+      }
+    }
+
+    permissionGranted = await location.hasPermission();
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted == PermissionStatus.denied) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.red,
             content: Text(LocaleKeys.costumer_providers_permission_denied.tr()),
           ),
         );
-        return false;
+        return;
       }
     }
-    if (permission == LocationPermission.deniedForever) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-              LocaleKeys.costumer_providers_we_can_not_request_permission.tr()),
-        ),
-      );
-      return false;
-    }
-    return true;
-  }
 
-  Future<void> _getCurrentPosition() async {
-    final hasPermission = await _handleLocationPermission();
-    if (!hasPermission) return;
-    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
-        .then((Position position) {
-      log(position.latitude.toString());
-      setState(() => latLng = LatLng(position.latitude, position.longitude));
-    }).catchError((e) {
-      debugPrint(e);
+    if (permissionGranted == PermissionStatus.deniedForever) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted == PermissionStatus.deniedForever) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.red,
+            content: Text(LocaleKeys
+                .costumer_providers_we_can_not_request_permission
+                .tr()),
+          ),
+        );
+        return;
+      }
+    }
+
+    log("started getting position");
+
+    // await location.getLocation().then((value) {
+    //   log(value.toString());
+    //   setState(() => latLng = LatLng(value.latitude!, value.longitude!));
+    // });
+
+    await geoLoc.Geolocator.getCurrentPosition(
+            desiredAccuracy: geoLoc.LocationAccuracy.low)
+        .then((value) {
+      log(value.toString());
+      setState(() => latLng = LatLng(value.latitude, value.longitude));
     });
   }
 

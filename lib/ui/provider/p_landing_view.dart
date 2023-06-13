@@ -80,6 +80,7 @@ class _PlandingViewState extends State<PlandingView> {
             children: [
               SvgPicture.asset(
                 icon,
+                // ignore: deprecated_member_use
                 color: _selectedIndex == index ? kDarkBleuColor : kGreyColor,
                 height: _selectedIndex != index ? 20.h : 25.h,
               ),
