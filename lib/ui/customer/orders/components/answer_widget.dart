@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -51,11 +52,16 @@ class _AnswerWidgetState extends State<AnswerWidget> {
                 height: 72.h,
                 width: 72.w,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(9.r),
+                  borderRadius: BorderRadius.circular(9),
                   color: kLightLightGreyColor,
                 ),
                 child: Center(
-                  child: SvgPicture.asset("assets/icons/car_logo_list.svg"),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(9),
+                    child: CachedNetworkImage(
+                      imageUrl: widget.answer.provider.avatar,
+                    ),
+                  ),
                 ),
               ),
               10.horizontalSpace,
@@ -75,7 +81,7 @@ class _AnswerWidgetState extends State<AnswerWidget> {
                         ),
                         Row(
                           mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             TextWidget(
@@ -89,7 +95,9 @@ class _AnswerWidgetState extends State<AnswerWidget> {
                               width: 10.w,
                             ),
                             TextWidget(
-                              text: widget.answer.provider.rates,
+                              text: widget.answer.provider.rates == 'null'
+                                  ? '0'
+                                  : widget.answer.provider.rates,
                               size: 12,
                               color: kDarkBleuColor,
                               fontWeight: FontWeight.w500,
@@ -290,11 +298,13 @@ class CatWidget extends StatelessWidget {
           10.r,
         ),
       ),
-      child: TextWidget(
-        text: cat.name,
-        size: 10,
-        color: kDarkBleuColor,
-        fontWeight: FontWeight.normal,
+      child: Center(
+        child: TextWidget(
+          text: cat.name,
+          size: 10,
+          color: kDarkBleuColor,
+          fontWeight: FontWeight.normal,
+        ),
       ),
     );
   }

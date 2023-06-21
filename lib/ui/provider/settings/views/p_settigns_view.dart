@@ -6,7 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart' as modal;
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:soan/Common/loading_widget.dart';
 import 'package:soan/controllers/auth_controller.dart';
 import 'package:soan/helpers/provider.provider.dart';
 import 'package:soan/models/auth/provider_model.dart';
@@ -39,7 +38,7 @@ class PsettingsView extends StatefulWidget {
 
 class _PsettingsViewState extends State<PsettingsView> {
   late ProviderModel provider;
-  bool isLoading = false;
+  bool isLoading = true;
 
   List<ContentModel> _contents = [];
 
@@ -48,6 +47,8 @@ class _PsettingsViewState extends State<PsettingsView> {
         .then((value) {
       if (value.runtimeType == List<ContentModel>) {
         _contents = value;
+        isLoading = false;
+
         setState(() {});
       }
     });
@@ -105,516 +106,557 @@ class _PsettingsViewState extends State<PsettingsView> {
               title: LocaleKeys.titles_settings.tr(),
               isProvider: true,
             ),
-            SizedBox(
-              height: 20.h,
-            ),
+            20.verticalSpace,
             RatingHeaderWidget(
               provdier: provider,
             ),
-            SizedBox(
-              height: 20.w,
-            ),
+            20.verticalSpace,
             Expanded(
-              // width: 350.w,
-              // height: 400.h,
               child: SizedBox(
                 width: 350.w,
-                child: GridView.count(
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 0.w,
-                  mainAxisSpacing: 30.h,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const PprofileView(),
-                          ),
-                        );
-                      },
-                      child: SettingsWidget(
-                        image: "assets/icons/contact_placeholder.svg",
-                        name:
-                            LocaleKeys.costumer_settings_personal_profile.tr(),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const DuesView(),
-                          ),
-                        );
-                      },
-                      child: SettingsWidget(
-                        image: "assets/icons/wallet.svg",
-                        name: LocaleKeys.titles_dues.tr(),
-                      ),
-                    ),
-                    for (ContentModel content in _contents)
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: ((context) => ContentPageView(
-                                    name: content.title,
-                                    id: content.id,
-                                  )),
-                            ),
-                          );
-                        },
-                        child: Column(children: [
-                          Container(
-                            height: 95.h,
-                            width: 95.w,
-                            padding: const EdgeInsets.all(15),
-                            decoration: BoxDecoration(
-                                color: kLightLightGreyColor,
-                                borderRadius: BorderRadius.circular(10.r)),
-                            child: Center(
-                                child: CachedNetworkImage(
-                              imageUrl: content.image,
-                              fit: BoxFit.contain,
-                              placeholder: (context, url) => const Center(
-                                child: CircularProgressIndicator(
-                                  color: kLightLightSkyBlueColor,
-                                ),
-                              ),
-                              errorWidget: (context, url, error) =>
-                                  const Icon(Icons.error),
-                            )),
-                          ),
-                          2.verticalSpace,
-                          FittedBox(
-                            child: TextWidget(
-                              text: content.title,
-                              size: 14,
-                              color: kDarkBleuColor,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                        ]),
-                      ),
-                    GestureDetector(
-                      onTap: () {
-                        _launchUrl(
-                          Uri.parse(
-                            "whatsapp://send?text=sample text&phone=${settingsModel.info.whatsapp}",
-                          ),
-                        );
-                      },
-                      child: SettingsWidget(
-                          name: LocaleKeys.costumer_settings_technical_support
-                              .tr(),
-                          image: "assets/icons/whatsapp.svg"),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        _launchUrl(Uri.parse(settingsModel.social.instagram));
-                      },
-                      child: SettingsWidget(
-                          name: LocaleKeys.costumer_settings_instagram.tr(),
-                          image: "assets/icons/instagram.svg"),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        _launchUrl(Uri.parse(settingsModel.social.twitter));
-                      },
-                      child: SettingsWidget(
-                          name: LocaleKeys.costumer_settings_twitter.tr(),
-                          image: "assets/icons/twitter.svg"),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        showDialog<void>(
-                          context: context,
-                          barrierDismissible: true, // user must tap button!
-                          builder: (BuildContext ctx) {
-                            return AlertDialog(
-                              contentPadding: EdgeInsets.zero,
-                              content: Container(
-                                height: 150.h,
-                                width: double.infinity,
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 20.w,
-                                ),
-                                margin: const EdgeInsets.all(20),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(16.r),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        context.setLocale(const Locale("en"));
-
-                                        setState(() {});
-                                      },
-                                      child: Container(
-                                        //width: 175.w,
-                                        height: 50.h,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(
-                                            10.r,
-                                          ),
-                                          color: ctx.locale.languageCode == 'en'
-                                              ? kBlueColor
-                                              : kLightLightBlueColor,
-                                        ),
-                                        child: Center(
-                                          child: Text(
-                                            "English",
-                                            style: GoogleFonts.tajawal(
-                                              fontSize: 14.sp,
-                                              fontWeight: FontWeight.normal,
-                                              color: ctx.locale.languageCode ==
-                                                      'en'
-                                                  ? Colors.white
-                                                  : kDarkBleuColor,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        context.setLocale(const Locale("ar"));
-                                        setState(() {});
-                                      },
-                                      child: Container(
-                                        //width: 175.w,
-                                        height: 50.h,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(
-                                            10.r,
-                                          ),
-                                          color: ctx.locale.languageCode == 'ar'
-                                              ? kBlueColor
-                                              : kLightLightBlueColor,
-                                        ),
-                                        child: Center(
-                                          child: Text(
-                                            "العربية",
-                                            style: GoogleFonts.tajawal(
-                                              fontSize: 14.sp,
-                                              fontWeight: FontWeight.normal,
-                                              color: ctx.locale.languageCode ==
-                                                      'ar'
-                                                  ? Colors.white
-                                                  : kDarkBleuColor,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        );
-                      },
-                      child: SizedBox(
-                        // height: 123.w,
-                        width: 95.w,
-                        child: Column(children: [
-                          Container(
-                            height: 95.h,
-                            width: 95.w,
-                            decoration: BoxDecoration(
-                              color: kLightLightGreyColor,
-                              borderRadius: BorderRadius.circular(10.r),
-                            ),
-                            child: const Center(
-                              child: Icon(
-                                Icons.language,
-                                color: kBlueColor,
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 2.h,
-                          ),
-                          FittedBox(
-                            child: TextWidget(
-                              text: LocaleKeys.costumer_settings_language.tr(),
-                              size: 14,
-                              color: kDarkBleuColor,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                        ]),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: ((context) => const SuggestionsView(
-                                      isProvider: true,
-                                    ))));
-                      },
-                      child: SettingsWidget(
-                          name: LocaleKeys.titles_suggestions.tr(),
-                          image: "assets/icons/suggestions.svg"),
-                    ),
-                    GestureDetector(
-                      onTap: () async {
-                        isLoading = true;
-                        setState(() {});
-                        await AuthController.logout(
-                          language: context.locale.languageCode,
-                          token: Provider.of<ProviderProvider>(context,
-                                  listen: false)
-                              .providerModel
-                              .apiToken,
-                        ).then((value) async {
-                          setState(() {
-                            isLoading = false;
-                          });
-                          if (value == 'تم تسجيل الخروج' || value == 'LogOut') {
-                            Navigator.pushAndRemoveUntil(
-                                context,
+                child: isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(
+                          color: kBlueColor,
+                        ),
+                      )
+                    : GridView.count(
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 0.w,
+                        mainAxisSpacing: 30.h,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(
                                 MaterialPageRoute(
-                                    builder: (context) => const SignInView()),
-                                (route) => false);
-                          } else {
-                            await SharedPreferences.getInstance().then((value) {
-                              value.clear();
-                              Navigator.pushAndRemoveUntil(
+                                  builder: (context) => const PprofileView(),
+                                ),
+                              );
+                            },
+                            child: SettingsWidget(
+                              image: "assets/icons/contact_placeholder.svg",
+                              name: LocaleKeys
+                                  .costumer_settings_personal_profile
+                                  .tr(),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => const DuesView(),
+                                ),
+                              );
+                            },
+                            child: SettingsWidget(
+                              image: "assets/icons/wallet.svg",
+                              name: LocaleKeys.titles_dues.tr(),
+                            ),
+                          ),
+                          for (ContentModel content in _contents)
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => const SignInView()),
-                                  (route) => false);
-                            });
-                          }
-                        });
-                      },
-                      child: SizedBox(
-                        // height: 123.w,
-                        width: 95.w,
-                        child: Column(children: [
-                          Container(
-                            height: 95.h,
-                            width: 95.w,
-                            decoration: BoxDecoration(
-                                color: kLightLightPinkColor,
-                                borderRadius: BorderRadius.circular(10.r)),
-                            child: Center(
-                                child: SvgPicture.asset(
-                              "assets/icons/logout.svg",
-                            )),
-                          ),
-                          SizedBox(
-                            height: 2.h,
-                          ),
-                          FittedBox(
-                            child: TextWidget(
-                              text: LocaleKeys.costumer_settings_logout.tr(),
-                              size: 14,
-                              color: kPinkColor,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                        ]),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () async {
-                        modal
-                            .showMaterialModalBottomSheet<bool>(
-                          enableDrag: false,
-                          backgroundColor: Colors.transparent,
-                          context: context,
-                          isDismissible: true,
-                          builder: (context) => Center(
-                            child: Container(
-                              height: 150.h,
-                              width: double.infinity,
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 20.w,
-                              ),
-                              margin: EdgeInsets.symmetric(horizontal: 20.w),
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(16.r)),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Center(
-                                      child: Text(
-                                    LocaleKeys
-                                        .costumer_settings_your_account_will_be_deleted
-                                        .tr(),
-                                    maxLines: 5,
-                                    softWrap: true,
-                                    style: GoogleFonts.tajawal(
-                                      fontSize: 18.sp,
-                                      fontWeight: FontWeight.w600,
-                                      color: kDarkBleuColor,
+                                    builder: ((context) => ContentPageView(
+                                          name: content.title,
+                                          id: content.id,
+                                        )),
+                                  ),
+                                );
+                              },
+                              child: Column(children: [
+                                Container(
+                                  height: 95.h,
+                                  width: 95.w,
+                                  padding: const EdgeInsets.all(15),
+                                  decoration: BoxDecoration(
+                                      color: kLightLightGreyColor,
+                                      borderRadius:
+                                          BorderRadius.circular(10.r)),
+                                  child: Center(
+                                      child: CachedNetworkImage(
+                                    imageUrl: content.image,
+                                    fit: BoxFit.contain,
+                                    placeholder: (context, url) => const Center(
+                                      child: CircularProgressIndicator(
+                                        color: kLightLightSkyBlueColor,
+                                      ),
                                     ),
+                                    errorWidget: (context, url, error) =>
+                                        const Icon(Icons.error),
                                   )),
-                                  // SizedBox(
-                                  //   height: 20.h,
-                                  // ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Expanded(
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            Navigator.pop(context, false);
-                                          },
-                                          child: Container(
-                                            width: 175.w,
-                                            height: 50.h,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                10.r,
+                                ),
+                                2.verticalSpace,
+                                FittedBox(
+                                  child: TextWidget(
+                                    text: content.title,
+                                    size: 14,
+                                    color: kDarkBleuColor,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                              ]),
+                            ),
+                          GestureDetector(
+                            onTap: () {
+                              _launchUrl(
+                                Uri.parse(
+                                  "whatsapp://send?text=sample text&phone=${settingsModel.info.whatsapp}",
+                                ),
+                              );
+                            },
+                            child: SettingsWidget(
+                                name: LocaleKeys
+                                    .costumer_settings_technical_support
+                                    .tr(),
+                                image: "assets/icons/whatsapp.svg"),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              _launchUrl(
+                                  Uri.parse(settingsModel.social.instagram));
+                            },
+                            child: SettingsWidget(
+                                name:
+                                    LocaleKeys.costumer_settings_instagram.tr(),
+                                image: "assets/icons/instagram.svg"),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              _launchUrl(
+                                  Uri.parse(settingsModel.social.twitter));
+                            },
+                            child: SettingsWidget(
+                                name: LocaleKeys.costumer_settings_twitter.tr(),
+                                image: "assets/icons/twitter.svg"),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              showDialog<void>(
+                                context: context,
+                                barrierDismissible:
+                                    true, // user must tap button!
+                                builder: (BuildContext ctx) {
+                                  return AlertDialog(
+                                    contentPadding: EdgeInsets.zero,
+                                    content: Container(
+                                      height: 150.h,
+                                      width: double.infinity,
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 20.w,
+                                      ),
+                                      margin: const EdgeInsets.all(20),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius:
+                                            BorderRadius.circular(16.r),
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              context.setLocale(
+                                                  const Locale("en"));
+
+                                              setState(() {});
+                                            },
+                                            child: Container(
+                                              //width: 175.w,
+                                              height: 50.h,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                  10.r,
+                                                ),
+                                                color:
+                                                    ctx.locale.languageCode ==
+                                                            'en'
+                                                        ? kBlueColor
+                                                        : kLightLightBlueColor,
                                               ),
-                                              color: kLightLightBlueColor,
-                                            ),
-                                            child: Center(
-                                              child: Text(
-                                                LocaleKeys.common_cancel.tr(),
-                                                style: GoogleFonts.tajawal(
-                                                  fontSize: 14.sp,
-                                                  fontWeight: FontWeight.normal,
-                                                  color: kDarkBleuColor,
+                                              child: Center(
+                                                child: Text(
+                                                  "English",
+                                                  style: GoogleFonts.tajawal(
+                                                    fontSize: 14.sp,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    color: ctx.locale
+                                                                .languageCode ==
+                                                            'en'
+                                                        ? Colors.white
+                                                        : kDarkBleuColor,
+                                                  ),
                                                 ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 10.w,
-                                      ),
-                                      Expanded(
-                                        child: GestureDetector(
+                                          GestureDetector(
                                             onTap: () {
-                                              Navigator.pop(context, true);
+                                              context.setLocale(
+                                                  const Locale("ar"));
+                                              setState(() {});
                                             },
-                                            child: LargeButton(
-                                              text:
-                                                  LocaleKeys.auth_confirm.tr(),
-                                              isButton: false,
-                                            )),
+                                            child: Container(
+                                              //width: 175.w,
+                                              height: 50.h,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                  10.r,
+                                                ),
+                                                color:
+                                                    ctx.locale.languageCode ==
+                                                            'ar'
+                                                        ? kBlueColor
+                                                        : kLightLightBlueColor,
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  "العربية",
+                                                  style: GoogleFonts.tajawal(
+                                                    fontSize: 14.sp,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    color: ctx.locale
+                                                                .languageCode ==
+                                                            'ar'
+                                                        ? Colors.white
+                                                        : kDarkBleuColor,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          )
+                                        ],
                                       ),
-                                    ],
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                            child: SizedBox(
+                              // height: 123.w,
+                              width: 95.w,
+                              child: Column(children: [
+                                Container(
+                                  height: 95.h,
+                                  width: 95.w,
+                                  decoration: BoxDecoration(
+                                    color: kLightLightGreyColor,
+                                    borderRadius: BorderRadius.circular(10.r),
                                   ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        )
-                            .then((value) async {
-                          if (value == true) {
-                            isLoading = true;
-                            setState(() {});
-                            await AuthController.deleteAccount(
-                                    language: context.locale.languageCode,
-                                    token: Provider.of<ProviderProvider>(
-                                            context,
-                                            listen: false)
-                                        .providerModel
-                                        .apiToken,
-                                    type: "provider")
-                                .then((value) async {
-                              isLoading = false;
-                              setState(() {});
-                              if (value == "تم مسح الحساب" ||
-                                  value == 'Your Account Has Deleted') {
-                                Provider.of<ProviderProvider>(context,
-                                        listen: false)
-                                    .clearUser();
-                                Provider.of<ProviderProvider>(context,
-                                        listen: false)
-                                    .clearUser();
-                                final prefs =
-                                    await SharedPreferences.getInstance();
-                                prefs.clear();
-
-                                // ignore: use_build_context_synchronously
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    duration: const Duration(seconds: 3),
-                                    backgroundColor: kBlueColor,
-                                    content: Text(
-                                      value.toString(),
+                                  child: const Center(
+                                    child: Icon(
+                                      Icons.language,
+                                      color: kBlueColor,
                                     ),
                                   ),
-                                );
-                                // ignore: use_build_context_synchronously
-                                Navigator.of(context).pushAndRemoveUntil(
+                                ),
+                                SizedBox(
+                                  height: 2.h,
+                                ),
+                                FittedBox(
+                                  child: TextWidget(
+                                    text: LocaleKeys.costumer_settings_language
+                                        .tr(),
+                                    size: 14,
+                                    color: kDarkBleuColor,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                              ]),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
                                   MaterialPageRoute(
-                                    builder: (context) => const SignInView(),
-                                  ),
-                                  (route) => false,
-                                );
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    duration: const Duration(seconds: 3),
-                                    backgroundColor: Colors.red,
-                                    content: Text(
-                                      value.toString(),
-                                    ),
-                                  ),
-                                );
-                              }
-                            });
-                          }
-                        });
-                      },
-                      child: SizedBox(
-                        // height: 123.w,
-                        width: 95.w,
-                        child: Column(children: [
-                          Container(
-                            height: 95.h,
-                            width: 95.w,
-                            decoration: BoxDecoration(
-                                color: kLightLightPinkColor,
-                                borderRadius: BorderRadius.circular(10.r)),
-                            child: const Center(
-                                child: Icon(
-                              Icons.delete_outline_rounded,
-                              color: kPinkColor,
-                            )),
+                                      builder: ((context) =>
+                                          const SuggestionsView(
+                                            isProvider: true,
+                                          ))));
+                            },
+                            child: SettingsWidget(
+                                name: LocaleKeys.titles_suggestions.tr(),
+                                image: "assets/icons/suggestions.svg"),
                           ),
-                          SizedBox(
-                            height: 2.h,
-                          ),
-                          FittedBox(
-                            child: TextWidget(
-                              text: LocaleKeys.costumer_settings_delete_account
-                                  .tr(),
-                              size: 14,
-                              color: kPinkColor,
-                              fontWeight: FontWeight.normal,
+                          GestureDetector(
+                            onTap: () async {
+                              isLoading = true;
+                              setState(() {});
+                              await AuthController.logout(
+                                language: context.locale.languageCode,
+                                token: Provider.of<ProviderProvider>(context,
+                                        listen: false)
+                                    .providerModel
+                                    .apiToken,
+                              ).then((value) async {
+                                setState(() {
+                                  isLoading = false;
+                                });
+                                if (value == 'تم تسجيل الخروج' ||
+                                    value == 'LogOut') {
+                                  Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const SignInView()),
+                                      (route) => false);
+                                } else {
+                                  await SharedPreferences.getInstance()
+                                      .then((value) {
+                                    value.clear();
+                                    Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const SignInView()),
+                                        (route) => false);
+                                  });
+                                }
+                              });
+                            },
+                            child: SizedBox(
+                              // height: 123.w,
+                              width: 95.w,
+                              child: Column(children: [
+                                Container(
+                                  height: 95.h,
+                                  width: 95.w,
+                                  decoration: BoxDecoration(
+                                      color: kLightLightPinkColor,
+                                      borderRadius:
+                                          BorderRadius.circular(10.r)),
+                                  child: Center(
+                                      child: SvgPicture.asset(
+                                    "assets/icons/logout.svg",
+                                  )),
+                                ),
+                                SizedBox(
+                                  height: 2.h,
+                                ),
+                                FittedBox(
+                                  child: TextWidget(
+                                    text: LocaleKeys.costumer_settings_logout
+                                        .tr(),
+                                    size: 14,
+                                    color: kPinkColor,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                              ]),
                             ),
                           ),
-                        ]),
+                          GestureDetector(
+                            onTap: () async {
+                              modal
+                                  .showMaterialModalBottomSheet<bool>(
+                                enableDrag: false,
+                                backgroundColor: Colors.transparent,
+                                context: context,
+                                isDismissible: true,
+                                builder: (context) => Center(
+                                  child: Container(
+                                    height: 150.h,
+                                    width: double.infinity,
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 20.w,
+                                    ),
+                                    margin:
+                                        EdgeInsets.symmetric(horizontal: 20.w),
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius:
+                                            BorderRadius.circular(16.r)),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Center(
+                                            child: Text(
+                                          LocaleKeys
+                                              .costumer_settings_your_account_will_be_deleted
+                                              .tr(),
+                                          maxLines: 5,
+                                          softWrap: true,
+                                          style: GoogleFonts.tajawal(
+                                            fontSize: 18.sp,
+                                            fontWeight: FontWeight.w600,
+                                            color: kDarkBleuColor,
+                                          ),
+                                        )),
+                                        // SizedBox(
+                                        //   height: 20.h,
+                                        // ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Expanded(
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  Navigator.pop(context, false);
+                                                },
+                                                child: Container(
+                                                  width: 175.w,
+                                                  height: 50.h,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                      10.r,
+                                                    ),
+                                                    color: kLightLightBlueColor,
+                                                  ),
+                                                  child: Center(
+                                                    child: Text(
+                                                      LocaleKeys.common_cancel
+                                                          .tr(),
+                                                      style:
+                                                          GoogleFonts.tajawal(
+                                                        fontSize: 14.sp,
+                                                        fontWeight:
+                                                            FontWeight.normal,
+                                                        color: kDarkBleuColor,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 10.w,
+                                            ),
+                                            Expanded(
+                                              child: GestureDetector(
+                                                  onTap: () {
+                                                    Navigator.pop(
+                                                        context, true);
+                                                  },
+                                                  child: LargeButton(
+                                                    text: LocaleKeys
+                                                        .auth_confirm
+                                                        .tr(),
+                                                    isButton: false,
+                                                  )),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              )
+                                  .then((value) async {
+                                if (value == true) {
+                                  isLoading = true;
+                                  setState(() {});
+                                  await AuthController.deleteAccount(
+                                          language: context.locale.languageCode,
+                                          token: Provider.of<ProviderProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .providerModel
+                                              .apiToken,
+                                          type: "provider")
+                                      .then((value) async {
+                                    isLoading = false;
+                                    setState(() {});
+                                    if (value == "تم مسح الحساب" ||
+                                        value == 'Your Account Has Deleted') {
+                                      Provider.of<ProviderProvider>(context,
+                                              listen: false)
+                                          .clearUser();
+                                      Provider.of<ProviderProvider>(context,
+                                              listen: false)
+                                          .clearUser();
+                                      final prefs =
+                                          await SharedPreferences.getInstance();
+                                      prefs.clear();
+
+                                      // ignore: use_build_context_synchronously
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          duration: const Duration(seconds: 3),
+                                          backgroundColor: kBlueColor,
+                                          content: Text(
+                                            value.toString(),
+                                          ),
+                                        ),
+                                      );
+                                      // ignore: use_build_context_synchronously
+                                      Navigator.of(context).pushAndRemoveUntil(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const SignInView(),
+                                        ),
+                                        (route) => false,
+                                      );
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          duration: const Duration(seconds: 3),
+                                          backgroundColor: Colors.red,
+                                          content: Text(
+                                            value.toString(),
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  });
+                                }
+                              });
+                            },
+                            child: SizedBox(
+                              // height: 123.w,
+                              width: 95.w,
+                              child: Column(children: [
+                                Container(
+                                  height: 95.h,
+                                  width: 95.w,
+                                  decoration: BoxDecoration(
+                                      color: kLightLightPinkColor,
+                                      borderRadius:
+                                          BorderRadius.circular(10.r)),
+                                  child: const Center(
+                                      child: Icon(
+                                    Icons.delete_outline_rounded,
+                                    color: kPinkColor,
+                                  )),
+                                ),
+                                SizedBox(
+                                  height: 2.h,
+                                ),
+                                FittedBox(
+                                  child: TextWidget(
+                                    text: LocaleKeys
+                                        .costumer_settings_delete_account
+                                        .tr(),
+                                    size: 14,
+                                    color: kPinkColor,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                              ]),
+                            ),
+                          )
+                        ],
                       ),
-                    )
-                  ],
-                ),
               ),
             ),
           ],
         ),
-        if (isLoading) const LoadingWidget(),
       ]),
     );
   }

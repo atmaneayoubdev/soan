@@ -9,6 +9,7 @@ import 'package:soan/translations/locale_keys.g.dart';
 import 'package:soan/ui/provider/orders/views/modify_invoice_view.dart';
 import '../../../../Common/back_button.dart';
 import '../../../../Common/large_button.dart';
+import '../../../../Common/show_image_view.dart';
 import '../../../../Common/text_widget.dart';
 import '../../../../constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -119,6 +120,21 @@ class _PorderDetailsViewState extends State<PorderDetailsView> {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10.r),
                                   color: kLightLightGreyColor,
+                                ),
+                                child: CachedNetworkImage(
+                                  imageUrl: widget.order.images[0].image,
+                                  fit: BoxFit.cover,
+                                  placeholder: (context, url) => const Center(
+                                    child: CircularProgressIndicator(
+                                      color: kLightLightSkyBlueColor,
+                                    ),
+                                  ),
+                                  errorWidget: (context, url, error) =>
+                                      const Center(
+                                    child: CircularProgressIndicator(
+                                      color: kLightLightSkyBlueColor,
+                                    ),
+                                  ),
                                 ),
                               ),
                               SizedBox(
@@ -329,29 +345,41 @@ class _PorderDetailsViewState extends State<PorderDetailsView> {
                                 );
                               },
                               itemBuilder: (BuildContext context, int index) {
-                                return Container(
-                                  height: 100.h,
-                                  width: 100.w,
-                                  decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(5.r)),
-                                  ),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(5.r),
-                                    child: CachedNetworkImage(
-                                      imageUrl:
-                                          widget.order.images[index].image,
-                                      fit: BoxFit.cover,
-                                      placeholder: (context, url) =>
-                                          const Center(
-                                        child: CircularProgressIndicator(
-                                          color: kLightLightSkyBlueColor,
+                                return GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => ShowImageView(
+                                            imageUrl: widget
+                                                .order.images[index].image,
+                                          ),
+                                        ));
+                                  },
+                                  child: Container(
+                                    height: 100.h,
+                                    width: 100.w,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(5.r)),
+                                    ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(5.r),
+                                      child: CachedNetworkImage(
+                                        imageUrl:
+                                            widget.order.images[index].image,
+                                        fit: BoxFit.cover,
+                                        placeholder: (context, url) =>
+                                            const Center(
+                                          child: CircularProgressIndicator(
+                                            color: kLightLightSkyBlueColor,
+                                          ),
                                         ),
-                                      ),
-                                      errorWidget: (context, url, error) =>
-                                          const Center(
-                                        child: CircularProgressIndicator(
-                                          color: kLightLightSkyBlueColor,
+                                        errorWidget: (context, url, error) =>
+                                            const Center(
+                                          child: CircularProgressIndicator(
+                                            color: kLightLightSkyBlueColor,
+                                          ),
                                         ),
                                       ),
                                     ),

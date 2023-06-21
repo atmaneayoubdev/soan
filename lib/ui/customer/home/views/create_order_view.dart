@@ -54,15 +54,13 @@ class _CreateOrderViewState extends State<CreateOrderView> {
 
   // ignore: unused_field
   final List<File> _images = [];
-  File? _image1;
-  File? _image2;
-  File? _image3;
+  final ImagePicker _picker = ImagePicker();
+
   CarModel? _selectedCar;
   CategoryModel? _selectedCategory;
   final _formKey = GlobalKey<FormState>();
   bool isDelivery = true;
-  final ImagePicker _picker = ImagePicker();
-  bool isLoading = false;
+  bool isLoading = true;
 
   Future getMyCarsList() async {
     await CostumerController.getCostumerCars(
@@ -93,6 +91,9 @@ class _CreateOrderViewState extends State<CreateOrderView> {
         _selectedArea = value.first;
         getAreaCities(int.parse(value.first.id));
       }
+      setState(() {
+        isLoading = false;
+      });
     });
   }
 
@@ -110,54 +111,6 @@ class _CreateOrderViewState extends State<CreateOrderView> {
       }
     });
   }
-
-  // Future<bool> _handleLocationPermission() async {
-  //   bool serviceEnabled;
-  //   LocationPermission permission;
-
-  //   serviceEnabled = await Geolocator.isLocationServiceEnabled();
-  //   if (!serviceEnabled) {
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(
-  //         backgroundColor: Colors.red,
-  //         content: Text(LocaleKeys
-  //             .costumer_providers_permission_denied_activate_location
-  //             .tr()),
-  //       ),
-  //     );
-  //     return false;
-  //   }
-  //   permission = await Geolocator.checkPermission();
-
-  //   if (permission == LocationPermission.denied) {
-  //     permission = await Geolocator.requestPermission();
-  //     if (permission == LocationPermission.denied) {
-  //       ScaffoldMessenger.of(context).showSnackBar(
-  //         SnackBar(
-  //           backgroundColor: Colors.red,
-  //           content: Text(LocaleKeys.costumer_providers_permission_denied.tr()),
-  //         ),
-  //       );
-  //       return false;
-  //     }
-  //   }
-  //   if (permission == LocationPermission.deniedForever) {
-  //     permission = await Geolocator.requestPermission();
-  //     if (permission == LocationPermission.deniedForever) {
-  //       ScaffoldMessenger.of(context).showSnackBar(
-  //         SnackBar(
-  //           backgroundColor: Colors.red,
-  //           content: Text(LocaleKeys
-  //               .costumer_providers_we_can_not_request_permission
-  //               .tr()),
-  //         ),
-  //       );
-  //       return false;
-  //     }
-  //   }
-
-  //   return true;
-  // }
 
   Future<bool> _handleLocationPermission() async {
     Location location = Location();
@@ -272,7 +225,7 @@ class _CreateOrderViewState extends State<CreateOrderView> {
                 ),
                 Expanded(
                   child: Container(
-                    width: double.infinity,
+                    // width: double.infinity,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.only(
@@ -284,14 +237,12 @@ class _CreateOrderViewState extends State<CreateOrderView> {
                       child: Form(
                         key: _formKey,
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(
-                              height: 31.h,
-                            ),
+                            30.verticalSpace,
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 25.w),
                               child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   TextWidget(
@@ -300,14 +251,11 @@ class _CreateOrderViewState extends State<CreateOrderView> {
                                     color: kDarkBleuColor,
                                     fontWeight: FontWeight.w500,
                                   ),
-                                  SizedBox(
-                                    height: 12.h,
-                                  ),
+                                  13.verticalSpace,
                                   DropdownButtonFormField<CarModel>(
                                     borderRadius: BorderRadius.circular(16.r),
                                     //underline: const SizedBox(),
                                     decoration: formFieldDecoration,
-
                                     isExpanded: true,
                                     value: _selectedCar,
                                     icon: const Icon(Icons.keyboard_arrow_down),
@@ -737,27 +685,23 @@ class _CreateOrderViewState extends State<CreateOrderView> {
                                     height: 14.h,
                                   ),
                                   Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Stack(
                                         children: [
                                           GestureDetector(
                                             onTap: () async {
                                               await _picker
-                                                  .pickImage(
-                                                source: ImageSource.camera,
-                                                imageQuality: 50,
-                                                preferredCameraDevice:
-                                                    CameraDevice.rear,
-                                                requestFullMetadata: false,
-                                              )
+                                                  .pickMultiImage(
+                                                      imageQuality: 50)
                                                   .then((value) {
-                                                if (value != null) {
-                                                  setState(() {
-                                                    _image1 =
-                                                        (File(value.path));
-                                                  });
+                                                if (value.isNotEmpty) {
+                                                  List<File> temp = [];
+                                                  for (XFile x in value) {
+                                                    temp.add(File(x.path));
+                                                  }
+                                                  _images.addAll(temp);
+                                                  setState(() {});
                                                 }
                                               });
                                             },
@@ -771,178 +715,87 @@ class _CreateOrderViewState extends State<CreateOrderView> {
                                                   color: kSkyBleuColor,
                                                 ),
                                               ),
-                                              child: _image1 != null
-                                                  ? Image.file(
-                                                      _image1!,
-                                                      fit: BoxFit.cover,
-                                                    )
-                                                  : Center(
-                                                      child: SvgPicture.asset(
-                                                        "assets/icons/add_camera.svg",
-                                                      ),
-                                                    ),
-                                            ),
-                                          ),
-                                          if (_image1 != null)
-                                            GestureDetector(
-                                              onTap: () {
-                                                _image1 = null;
-                                                setState(() {});
-                                              },
-                                              child: Align(
-                                                alignment: Alignment.topRight,
-                                                child: Container(
-                                                  padding:
-                                                      const EdgeInsets.all(5),
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.black45,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5.r),
-                                                  ),
-                                                  child: Icon(
-                                                    Icons.delete,
-                                                    color: Colors.white,
-                                                    size: 15.h,
-                                                  ),
+                                              child: Center(
+                                                child: SvgPicture.asset(
+                                                  "assets/icons/add_camera.svg",
                                                 ),
                                               ),
-                                            )
+                                            ),
+                                          ),
                                         ],
                                       ),
-                                      Stack(
-                                        children: [
-                                          GestureDetector(
-                                            onTap: () async {
-                                              await _picker
-                                                  .pickImage(
-                                                source: ImageSource.gallery,
-                                                imageQuality: 50,
-                                              )
-                                                  .then((value) {
-                                                if (value != null) {
-                                                  setState(() {
-                                                    _image2 =
-                                                        (File(value.path));
-                                                  });
-                                                }
-                                              });
-                                            },
-                                            child: Container(
-                                              height: 96.h,
-                                              width: 111.w,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(5.r),
-                                                border: Border.all(
-                                                  color: kSkyBleuColor,
-                                                ),
-                                              ),
-                                              child: _image2 != null
-                                                  ? Image.file(
-                                                      _image2!,
-                                                      fit: BoxFit.cover,
-                                                    )
-                                                  : Center(
-                                                      child: SvgPicture.asset(
-                                                        "assets/icons/add_camera.svg",
+                                      3.horizontalSpace,
+                                      Expanded(
+                                        //width: 111.w,
+                                        child: SizedBox(
+                                          height: 96.h,
+                                          child: ListView.separated(
+                                            itemCount: _images.length,
+                                            shrinkWrap: true,
+                                            scrollDirection: Axis.horizontal,
+                                            itemBuilder: (BuildContext context,
+                                                int index) {
+                                              return Stack(
+                                                children: [
+                                                  Container(
+                                                    height: 96.h,
+                                                    width: 111.w,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5),
+                                                      border: Border.all(
+                                                        color: kSkyBleuColor,
                                                       ),
                                                     ),
-                                            ),
-                                          ),
-                                          if (_image2 != null)
-                                            GestureDetector(
-                                              onTap: () {
-                                                _image2 = null;
-                                                setState(() {});
-                                              },
-                                              child: Align(
-                                                alignment: Alignment.topRight,
-                                                child: Container(
-                                                  padding:
-                                                      const EdgeInsets.all(5),
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.black45,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5.r),
-                                                  ),
-                                                  child: Icon(
-                                                    Icons.delete,
-                                                    color: Colors.white,
-                                                    size: 15.h,
-                                                  ),
-                                                ),
-                                              ),
-                                            )
-                                        ],
-                                      ),
-                                      Stack(
-                                        children: [
-                                          GestureDetector(
-                                            onTap: () async {
-                                              await _picker
-                                                  .pickImage(
-                                                source: ImageSource.gallery,
-                                                imageQuality: 50,
-                                              )
-                                                  .then((value) {
-                                                if (value != null) {
-                                                  setState(() {
-                                                    _image3 =
-                                                        (File(value.path));
-                                                  });
-                                                }
-                                              });
-                                            },
-                                            child: Container(
-                                              height: 96.h,
-                                              width: 111.w,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(5.r),
-                                                border: Border.all(
-                                                  color: kSkyBleuColor,
-                                                ),
-                                              ),
-                                              child: _image3 != null
-                                                  ? Image.file(
-                                                      _image3!,
-                                                      fit: BoxFit.cover,
-                                                    )
-                                                  : Center(
-                                                      child: SvgPicture.asset(
-                                                        "assets/icons/add_camera.svg",
+                                                    child: ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5),
+                                                      child: Image.file(
+                                                        _images[index],
+                                                        fit: BoxFit.cover,
                                                       ),
                                                     ),
-                                            ),
+                                                  ),
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      _images.removeAt(index);
+                                                      setState(() {});
+                                                    },
+                                                    child: Align(
+                                                      alignment:
+                                                          Alignment.topRight,
+                                                      child: Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(5),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: Colors.black45,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      5.r),
+                                                        ),
+                                                        child: Icon(
+                                                          Icons.delete,
+                                                          color: Colors.white,
+                                                          size: 15.h,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                            separatorBuilder:
+                                                (BuildContext context,
+                                                    int index) {
+                                              return 3.horizontalSpace;
+                                            },
                                           ),
-                                          if (_image3 != null)
-                                            GestureDetector(
-                                              onTap: () {
-                                                _image3 = null;
-                                                setState(() {});
-                                              },
-                                              child: Align(
-                                                alignment: Alignment.topRight,
-                                                child: Container(
-                                                  padding:
-                                                      const EdgeInsets.all(5),
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.black45,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5.r),
-                                                  ),
-                                                  child: Icon(
-                                                    Icons.delete,
-                                                    color: Colors.white,
-                                                    size: 15.h,
-                                                  ),
-                                                ),
-                                              ),
-                                            )
-                                        ],
+                                        ),
                                       )
                                     ],
                                   ),
@@ -983,33 +836,32 @@ class _CreateOrderViewState extends State<CreateOrderView> {
                                   ),
                                   GestureDetector(
                                     onTap: () async {
+                                      for (var image in _images) {
+                                        debugPrint(image.path);
+                                      }
                                       if (_formKey.currentState!.validate()) {
                                         isLoading = true;
                                         setState(() {});
                                         await CostumerController.createOrder(
-                                            language:
-                                                context.locale.languageCode,
-                                            token: Provider.of<UserProvider>(
-                                              context,
-                                              listen: false,
-                                            ).user.apiToken,
-                                            carId: _selectedCar!.id,
-                                            catId: _selectedCategory!.id,
-                                            adressName: _locModel!.address,
-                                            locationName: _locModel!.address,
-                                            lat: _locModel!.latLng.latitude
-                                                .toString(),
-                                            lng: _locModel!.latLng.longitude
-                                                .toString(),
-                                            orderPlace: "in-location",
-                                            desc: descriptionController.text,
-                                            regionId: _selectedArea!.id,
-                                            cityId: _selectedCity!.id,
-                                            images: [
-                                              _image1,
-                                              _image2,
-                                              _image3
-                                            ]).then((value) {
+                                          language: context.locale.languageCode,
+                                          token: Provider.of<UserProvider>(
+                                            context,
+                                            listen: false,
+                                          ).user.apiToken,
+                                          carId: _selectedCar!.id,
+                                          catId: _selectedCategory!.id,
+                                          adressName: _locModel!.address,
+                                          locationName: _locModel!.address,
+                                          lat: _locModel!.latLng.latitude
+                                              .toString(),
+                                          lng: _locModel!.latLng.longitude
+                                              .toString(),
+                                          orderPlace: "in-location",
+                                          desc: descriptionController.text,
+                                          regionId: _selectedArea!.id,
+                                          cityId: _selectedCity!.id,
+                                          images: _images,
+                                        ).then((value) {
                                           isLoading = false;
                                           setState(() {});
 
@@ -1034,9 +886,7 @@ class _CreateOrderViewState extends State<CreateOrderView> {
                                                 backgroundColor: Colors.red,
                                                 duration:
                                                     const Duration(seconds: 3),
-                                                content: Text(
-                                                  value,
-                                                ),
+                                                content: Text(value.toString()),
                                               ),
                                             );
                                           }

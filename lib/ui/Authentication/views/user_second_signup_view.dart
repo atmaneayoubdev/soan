@@ -247,17 +247,16 @@ class _UserSecondSignUpViewState extends State<UserSecondSignUpView> {
                                   isLoading = true;
                                 });
                                 await AuthController.userRegister(
-                                        firstName: widget.firstName,
-                                        lastName: widget.lastName,
-                                        phoneNumber: widget.phone,
-                                        email: emailControlelr.text,
-                                        password: passwordController.text,
-                                        passwordConfirm:
-                                            confirmPassController.text,
-                                        deviceToken: "54234343234523",
-                                        howToKnowUs: widget.howToKnowUs,
-                                        language: context.locale.languageCode)
-                                    .then((value) {
+                                  firstName: widget.firstName,
+                                  lastName: widget.lastName,
+                                  phoneNumber: widget.phone,
+                                  email: emailControlelr.text,
+                                  password: passwordController.text,
+                                  passwordConfirm: confirmPassController.text,
+                                  deviceToken: "54234343234523",
+                                  howToKnowUs: widget.howToKnowUs,
+                                  language: context.locale.languageCode,
+                                ).then((value) {
                                   setState(() {
                                     isLoading = false;
                                   });

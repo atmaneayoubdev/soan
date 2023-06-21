@@ -95,9 +95,7 @@ class _CurrentOrderWidgetState extends State<CurrentOrderWidget> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(9.r),
                       child: CachedNetworkImage(
-                        imageUrl: widget.order.provider != null
-                            ? widget.order.provider!.avatar
-                            : "",
+                        imageUrl: widget.order.provider!.avatar,
                         fit: BoxFit.cover,
                         placeholder: (context, url) => Center(
                           child: SvgPicture.asset(
@@ -133,7 +131,7 @@ class _CurrentOrderWidgetState extends State<CurrentOrderWidget> {
                       ),
                       SizedBox(
                         height: 20.h,
-                        width: 200.w,
+                        width: 250.w,
                         child: ListView.separated(
                           scrollDirection: Axis.horizontal,
                           itemCount: widget.order.provider!.categories.length,

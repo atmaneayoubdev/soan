@@ -57,6 +57,7 @@ class _PcurrentOrdersWidgetState extends State<PcurrentOrdersWidget> {
                   SizedBox(
                     width: 10.w,
                   ),
+                  //Text(widget.order.createdAt, style: G,),
                   TextWidget(
                     text: widget.order.createdAt,
                     size: 14,
@@ -190,31 +191,45 @@ class _PcurrentOrdersWidgetState extends State<PcurrentOrdersWidget> {
                         width: 5.w,
                       ),
                       context.locale.languageCode == 'ar'
-                          ? Text(
-                              widget.order.invoiceItems.isNotEmpty
-                                  ? "تم اصدار الفاتورة ${double.parse(widget.order.price.total).toStringAsFixed(0)} ريال ، بانتظار تاكيد استلام المبلغ"
-                                  : "تم التعاقد  ${widget.order.processAt}",
-                              //maxLines: 2,
-                              overflow: TextOverflow.clip,
-                              style: GoogleFonts.tajawal(
-                                  fontSize: 14.r,
-                                  color: widget.order.invoiceItems.isNotEmpty
-                                      ? kDarkBleuColor
-                                      : kGreenColor,
-                                  fontWeight: FontWeight.normal),
+                          ? SizedBox(
+                              height: 20.h,
+                              width: 300.w,
+                              child: FittedBox(
+                                child: Text(
+                                  widget.order.invoiceItems.isNotEmpty
+                                      ? "تم اصدار الفاتورة ${double.parse(widget.order.price.total).toStringAsFixed(0)} ريال ، بانتظار تاكيد استلام المبلغ"
+                                      : "تم التعاقد  ${widget.order.processAt}",
+                                  //maxLines: 2,
+                                  overflow: TextOverflow.clip,
+                                  style: GoogleFonts.tajawal(
+                                      fontSize: 14.r,
+                                      color:
+                                          widget.order.invoiceItems.isNotEmpty
+                                              ? kDarkBleuColor
+                                              : kGreenColor,
+                                      fontWeight: FontWeight.normal),
+                                ),
+                              ),
                             )
-                          : Text(
-                              widget.order.invoiceItems.isNotEmpty
-                                  ? "${LocaleKeys.provider_orders_invoice_was_created.tr()} ${double.parse(widget.order.price.total).toStringAsFixed(0)} ${LocaleKeys.provider_orders_waiting_payement.tr()}"
-                                  : "${LocaleKeys.costumer_my_orders_contracted.tr()} ${widget.order.processAt}",
-                              // maxLines: 2,
-                              overflow: TextOverflow.clip,
-                              style: GoogleFonts.tajawal(
-                                  fontSize: 14.r,
-                                  color: widget.order.invoiceItems.isNotEmpty
-                                      ? kDarkBleuColor
-                                      : kGreenColor,
-                                  fontWeight: FontWeight.normal),
+                          : SizedBox(
+                              height: 20.h,
+                              width: 300.w,
+                              child: FittedBox(
+                                child: Text(
+                                  widget.order.invoiceItems.isNotEmpty
+                                      ? "${LocaleKeys.provider_orders_invoice_was_created.tr()} ${double.parse(widget.order.price.total).toStringAsFixed(0)} ${LocaleKeys.provider_orders_waiting_payement.tr()}"
+                                      : "${LocaleKeys.costumer_my_orders_contracted.tr()} ${widget.order.processAt}",
+                                  // maxLines: 2,
+                                  overflow: TextOverflow.clip,
+                                  style: GoogleFonts.tajawal(
+                                      fontSize: 14.r,
+                                      color:
+                                          widget.order.invoiceItems.isNotEmpty
+                                              ? kDarkBleuColor
+                                              : kGreenColor,
+                                      fontWeight: FontWeight.normal),
+                                ),
+                              ),
                             )
                     ],
                   ),

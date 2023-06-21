@@ -120,10 +120,10 @@ class _PhoneVerificationState extends State<PhoneVerification> {
                       });
                       if (widget.from == "provider") {
                         await AuthController.checkOtpProvider(
-                                phone: widget.number,
-                                otp: v,
-                                language: context.locale.languageCode)
-                            .then((value) async {
+                          phone: widget.number,
+                          otp: v,
+                          language: context.locale.languageCode,
+                        ).then((value) async {
                           setState(() {
                             isLoading = false;
                           });

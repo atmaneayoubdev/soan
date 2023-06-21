@@ -72,9 +72,9 @@ class OldOrderWidget extends StatelessWidget {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(9.r),
                       child: CachedNetworkImage(
-                        imageUrl: order.provider != null
-                            ? order.provider!.avatar
-                            : "",
+                        imageUrl: order.provider == null
+                            ? order.images.first.image
+                            : order.provider!.avatar,
                         fit: BoxFit.cover,
                         placeholder: (context, url) => Center(
                           child: SvgPicture.asset(

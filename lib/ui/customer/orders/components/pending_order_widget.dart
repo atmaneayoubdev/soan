@@ -120,11 +120,13 @@ class PendingOrderWidget extends StatelessWidget {
                             10.r,
                           ),
                         ),
-                        child: TextWidget(
-                          text: order.category.name,
-                          size: 10,
-                          color: kDarkBleuColor,
-                          fontWeight: FontWeight.normal,
+                        child: Center(
+                          child: TextWidget(
+                            text: order.category.name,
+                            size: 10,
+                            color: kDarkBleuColor,
+                            fontWeight: FontWeight.normal,
+                          ),
                         ),
                       ),
                       SizedBox(

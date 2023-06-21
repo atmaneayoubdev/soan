@@ -3,12 +3,13 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:html/dom.dart' as dom;
 import '../../../../Common/back_button.dart';
 import '../../../../Common/text_widget.dart';
 import '../../../../constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../controllers/global_controller.dart';
-import 'package:html/parser.dart';
+import 'package:html/parser.dart' show parse;
 
 class ContentPageView extends StatefulWidget {
   const ContentPageView({Key? key, required this.name, required this.id})
@@ -84,11 +85,11 @@ class _ContentPageViewState extends State<ContentPageView> {
                       ),
                       initialData: '',
                       builder: (BuildContext context, AsyncSnapshot snapshot) {
-                        var text = parse(snapshot.data);
+                        dom.Document doc = parse(snapshot.data);
                         return snapshot.data.isNotEmpty
                             ? SingleChildScrollView(
                                 child: Text(
-                                  text.body!.innerHtml,
+                                  doc.body!.text,
                                   style: GoogleFonts.tajawal(
                                       fontSize: 22.sp, color: kDarkBleuColor),
                                 ),

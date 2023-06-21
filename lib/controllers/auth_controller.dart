@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:soan/models/auth/provider_model.dart';
 import 'package:soan/models/auth/user_model.dart';
 import '../constants.dart';
+import "package:logger/logger.dart";
 
 class AuthController with ChangeNotifier {
 ////////////////////////////User Register///////////////////////////
@@ -106,7 +107,9 @@ class AuthController with ChangeNotifier {
               'Accept-Language': language,
             }),
       );
-      debugPrint(response.toString());
+      final logger = Logger();
+
+      logger.d(response.toString());
       debugPrint(response.statusCode.toString());
 
       if (response.statusCode == 200) {

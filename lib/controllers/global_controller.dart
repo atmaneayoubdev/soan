@@ -30,7 +30,7 @@ class GlobalController with ChangeNotifier {
           headers: headers,
         ),
       );
-      debugPrint(response.data.toString());
+      //debugPrint(response.data.toString());
       if (response.statusCode == 200) {
         List<CategoryModel> categories = [];
         categories = (response.data['data'] as List)
@@ -39,8 +39,8 @@ class GlobalController with ChangeNotifier {
         return categories;
       }
       return [];
-    } on DioError catch (error) {
-      debugPrint(error.message!);
+    } on DioError {
+      //debugPrint(error.message!);
       return [];
     }
   }
@@ -63,7 +63,7 @@ class GlobalController with ChangeNotifier {
           headers: headers,
         ),
       );
-      debugPrint(response.data.toString());
+      //debugPrint(response.data.toString());
       if (response.statusCode == 200) {
         List<CarCountryFactoryModel> factories = [];
         factories = (response.data['data'] as List)
@@ -72,8 +72,8 @@ class GlobalController with ChangeNotifier {
         return factories;
       }
       return [];
-    } on DioError catch (error) {
-      debugPrint(error.message!);
+    } on DioError {
+      //debugPrint(error.message!);
       return [];
     }
   }
@@ -95,7 +95,7 @@ class GlobalController with ChangeNotifier {
           headers: headers,
         ),
       );
-      debugPrint(response.data.toString());
+      //debugPrint(response.data.toString());
       if (response.statusCode == 200) {
         List<AreaModel> areas = [];
         areas = (response.data['data'] as List)
@@ -104,8 +104,8 @@ class GlobalController with ChangeNotifier {
         return areas;
       }
       return [];
-    } on DioError catch (error) {
-      debugPrint(error.message!);
+    } on DioError {
+      //debugPrint(error.message!);
       return [];
     }
   }
@@ -127,7 +127,7 @@ class GlobalController with ChangeNotifier {
           headers: headers,
         ),
       );
-      debugPrint(response.data.toString());
+      //debugPrint(response.data.toString());
       if (response.statusCode == 200) {
         List<CityModel> cities = [];
         cities = (response.data['data'] as List)
@@ -136,8 +136,8 @@ class GlobalController with ChangeNotifier {
         return cities;
       }
       return [];
-    } on DioError catch (error) {
-      debugPrint(error.message!);
+    } on DioError {
+      //debugPrint(error.message!);
       return [];
     }
   }
@@ -160,7 +160,7 @@ class GlobalController with ChangeNotifier {
           headers: headers,
         ),
       );
-      debugPrint(response.data.toString());
+      //debugPrint(response.data.toString());
       if (response.statusCode == 200) {
         List<HowToKnowUsModel> howToknowUsList = [];
         howToknowUsList = (response.data['data'] as List)
@@ -169,8 +169,8 @@ class GlobalController with ChangeNotifier {
         return howToknowUsList;
       }
       return [];
-    } on DioError catch (error) {
-      debugPrint(error.message!);
+    } on DioError {
+      //debugPrint(error.message!);
       return [];
     }
   }
@@ -192,7 +192,7 @@ class GlobalController with ChangeNotifier {
           headers: headers,
         ),
       );
-      debugPrint(response.data.toString());
+      //debugPrint(response.data.toString());
       if (response.statusCode == 200) {
         List<HomesliderModel> sliders = [];
         sliders = (response.data['data'] as List)
@@ -201,8 +201,8 @@ class GlobalController with ChangeNotifier {
         return sliders;
       }
       return [];
-    } on DioError catch (error) {
-      debugPrint(error.message!);
+    } on DioError {
+      //debugPrint(error.message!);
       return [];
     }
   }
@@ -229,9 +229,8 @@ class GlobalController with ChangeNotifier {
         settings = SettingsModel.fromJson(response.data['data']);
         return settings;
       }
-      return;
-    } on DioError catch (error) {
-      debugPrint(error.message!);
+    } on DioError {
+      //debugPrint(error.message!);
       return;
     }
   }
@@ -253,7 +252,7 @@ class GlobalController with ChangeNotifier {
           headers: headers,
         ),
       );
-      debugPrint(response.data.toString());
+      //debugPrint(response.data.toString());
       if (response.statusCode == 200) {
         List<ColorModel> colors = [];
         colors = (response.data['data'] as List)
@@ -262,8 +261,8 @@ class GlobalController with ChangeNotifier {
         return colors;
       }
       return [];
-    } on DioError catch (error) {
-      debugPrint(error.message!);
+    } on DioError {
+      //debugPrint(error.message!);
       return [];
     }
   }
@@ -285,7 +284,7 @@ class GlobalController with ChangeNotifier {
           headers: headers,
         ),
       );
-      debugPrint(response.data.toString());
+      //debugPrint(response.data.toString());
       if (response.statusCode == 200) {
         List<String> makers = [];
         makers = (response.data['data'] as List<dynamic>).cast<String>();
@@ -293,8 +292,8 @@ class GlobalController with ChangeNotifier {
         return makers;
       }
       return [];
-    } on DioError catch (error) {
-      debugPrint(error.message!);
+    } on DioError {
+      //debugPrint(error.message!);
       return [];
     }
   }
@@ -316,15 +315,15 @@ class GlobalController with ChangeNotifier {
           headers: headers,
         ),
       );
-      debugPrint(response.data.toString());
+      //debugPrint(response.data.toString());
       if (response.statusCode == 200) {
         List<String> models = [];
         models = (response.data['data'] as List<dynamic>).cast<String>();
         return models;
       }
       return [];
-    } on DioError catch (error) {
-      debugPrint(error.message!);
+    } on DioError {
+      //debugPrint(error.message!);
       return [];
     }
   }
@@ -346,7 +345,7 @@ class GlobalController with ChangeNotifier {
           headers: headers,
         ),
       );
-      debugPrint(response.data.toString());
+      //debugPrint(response.data.toString());
       if (response.statusCode == 200) {
         List<RefusalModel> refusals = [];
         refusals = (response.data['data'] as List)
@@ -355,8 +354,8 @@ class GlobalController with ChangeNotifier {
         return refusals;
       }
       return [];
-    } on DioError catch (error) {
-      debugPrint(error.message!);
+    } on DioError {
+      //debugPrint(error.message!);
       return [];
     }
   }
@@ -388,7 +387,7 @@ class GlobalController with ChangeNotifier {
           headers: headers,
         ),
       );
-      debugPrint(response.data.toString());
+      //debugPrint(response.data.toString());
       if (response.statusCode == 400) {
         return {
           "message": response.data["errors"].first["value"],
@@ -400,7 +399,7 @@ class GlobalController with ChangeNotifier {
         "code": response.statusCode.toString()
       };
     } on DioError catch (error) {
-      debugPrint(error.message!);
+      //debugPrint(error.message!);
       return error.message!;
     }
   }
@@ -421,10 +420,10 @@ class GlobalController with ChangeNotifier {
           headers: headers,
         ),
       );
-      debugPrint(response.data.toString());
+      //debugPrint(response.data.toString());
       return response.data['data']['description'];
-    } on DioError catch (error) {
-      debugPrint(error.message!);
+    } on DioError {
+      //debugPrint(error.message!);
       return '';
     }
   }
@@ -445,12 +444,12 @@ class GlobalController with ChangeNotifier {
           headers: headers,
         ),
       );
-      debugPrint(response.data.toString());
+      //debugPrint(response.data.toString());
       return (response.data['data'] as List)
           .map((x) => ContentModel.fromJson(x))
           .toList();
-    } on DioError catch (error) {
-      debugPrint(error.message!);
+    } on DioError {
+      //debugPrint(error.message!);
       return '';
     }
   }

@@ -44,11 +44,13 @@ class RatingHeaderWidget extends StatelessWidget {
           SizedBox(
             height: 15.h,
           ),
-          TextWidget(
-            text: provdier.providerName,
-            size: 14,
-            color: kDarkBleuColor,
-            fontWeight: FontWeight.normal,
+          Center(
+            child: TextWidget(
+              text: provdier.providerName,
+              size: 14,
+              color: kDarkBleuColor,
+              fontWeight: FontWeight.normal,
+            ),
           ),
           SizedBox(
             height: 10.h,
@@ -78,11 +80,13 @@ class RatingHeaderWidget extends StatelessWidget {
                           10.r,
                         ),
                       ),
-                      child: TextWidget(
-                        text: provdier.categories[index].name,
-                        size: 10,
-                        color: kDarkBleuColor,
-                        fontWeight: FontWeight.normal,
+                      child: Center(
+                        child: TextWidget(
+                          text: provdier.categories[index].name,
+                          size: 10,
+                          color: kDarkBleuColor,
+                          fontWeight: FontWeight.normal,
+                        ),
                       ),
                     );
                   },
@@ -99,7 +103,7 @@ class RatingHeaderWidget extends StatelessWidget {
               padding: EdgeInsets.zero,
               physics: const NeverScrollableScrollPhysics(),
               scrollDirection: Axis.horizontal,
-              itemCount: double.parse(provdier.rates).toInt(),
+              itemCount: int.parse(provdier.ratesCount),
               separatorBuilder: (BuildContext context, int index) {
                 return SizedBox(
                   width: 0.w,

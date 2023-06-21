@@ -104,6 +104,14 @@ class _LocationViewState extends State<LocationView> {
                     _controller.complete(controller);
                   },
                 ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: BackButton(
+                      color: kBlueColor,
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.white))),
+                ),
                 Center(
                     child: SvgPicture.asset(
                   "assets/icons/map_marker_icon.svg",

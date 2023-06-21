@@ -53,11 +53,13 @@ class _CategoryWidgetState extends State<CategoryWidget> {
               ),
             ),
           ),
-          TextWidget(
-              text: widget.name,
-              size: 14,
-              color: widget.isActive ? Colors.white : kDarkBleuColor,
-              fontWeight: FontWeight.w500),
+          Center(
+            child: TextWidget(
+                text: widget.name,
+                size: 14,
+                color: widget.isActive ? Colors.white : kDarkBleuColor,
+                fontWeight: FontWeight.w500),
+          ),
         ],
       ),
     );

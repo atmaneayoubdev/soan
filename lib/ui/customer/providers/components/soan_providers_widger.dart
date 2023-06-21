@@ -52,11 +52,13 @@ class SoanProviderWidget extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          TextWidget(
-                            text: provider.providerName,
-                            size: 14,
-                            color: kDarkBleuColor,
-                            fontWeight: FontWeight.normal,
+                          Center(
+                            child: TextWidget(
+                              text: provider.providerName,
+                              size: 14,
+                              color: kDarkBleuColor,
+                              fontWeight: FontWeight.normal,
+                            ),
                           ),
                           Padding(
                             padding: EdgeInsets.symmetric(vertical: 12.h),

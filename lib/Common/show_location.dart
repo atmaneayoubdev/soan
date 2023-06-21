@@ -68,6 +68,14 @@ class _ShowLocationViewState extends State<ShowLocationView> {
             //   "assets/icons/map_marker_icon.svg",
             //   height: 40.h,
             // ))
+            const SafeArea(
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: BackButton(
+                  color: kBlueColor,
+                ),
+              ),
+            )
           ],
         ),
       ),

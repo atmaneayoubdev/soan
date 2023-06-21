@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,7 +12,6 @@ import 'package:soan/models/constumer/notification_model.dart';
 import 'package:soan/models/constumer/order_model.dart';
 import 'package:soan/models/global/answer_list_model.dart';
 import 'package:soan/models/global/invoice_model.dart';
-import 'package:soan/translations/locale_keys.g.dart';
 
 class CostumerController with ChangeNotifier {
   ////////////////////////////change user info///////////////////////////
@@ -48,7 +46,7 @@ class CostumerController with ChangeNotifier {
           headers: headers,
         ),
       );
-      debugPrint(response.data.toString());
+      //debugPrint(response.data.toString());
       UserModel user;
       user = UserModel.fromJson(response.data["data"]);
       final prefs = await SharedPreferences.getInstance();
@@ -75,7 +73,7 @@ class CostumerController with ChangeNotifier {
           headers: headers,
         ),
       );
-      debugPrint(response.data.toString());
+      //debugPrint(response.data.toString());
       UserModel user;
       user = UserModel.fromJson(response.data["data"]);
       final prefs = await SharedPreferences.getInstance();
@@ -104,8 +102,8 @@ class CostumerController with ChangeNotifier {
         'Authorization': "Bearer $token",
         'Accept-Language': language,
       };
-      debugPrint(password);
-      debugPrint(phone);
+      //debugPrint(password);
+      //debugPrint(phone);
       var response = await dio.post(
         "${baseUrl}customer/my-profile/change-phone",
         data: {
@@ -118,7 +116,7 @@ class CostumerController with ChangeNotifier {
           headers: headers,
         ),
       );
-      debugPrint(response.data.toString());
+      //debugPrint(response.data.toString());
       if (response.statusCode == 200) {
         final prefs = await SharedPreferences.getInstance();
 
@@ -131,7 +129,7 @@ class CostumerController with ChangeNotifier {
             : response.data['message'];
       }
     } on DioError catch (error) {
-      debugPrint(error.message!);
+      //debugPrint(error.message!);
       return error.response!.data['message'];
     }
   }
@@ -164,7 +162,7 @@ class CostumerController with ChangeNotifier {
           headers: headers,
         ),
       );
-      debugPrint(response.data.toString());
+      //debugPrint(response.data.toString());
       if (response.statusCode == 200) {
         return response.data['message'];
       } else {
@@ -173,7 +171,7 @@ class CostumerController with ChangeNotifier {
             : response.data['message'];
       }
     } on DioError catch (error) {
-      debugPrint(error.message!);
+      //debugPrint(error.message!);
       return error.response!.data['message'];
     }
   }
@@ -197,7 +195,7 @@ class CostumerController with ChangeNotifier {
           headers: headers,
         ),
       );
-      debugPrint(response.data.toString());
+      //debugPrint(response.data.toString());
       if (response.statusCode == 200) {
         List<CarModel> cars = [];
         cars = (response.data['data'] as List)
@@ -206,8 +204,8 @@ class CostumerController with ChangeNotifier {
         return cars;
       }
       return [];
-    } on DioError catch (error) {
-      debugPrint(error.message!);
+    } on DioError {
+      //debugPrint(error.message!);
       return [];
     }
   }
@@ -234,13 +232,13 @@ class CostumerController with ChangeNotifier {
           headers: headers,
         ),
       );
-      debugPrint(response.data.toString());
+      //debugPrint(response.data.toString());
       if (response.statusCode == 200) {
         return response.data['message'];
       }
       return response.data['message'];
     } on DioError catch (error) {
-      debugPrint(error.message!);
+      //debugPrint(error.message!);
       return error.response!.data['message'];
     }
   }
@@ -279,7 +277,7 @@ class CostumerController with ChangeNotifier {
           headers: headers,
         ),
       );
-      debugPrint(response.data.toString());
+      //debugPrint(response.data.toString());
       if (response.statusCode == 200) {
         CarModel car = CarModel.fromJson(response.data["data"]);
         return car;
@@ -289,7 +287,7 @@ class CostumerController with ChangeNotifier {
             : response.data['message'];
       }
     } on DioError catch (error) {
-      debugPrint(error.message!);
+      //debugPrint(error.message!);
       return error.response!.data['message'];
     }
   }
@@ -329,7 +327,7 @@ class CostumerController with ChangeNotifier {
           headers: headers,
         ),
       );
-      debugPrint(response.data.toString());
+      //debugPrint(response.data.toString());
       if (response.statusCode == 200) {
         CarModel car = CarModel.fromJson(response.data["data"]);
         return car;
@@ -339,7 +337,7 @@ class CostumerController with ChangeNotifier {
             : response.data['message'];
       }
     } on DioError catch (error) {
-      debugPrint(error.message!);
+      //debugPrint(error.message!);
       return error.response!.data['message'];
     }
   }
@@ -365,7 +363,7 @@ class CostumerController with ChangeNotifier {
           headers: headers,
         ),
       );
-      debugPrint(response.data.toString());
+      //debugPrint(response.data.toString());
       if (response.statusCode == 200) {
         List<NotificationModel> notifications = [];
         notifications = (response.data['data'] as List)
@@ -374,8 +372,8 @@ class CostumerController with ChangeNotifier {
         return notifications;
       }
       return [];
-    } on DioError catch (error) {
-      debugPrint(error.message!);
+    } on DioError {
+      //debugPrint(error.message!);
       return [];
     }
   }
@@ -414,7 +412,7 @@ class CostumerController with ChangeNotifier {
           headers: headers,
         ),
       );
-      debugPrint(response.data.toString());
+      //debugPrint(response.data.toString());
       if (response.statusCode == 200) {
         List<ProviderModel> notifications = [];
         notifications = (response.data['data'] as List)
@@ -423,8 +421,8 @@ class CostumerController with ChangeNotifier {
         return notifications;
       }
       return [];
-    } on DioError catch (error) {
-      debugPrint(error.message!);
+    } on DioError {
+      //debugPrint(error.message!);
       return [];
     }
   }
@@ -462,17 +460,10 @@ class CostumerController with ChangeNotifier {
               await MultipartFile.fromFile(image.path, filename: fileName));
         }
       }
-
-      List<MultipartFile> files = [];
-      for (var item in images) {
-        if (item != null) {
-          String fileName = item.path.split('/').last;
-          files.add(await MultipartFile.fromFile(
-            item.path,
-            filename: fileName,
-          ));
-        }
+      for (MultipartFile file in imagesList) {
+        debugPrint(file.filename);
       }
+
       FormData formData = FormData.fromMap({
         'car_id': carId,
         "category_id": catId,
@@ -484,7 +475,7 @@ class CostumerController with ChangeNotifier {
         "description": desc,
         "region_id": regionId,
         "city_id": cityId,
-        "images[]": files,
+        "images[]": imagesList,
       });
 
       var response = await dio.post(
@@ -500,14 +491,16 @@ class CostumerController with ChangeNotifier {
         ),
       );
       debugPrint(response.data.toString());
-      return response.data['message'];
-    } on DioError catch (ex) {
-      if (ex.type == DioErrorType.connectionTimeout ||
-          ex.type == DioErrorType.sendTimeout ||
-          ex.type == DioErrorType.receiveTimeout) {
-        return LocaleKeys.common_could_not_upload.tr();
+      if (response.statusCode == 200) {
+        return response.data['message'];
       }
-      throw Exception(ex.message);
+      if (response.statusCode == 400) {
+        return response.data['errors'].isEmpty
+            ? response.data["message"].toString()
+            : response.data['errors'].first["value"].toString();
+      }
+    } on DioError catch (error) {
+      return error.message;
     }
   }
 
@@ -532,7 +525,7 @@ class CostumerController with ChangeNotifier {
           headers: headers,
         ),
       );
-      debugPrint(response.data.toString());
+      //debugPrint(response.data.toString());
 
       if (response.statusCode == 200) {
         List<OrderModel> orders = [];
@@ -542,8 +535,8 @@ class CostumerController with ChangeNotifier {
         return orders;
       }
       return [];
-    } on DioError catch (error) {
-      debugPrint(error.message!);
+    } on DioError {
+      //debugPrint(error.message!);
       return [];
     }
   }
@@ -573,7 +566,7 @@ class CostumerController with ChangeNotifier {
           headers: headers,
         ),
       );
-      debugPrint(response.data.toString());
+      //debugPrint(response.data.toString());
       if (response.statusCode == 200) {
         OrderModel order = OrderModel.fromJson(response.data["data"]);
 
@@ -584,7 +577,7 @@ class CostumerController with ChangeNotifier {
       }
       return "error";
     } on DioError catch (error) {
-      debugPrint(error.message!);
+      //debugPrint(error.message!);
       if (error.response!.statusCode == 400) {
         return error.response!.data["message"];
       }
@@ -613,7 +606,7 @@ class CostumerController with ChangeNotifier {
           headers: headers,
         ),
       );
-      debugPrint(response.data.toString());
+      //debugPrint(response.data.toString());
       if (response.statusCode == 200) {
         List<AnswerListModel> answers = [];
         answers = (response.data['data'] as List)
@@ -622,8 +615,8 @@ class CostumerController with ChangeNotifier {
         return answers;
       }
       return [];
-    } on DioError catch (error) {
-      debugPrint(error.message!);
+    } on DioError {
+      //debugPrint(error.message!);
       return [];
     }
   }
@@ -650,10 +643,10 @@ class CostumerController with ChangeNotifier {
           headers: headers,
         ),
       );
-      debugPrint(response.data.toString());
+      //debugPrint(response.data.toString());
       return response.data["message"];
     } on DioError catch (error) {
-      debugPrint(error.message!);
+      //debugPrint(error.message!);
       if (error.response!.statusCode == 400) {
         return error.response!.data["message"];
       }
@@ -691,10 +684,10 @@ class CostumerController with ChangeNotifier {
           headers: headers,
         ),
       );
-      debugPrint(response.data.toString());
+      //debugPrint(response.data.toString());
       return response.data["message"].toString();
     } on DioError catch (error) {
-      debugPrint(error.message!);
+      //debugPrint(error.message!);
       return error.message!;
     }
   }
@@ -720,11 +713,11 @@ class CostumerController with ChangeNotifier {
           headers: headers,
         ),
       );
-      debugPrint(response.data.toString());
+      //debugPrint(response.data.toString());
 
       return OrderModel.fromJson(response.data["data"]);
     } on DioError catch (error) {
-      debugPrint(error.message!);
+      //debugPrint(error.message!);
       return error.message!;
     }
   }
@@ -750,11 +743,11 @@ class CostumerController with ChangeNotifier {
           headers: headers,
         ),
       );
-      debugPrint(response.data.toString());
+      //debugPrint(response.data.toString());
 
       return InvoiceModel.fromJson(response.data["data"]);
     } on DioError catch (error) {
-      debugPrint(error.message!);
+      //debugPrint(error.message!);
       return error.message!;
     }
   }
@@ -780,10 +773,10 @@ class CostumerController with ChangeNotifier {
           headers: headers,
         ),
       );
-      debugPrint(response.data.toString());
+      //debugPrint(response.data.toString());
       return CarModel.fromJson(response.data['data']);
     } on DioError catch (error) {
-      debugPrint(error.message!);
+      //debugPrint(error.message!);
       return error.message!;
     }
   }
